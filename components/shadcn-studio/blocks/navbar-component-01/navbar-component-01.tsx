@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import Link from 'next/link'
 import { MenuIcon, SearchIcon } from 'lucide-react'
 
 import LogoSVG from '@/assets/svg/logo.svg'
@@ -17,25 +18,27 @@ type NavigationItem = {
 }[]
 
 const Navbar = ({ navigationData }: { navigationData: NavigationItem }) => {
+  const midpoint = Math.ceil(navigationData.length / 2)
+  const leftItems = navigationData.slice(0, midpoint)
+  const rightItems = navigationData.slice(midpoint)
+
   return (
     <header className='bg-background sticky top-0 z-50'>
       <div className='mx-auto flex max-w-7xl items-center justify-between gap-8 px-4 py-7 sm:px-6'>
         <div className='text-muted-foreground flex flex-1 items-center gap-8 font-medium md:justify-center lg:gap-16'>
-          <a href='#' className='hover:text-primary max-md:hidden'>
-            Home
-          </a>
-          <a href='#' className='hover:text-primary max-md:hidden'>
-            Products
-          </a>
-          <a href='#' className='flex items-center gap-3'>
+          {leftItems.map((item) => (
+            <Link key={item.href} href={item.href} className='hover:text-primary max-md:hidden'>
+              {item.title}
+            </Link>
+          ))}
+          <Link href='/' className='flex items-center gap-3'>
             <Image src={LogoSVG} alt='Logo' className='w-5' priority />
-          </a>
-          <a href='#' className='hover:text-primary max-md:hidden'>
-            About Us
-          </a>
-          <a href='#' className='hover:text-primary max-md:hidden'>
-            Contacts
-          </a>
+          </Link>
+          {rightItems.map((item) => (
+            <Link key={item.href} href={item.href} className='hover:text-primary max-md:hidden'>
+              {item.title}
+            </Link>
+          ))}
         </div>
 
         <div className='flex items-center gap-6'>
@@ -49,7 +52,9 @@ const Navbar = ({ navigationData }: { navigationData: NavigationItem }) => {
               <DropdownMenuGroup>
                 {navigationData.map((item, index) => (
                   <DropdownMenuItem key={index}>
-                    <a href={item.href}>{item.title}</a>
+                    <Link href={item.href} className='w-full'>
+                      {item.title}
+                    </Link>
                   </DropdownMenuItem>
                 ))}
               </DropdownMenuGroup>
