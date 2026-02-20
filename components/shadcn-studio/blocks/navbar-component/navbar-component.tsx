@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { MenuIcon, SearchIcon } from 'lucide-react'
+import { MenuIcon, SearchIcon, ShoppingCart } from 'lucide-react'
 
 import LogoSVG from '@/assets/svg/logo.svg'
 import { Button } from '@/components/ui/button'
@@ -23,11 +23,15 @@ const Navbar = ({ navigationData }: { navigationData: NavigationItem }) => {
   const rightItems = navigationData.slice(midpoint)
 
   return (
-    <header className='bg-background/55 sticky top-0 z-50 border-b border-white/20 backdrop-blur-xl supports-[backdrop-filter]:bg-background/45 shadow-[0_8px_24px_-16px_rgba(0,0,0,0.45)]'>
-      <div className='mx-auto flex w-full items-center justify-between gap-8 px-4 py-4 sm:px-6'>
-        <div className='text-muted-foreground flex flex-1 items-center gap-8 font-medium md:justify-center lg:gap-16'>
+    <header className='bg-background/55 sticky top-0 z-50 border-b border-white/20 backdrop-blur-xl supports-[backdrop-filter]:bg-background/90'>
+      <div className='mx-auto relative flex w-full items-center gap-8 px-4 py-4 sm:px-6'>
+        <Link href='/' className='flex items-center gap-3 md:hidden'>
+          <Image src={LogoSVG} alt='Logo' className='w-5' priority />
+        </Link>
+
+        <div className='absolute left-1/2 hidden -translate-x-1/2 items-center gap-8 font-medium md:flex lg:gap-16'>
           {leftItems.map((item) => (
-            <Link key={item.href} href={item.href} className='hover:text-primary max-md:hidden'>
+            <Link key={item.href} href={item.href} className='hover:text-primary'>
               {item.title}
             </Link>
           ))}
@@ -35,17 +39,21 @@ const Navbar = ({ navigationData }: { navigationData: NavigationItem }) => {
             <Image src={LogoSVG} alt='Logo' className='w-5' priority />
           </Link>
           {rightItems.map((item) => (
-            <Link key={item.href} href={item.href} className='hover:text-primary max-md:hidden'>
+            <Link key={item.href} href={item.href} className='hover:text-primary'>
               {item.title}
             </Link>
           ))}
         </div>
 
-        <div className='flex items-center gap-6'>
-          <Button variant='ghost' size='icon'>
-            <SearchIcon />
-            <span className='sr-only'>Search</span>
-          </Button>
+        <div className='ml-auto flex items-center gap-2'>
+            <Button variant='ghost' size='icon'>
+              <SearchIcon />
+              <span className='sr-only'>Search</span>
+            </Button>
+            <Button variant='ghost' size='icon'>
+              <ShoppingCart />
+              <span className='sr-only'>Cart</span>
+            </Button>
           <DropdownMenu>
             <DropdownMenuTrigger className='md:hidden' render={<Button variant='outline' size='icon' />}><MenuIcon /><span className='sr-only'>Menu</span></DropdownMenuTrigger>
             <DropdownMenuContent className='w-56' align='end'>
