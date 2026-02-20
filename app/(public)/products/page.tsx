@@ -65,7 +65,6 @@ export default async function ProductsPage() {
             price={formatProductPrice(product)}
             image={product.images?.[0]?.src || FALLBACK_IMAGE}
             imageAlt={product.images?.[0]?.alt || product.name}
-            featured={index === 0}
           />
         ))}
       </div>
