@@ -23,7 +23,7 @@ const Navbar = ({ navigationData }: { navigationData: NavigationItem }) => {
   const rightItems = navigationData.slice(midpoint)
 
   return (
-    <header className='bg-background sticky top-0 z-50'>
+    <header className='bg-background/55 sticky top-0 z-50 border-b border-white/20 backdrop-blur-xl supports-[backdrop-filter]:bg-background/45 shadow-[0_8px_24px_-16px_rgba(0,0,0,0.45)]'>
       <div className='mx-auto flex w-full items-center justify-between gap-8 px-4 py-4 sm:px-6'>
         <div className='text-muted-foreground flex flex-1 items-center gap-8 font-medium md:justify-center lg:gap-16'>
           {leftItems.map((item) => (
