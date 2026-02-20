@@ -1,3 +1,5 @@
+import { MedalIcon, SparklesIcon, StarIcon, TargetIcon } from "lucide-react";
+
 export const menudata = [
   {
     id: 1,
@@ -36,5 +38,46 @@ export const menudata = [
     userComment:
       "Great customer service. Thank you Indi for your professionalism",
     userAvatar: "https://cdn.shadcnstudio.com/ss-assets/avatar/avatar-57.png",
+  },
+];
+
+export const stats = [
+  {
+    icon: SparklesIcon,
+    value: "20+",
+    description: "Years of Experience",
+  },
+  {
+    icon: TargetIcon,
+    value: "70+",
+    description: "Successful Projects",
+  },
+  {
+    icon: StarIcon,
+    value: "550+",
+    description: "Customer Reviews",
+  },
+  {
+    icon: MedalIcon,
+    value: "25",
+    description: "Achieve Awards",
+  },
+];
+
+export const aboutHighlights = [
+  {
+    title: "Our Mission",
+    description:
+      "We provide advanced whole-house water filtration systems that deliver clean, great-tasting, highly purified water from every tap. Our goal is to improve your health while supporting a more sustainable future.",
+  },
+  {
+    title: "Why Choose Us?",
+    description:
+      "Our Australian-certified water filtration systems are built for harsh local conditions. They are reliable, durable, and designed to improve water quality, safety, and taste for your entire home.",
+  },
+  {
+    title: "Our Team",
+    description:
+      "With over 20 years of experience, our experts design, install, and maintain water purification systems across Australia, delivering trusted solutions tailored to your home.",
   },
 ];
