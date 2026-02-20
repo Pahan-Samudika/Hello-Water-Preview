@@ -1,6 +1,6 @@
 export default function AboutPage() {
   return (
-    <section className="mx-auto w-full max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
+    <section className="mx-auto w-full max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
       <div className="space-y-4">
         <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">About Us</h1>
         <p className="text-muted-foreground">

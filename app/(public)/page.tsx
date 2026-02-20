@@ -1,4 +1,5 @@
 import Link from "next/link";
+import HeroSection from "@/components/shadcn-studio/blocks/hero-section/hero-section";
 
 const highlights = [
   {
@@ -15,39 +16,48 @@ const highlights = [
   },
 ];
 
+const menudata = [
+  {
+    id: 1,
+    img: 'https://res.cloudinary.com/dnlb02zp9/image/upload/v1771561660/quxsbge2u1tn30s1ciru_qcwtyn.webp',
+    imgAlt: 'plate-1',
+    userComment: 'These people are in the business of making peoples life healthier.',
+    userAvatar: 'https://cdn.shadcnstudio.com/ss-assets/avatar/avatar-56.png'
+  },
+  {
+    id: 2,
+    img: 'https://res.cloudinary.com/dnlb02zp9/image/upload/v1771561660/coz3uyrltwb0qmq2yuir_evprgj.webp',
+    imgAlt: 'plate-2',
+    userComment: 'Just had a complete home water filtration system installed and it’s been working perfectly.',
+    userAvatar: 'https://cdn.shadcnstudio.com/ss-assets/avatar/avatar-46.png'
+  },
+  {
+    id: 3,
+    img: 'https://res.cloudinary.com/dnlb02zp9/image/upload/v1771561659/h3njqef1kyfc18df4hun_aburgz.webp',
+    imgAlt: 'plate-3',
+    userComment: 'Amazing service from start to finish!',
+    userAvatar: 'https://cdn.shadcnstudio.com/ss-assets/avatar/avatar-57.png'
+  },
+  {
+    id: 4,
+    img: 'https://res.cloudinary.com/dnlb02zp9/image/upload/v1771561659/nd1np6qyyfcetzpo0efv_yrbnyh.webp',
+    imgAlt: 'plate-4',
+    userComment: 'Installed in 2024 December. Happy with product and service…',
+    userAvatar: 'https://cdn.shadcnstudio.com/ss-assets/avatar/avatar-58.png'
+  },
+  {
+    id: 5,
+    img: 'https://res.cloudinary.com/dnlb02zp9/image/upload/v1771561659/fvcy6rcqzbq1hudhuhqu_jynsqw.webp',
+    imgAlt: 'plate-3',
+    userComment: 'Great customer service. Thank you Indi for your professionalism',
+    userAvatar: 'https://cdn.shadcnstudio.com/ss-assets/avatar/avatar-57.png'
+  }
+]
+
 export default function PublicHomePage() {
   return (
-    <section className="mx-auto flex min-h-[calc(100vh-6rem)] w-full max-w-6xl flex-col justify-center gap-10 px-4 py-12 sm:px-6 lg:px-8">
-      <div className="max-w-3xl space-y-4">
-        <p className="text-sm font-medium text-muted-foreground">Public Section</p>
-        <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
-          Welcome to Hello Water
-        </h1>
-        <p className="text-base text-muted-foreground sm:text-lg">
-          This is the public-facing home page with dedicated pages for products, about, and contact.
-        </p>
-      </div>
-
-      <div className="flex flex-wrap gap-3">
-        <Link href="/products" className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground">
-          View Products
-        </Link>
-        <Link href="/about" className="rounded-md border px-4 py-2 text-sm font-medium">
-          Learn About Us
-        </Link>
-        <Link href="/contact" className="rounded-md border px-4 py-2 text-sm font-medium">
-          Contact Team
-        </Link>
-      </div>
-
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {highlights.map((item) => (
-          <article key={item.title} className="rounded-lg border p-5">
-            <h2 className="text-lg font-semibold">{item.title}</h2>
-            <p className="mt-2 text-sm text-muted-foreground">{item.description}</p>
-          </article>
-        ))}
-      </div>
-    </section>
+    <main className='flex flex-col'>
+        <HeroSection menudata={menudata} />
+      </main>
   );
 }
