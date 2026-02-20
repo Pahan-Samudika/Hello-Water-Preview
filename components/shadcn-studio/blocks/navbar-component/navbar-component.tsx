@@ -23,13 +23,9 @@ const Navbar = ({ navigationData }: { navigationData: NavigationItem }) => {
   const rightItems = navigationData.slice(midpoint)
 
   return (
-    <header className='bg-background sticky top-0 z-50'>
-      <div className='mx-auto relative flex w-full items-center gap-8 px-4 py-4 sm:px-6'>
-        <Link href='/' className='flex items-center gap-3 md:hidden'>
-          <Image src={LogoSVG} alt='Logo' className='w-5' priority />
-        </Link>
-
-        <div className='text-muted-foreground absolute left-1/2 hidden -translate-x-1/2 items-center gap-8 font-medium md:flex lg:gap-16'>
+    <header className='bg-background/55 sticky top-0 z-50 border-b border-white/20 backdrop-blur-xl supports-[backdrop-filter]:bg-background/45 shadow-[0_8px_24px_-16px_rgba(0,0,0,0.45)]'>
+      <div className='mx-auto flex w-full items-center justify-between gap-8 px-4 py-4 sm:px-6'>
+        <div className='text-muted-foreground flex flex-1 items-center gap-8 font-medium md:justify-center lg:gap-16'>
           {leftItems.map((item) => (
             <Link key={item.href} href={item.href} className='hover:text-primary'>
               {item.title}
