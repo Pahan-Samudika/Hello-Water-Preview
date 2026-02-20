@@ -1,27 +1,27 @@
+import { TestimonialsSection } from "@/components/custom/testimonials-section";
+import AboutUs from "@/components/shadcn-studio/blocks/about-us-section/about-us-section";
+import { stats } from "@/constants";
+
 export default function AboutPage() {
   return (
     <section className="mx-auto w-full max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-      <div className="space-y-4">
+      <div className="mb-8 max-w-7xl space-y-3">
         <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">About Us</h1>
         <p className="text-muted-foreground">
-          Hello Water builds simple, practical water products focused on everyday reliability.
+          Welcome to Hello Water, where our passion for pure, clean water
+            meets our commitment to enhancing lives. With over two decades of
+            experience in the residential, commercial, and industrial water
+            purification industry, Hello Water stands as a trusted name in
+            delivering innovative solutions that redefine the way you experience
+            water.
         </p>
       </div>
 
-      <div className="mt-8 grid gap-4 sm:grid-cols-2">
-        <article className="rounded-lg border p-5">
-          <h2 className="text-lg font-semibold">Our Mission</h2>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Improve access to clean water with products that are easy to use and maintain.
-          </p>
-        </article>
-        <article className="rounded-lg border p-5">
-          <h2 className="text-lg font-semibold">Our Approach</h2>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Build clear workflows, clean interfaces, and dependable hardware backed by support.
-          </p>
-        </article>
-      </div>
+      <AboutUs stats={stats} />
+
+      
+
+      <TestimonialsSection />
     </section>
   );
 }
