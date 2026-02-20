@@ -90,8 +90,8 @@ const HeroSection = ({ menudata }: { menudata: MenuData[] }) => {
   const plugin = useRef(Autoplay({ delay: 3000, stopOnInteraction: false }));
 
   return (
-    <section className="flex-1 py-12 sm:py-16 lg:py-8">
-      <div className="mx-auto flex h-full max-w-6xl flex-col gap-16 px-4 py-12 sm:px-6 lg:px-8">
+    <section className="flex-1 px-6 py-12 sm:py-16 lg:py-24">
+      <div className="mx-auto flex h-full max-w-7xl flex-col gap-16 px-4 sm:px-6 lg:px-8">
         {/* Hero Header */}
         <div className="grid grid-cols-1 gap-6 gap-y-12 md:gap-y-16 lg:grid-cols-5">
           <div className="flex w-full flex-col justify-center gap-5 max-lg:items-center lg:col-span-3 lg:h-95.5">
@@ -99,7 +99,7 @@ const HeroSection = ({ menudata }: { menudata: MenuData[] }) => {
               Every Drop Matters!
             </h1>
 
-            <p className="text-muted-foreground max-w-xl text-xl max-lg:text-center">
+            <p className="text-muted-foreground sm:max-w-xl text-sm sm:text-xl max-lg:text-center">
               Upgrade your home with Hello Water. Enjoy peace of mind with
               whole-house filtration that delivers safe, crystal-clean water to
               your family every single day.
@@ -118,7 +118,7 @@ const HeroSection = ({ menudata }: { menudata: MenuData[] }) => {
             </div>
 
             <Carousel
-              className="flex w-full items-center justify-center lg:col-span-2"
+              className="flex w-full items-center justify-center lg:col-span-2 hidden sm:flex"
               setApi={setCommentsApi}
               opts={{
                 loop: true,
@@ -128,12 +128,12 @@ const HeroSection = ({ menudata }: { menudata: MenuData[] }) => {
                 {menudata.map((item) => (
                   <CarouselItem
                     key={item.id}
-                    className="flex items-center h-full min-h-14 max-w- justify-start gap-4 mt-8 lg:items-center"
+                    className="flex items-center h-full min-h-14 justify-start gap-4 mt-8 lg:items-center"
                   >
                     <img
                       src={item.userAvatar}
                       alt={item.imgAlt}
-                      className="border-background size-10 rounded-full border-4 drop-shadow-lg"
+                      className="border-background size-10 rounded-full border-4"
                     />
                     <div className="bg-primary hidden !h-6 !w-1 !rounded-full sm:block" />
                     <p className="text-card-foreground">{item.userComment}</p>
@@ -144,7 +144,7 @@ const HeroSection = ({ menudata }: { menudata: MenuData[] }) => {
           </div>
 
           <Carousel
-            className="w-full lg:col-span-2"
+            className="w-full overflow-hidden rounded-2xl lg:col-span-2"
             setApi={setMainApi}
             plugins={[plugin.current]}
             opts={{
@@ -160,7 +160,7 @@ const HeroSection = ({ menudata }: { menudata: MenuData[] }) => {
                   <img
                     src={item.img}
                     alt={item.imgAlt}
-                    className="obeh size-90 h-full object-contain"
+                    className="obeh size-90 h-full rounded-2xl object-cover"
                   />
                 </CarouselItem>
               ))}
