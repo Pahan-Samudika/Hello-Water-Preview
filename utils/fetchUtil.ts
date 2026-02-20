@@ -61,3 +61,24 @@ export async function fetchWooCommerceProducts(
 
   return (await response.json()) as WooCommerceProduct[];
 }
+
+export async function fetchWooCommerceProductBySlug(
+  slug: string,
+): Promise<WooCommerceProduct | null> {
+  const url = new URL("/wp-json/wc/store/v1/products", WORDPRESS_BASE_URL);
+  url.searchParams.set("slug", slug);
+  url.searchParams.set("per_page", "1");
+
+  const response = await fetch(url.toString(), {
+    next: { revalidate: 300 },
+  });
+
+  if (!response.ok) {
+    throw new Error(
+      `Failed to fetch WooCommerce product by slug: ${response.status} ${response.statusText}`,
+    );
+  }
+
+  const products = (await response.json()) as WooCommerceProduct[];
+  return products[0] ?? null;
+}
