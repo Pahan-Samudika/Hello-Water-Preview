@@ -17,7 +17,7 @@ const navigationData = [
     href: "/about",
   },
   {
-    title: "Contacts",
+    title: "Contact Us",
     href: "/contact",
   },
 ];
