@@ -28,6 +28,13 @@ function formatProductPrice(product: WooCommerceProduct) {
   }).format(amount / 10 ** minorUnit);
 }
 
+function sanitizeProductHtml(input: string) {
+  return input
+    .replace(/<script[\s\S]*?>[\s\S]*?<\/script>/gi, "")
+    .replace(/\son\w+=(?:"[^"]*"|'[^']*'|[^\s>]+)/gi, "")
+    .replace(/javascript:/gi, "");
+}
+
 export default async function ProductViewPage({
   params,
 }: {
@@ -42,7 +49,9 @@ export default async function ProductViewPage({
 
   const imageSrc = product.images?.[0]?.src;
   const imageAlt = product.images?.[0]?.alt || product.name;
-  const descriptionHtml = product.description || product.short_description || "";
+  const descriptionHtml = sanitizeProductHtml(
+    product.description || product.short_description || "",
+  );
 
   return (
     <section className="mx-auto w-full max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
