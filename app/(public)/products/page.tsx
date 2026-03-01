@@ -1,4 +1,4 @@
-import { ProductCard } from "@/components/product-card";
+import { ProductCard } from "@/components/custom/product-card";
 import {
   fetchWooCommerceProducts,
   type WooCommerceProduct,
@@ -57,7 +57,7 @@ export default async function ProductsPage() {
       )}
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {products.map((product, index) => (
+        {products.map((product) => (
           <ProductCard
             key={product.id}
             name={product.name}
@@ -65,6 +65,7 @@ export default async function ProductsPage() {
             price={formatProductPrice(product)}
             image={product.images?.[0]?.src || FALLBACK_IMAGE}
             imageAlt={product.images?.[0]?.alt || product.name}
+            href={`/products/${product.slug}`}
           />
         ))}
       </div>

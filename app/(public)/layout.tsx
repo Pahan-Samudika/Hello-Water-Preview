@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 
 import Navbar from "@/components/shadcn-studio/blocks/navbar-component/navbar-component";
+import { Footer } from "@/components/custom/footer";
 
 const navigationData = [
   {
@@ -16,7 +17,7 @@ const navigationData = [
     href: "/about",
   },
   {
-    title: "Contacts",
+    title: "Contact Us",
     href: "/contact",
   },
 ];
@@ -25,7 +26,8 @@ export default function PublicLayout({ children }: { children: ReactNode }) {
   return (
     <>
       <Navbar navigationData={navigationData} />
-      <main>{children}</main>
+      <main className='flex flex-col'>{children}</main>
+      <Footer />
     </>
   );
 }
