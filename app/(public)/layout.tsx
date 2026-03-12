@@ -24,10 +24,10 @@ const navigationData = [
 
 export default function PublicLayout({ children }: { children: ReactNode }) {
   return (
-    <>
+    <div className="flex min-h-dvh flex-col">
       <Navbar navigationData={navigationData} />
-      <main className='flex flex-col'>{children}</main>
+      <main className="flex flex-1 flex-col">{children}</main>
       <Footer />
-    </>
+    </div>
   );
 }

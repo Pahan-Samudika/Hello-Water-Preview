@@ -90,11 +90,11 @@ const HeroSection = ({ menudata }: { menudata: MenuData[] }) => {
   const plugin = useRef(Autoplay({ delay: 3000, stopOnInteraction: false }));
 
   return (
-    <section className="flex-1 px-6 py-12 sm:py-12">
-      <div className="mx-auto flex h-full max-w-7xl flex-col gap-16 px-4 sm:px-6 lg:px-8">
+    <section className="flex min-h-[calc(100svh-4.375rem)] items-center px-6 py-6 sm:py-8">
+      <div className="mx-auto flex min-h-full w-full max-w-7xl flex-col justify-center px-4 sm:px-6 lg:px-8">
         {/* Hero Header */}
-        <div className="grid grid-cols-1 items-center gap-6 gap-y-12 md:gap-y-16 lg:grid-cols-5">
-          <div className="flex w-full flex-col justify-center gap-5 max-lg:items-center lg:col-span-3">
+        <div className="grid grid-cols-1 items-center gap-6 gap-y-10 md:gap-y-12 lg:min-h-[min(68vh,640px)] lg:grid-cols-5 lg:gap-x-10">
+          <div className="flex w-full flex-col justify-center gap-5 max-lg:items-center lg:col-span-3 lg:h-full">
             <h1 className="text-3xl leading-[1.29167] font-semibold text-balance max-lg:text-center sm:text-4xl lg:text-5xl">
               Every Drop Matters!
             </h1>
@@ -118,7 +118,7 @@ const HeroSection = ({ menudata }: { menudata: MenuData[] }) => {
             </div>
 
             <Carousel
-              className="flex w-full items-center justify-center lg:col-span-2 hidden sm:flex"
+              className="mt-6 hidden w-full items-center justify-center sm:flex lg:col-span-2"
               setApi={setCommentsApi}
               opts={{
                 loop: true,
@@ -128,7 +128,7 @@ const HeroSection = ({ menudata }: { menudata: MenuData[] }) => {
                 {menudata.map((item) => (
                   <CarouselItem
                     key={item.id}
-                    className="flex items-center h-full min-h-14 justify-start gap-4 mt-8 lg:items-center"
+                    className="flex h-full min-h-14 items-center justify-start gap-4 lg:items-center"
                   >
                     <img
                       src={item.userAvatar}
@@ -160,7 +160,7 @@ const HeroSection = ({ menudata }: { menudata: MenuData[] }) => {
                   <img
                     src={item.img}
                     alt={item.imgAlt}
-                    className="w-full h-full rounded-2xl object-cover"
+                    className="h-[320px] w-full rounded-2xl object-cover sm:h-[420px] lg:h-[min(68vh,640px)]"
                   />
                 </CarouselItem>
               ))}
