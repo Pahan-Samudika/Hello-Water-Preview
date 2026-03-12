@@ -90,13 +90,20 @@ const HeroSection = ({ menudata }: { menudata: MenuData[] }) => {
   const plugin = useRef(Autoplay({ delay: 3000, stopOnInteraction: false }));
 
   return (
-    <section className="flex min-h-[calc(100svh-4.375rem)] items-center px-6 py-6 sm:py-8">
-      <div className="mx-auto flex min-h-full w-full max-w-7xl flex-col justify-center px-4 sm:px-6 lg:px-8">
+    <section className="relative flex min-h-[calc(100svh-4.375rem)] items-center overflow-hidden px-6 py-6 sm:py-8">
+      <div className="pointer-events-none absolute inset-0">
+        <div className="absolute left-[8%] top-[12%] h-40 w-40 rounded-full bg-primary/15 blur-3xl sm:h-56 sm:w-56" />
+        <div className="absolute bottom-[10%] right-[6%] h-48 w-48 rounded-full bg-sky-400/20 blur-3xl sm:h-64 sm:w-64" />
+      </div>
+      <div className="mx-auto flex min-h-full w-full max-w-6xl flex-col justify-center px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
         {/* Hero Header */}
         <div className="grid grid-cols-1 items-center gap-6 gap-y-10 md:gap-y-12 lg:min-h-[min(68vh,640px)] lg:grid-cols-5 lg:gap-x-10">
           <div className="flex w-full flex-col justify-center gap-5 max-lg:items-center lg:col-span-3 lg:h-full">
             <h1 className="text-3xl leading-[1.29167] font-semibold text-balance max-lg:text-center sm:text-4xl lg:text-5xl">
-              Every Drop Matters!
+              Every Drop{" "}
+              <span className="bg-linear-to-r from-primary via-sky-500 to-cyan-400 bg-clip-text text-transparent">
+                Matters!
+              </span>
             </h1>
 
             <p className="text-muted-foreground sm:max-w-xl text-sm sm:text-xl max-lg:text-center">
@@ -144,7 +151,7 @@ const HeroSection = ({ menudata }: { menudata: MenuData[] }) => {
           </div>
 
           <Carousel
-            className="w-full overflow-hidden rounded-2xl lg:col-span-2"
+            className="w-full overflow-hidden rounded-[1.75rem] border border-white/30 bg-white/20 shadow-[0_20px_60px_rgba(15,23,42,0.14)] backdrop-blur-xl dark:border-white/10 dark:bg-white/5 lg:col-span-2"
             setApi={setMainApi}
             plugins={[plugin.current]}
             opts={{
