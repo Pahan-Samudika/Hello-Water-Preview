@@ -90,11 +90,11 @@ const HeroSection = ({ menudata }: { menudata: MenuData[] }) => {
   const plugin = useRef(Autoplay({ delay: 3000, stopOnInteraction: false }));
 
   return (
-    <section className="flex-1 px-6 py-12 sm:py-16 lg:py-24">
+    <section className="flex-1 px-6 py-12 sm:py-12">
       <div className="mx-auto flex h-full max-w-7xl flex-col gap-16 px-4 sm:px-6 lg:px-8">
         {/* Hero Header */}
-        <div className="grid grid-cols-1 gap-6 gap-y-12 md:gap-y-16 lg:grid-cols-5">
-          <div className="flex w-full flex-col justify-center gap-5 max-lg:items-center lg:col-span-3 lg:h-95.5">
+        <div className="grid grid-cols-1 items-center gap-6 gap-y-12 md:gap-y-16 lg:grid-cols-5">
+          <div className="flex w-full flex-col justify-center gap-5 max-lg:items-center lg:col-span-3">
             <h1 className="text-3xl leading-[1.29167] font-semibold text-balance max-lg:text-center sm:text-4xl lg:text-5xl">
               Every Drop Matters!
             </h1>
@@ -160,7 +160,7 @@ const HeroSection = ({ menudata }: { menudata: MenuData[] }) => {
                   <img
                     src={item.img}
                     alt={item.imgAlt}
-                    className="obeh size-90 h-full rounded-2xl object-cover"
+                    className="w-full h-full rounded-2xl object-cover"
                   />
                 </CarouselItem>
               ))}
