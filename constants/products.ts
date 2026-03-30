@@ -18,7 +18,7 @@ export const products: Product[] = [
     name: "The Bottle Water Plant Whole House Micro Water Filtration",
     category: "Whole House",
     price: "Call for Price",
-    image: "https://res.cloudinary.com/dnlb02zp9/image/upload/v1774890832/Gemini_Generated_Image_v2537ov2537ov253_kortkn.png",
+    image: "https://res.cloudinary.com/dnlb02zp9/image/upload/v1774892292/IMG_5153_wftjgy.jpg",
     imageAlt: "The Bottle Water Plant Whole House Micro Water Filtration system",
     shortDescription:
       "Whole House Micron Water Filtration. 7-10 Business Delivery Days, 12 Months Warranty Included.",
@@ -45,7 +45,7 @@ export const products: Product[] = [
     name: "UV Radiation Micro Filtration System",
     category: "UV Purification",
     price: "Call for Price",
-    image: "https://res.cloudinary.com/dnlb02zp9/image/upload/v1774890833/Gemini_Generated_Image_pn84x8pn84x8pn84_bvxhts.png",
+    image: "https://res.cloudinary.com/dnlb02zp9/image/upload/v1774892293/IMG_5154_jlxwkq.jpg",
     imageAlt: "UV Radiation Micro Filtration System all-in-one unit",
     shortDescription: "UV Water Purification System Australia (DIY Installation).",
     description: [
@@ -67,7 +67,7 @@ export const products: Product[] = [
     name: "MICRON REPLACEMENT CARTRIDGE DUAL – PENTAIR DGD 1",
     category: "Replacement Cartridges",
     price: "$49.00 + GST",
-    image: "https://res.cloudinary.com/dnlb02zp9/image/upload/v1774890821/Gemini_Generated_Image_jeqzx7jeqzx7jeqz_cmiblh.png",
+    image: "https://res.cloudinary.com/dnlb02zp9/image/upload/v1774892292/IMG_5155_uf4ckc.jpg",
     imageAlt: "Micron Replacement Cartridge Dual for sediment reduction",
     shortDescription: "For Sediment Reduction.",
     description: [
@@ -88,7 +88,7 @@ export const products: Product[] = [
     name: "CHEMICAL REDUCTION PENTAIR RFC SERIES RADIAL FLOW CARBON CARTRIDGES",
     category: "Replacement Cartridges",
     price: "$95.00 + GST",
-    image: "https://res.cloudinary.com/dnlb02zp9/image/upload/v1774890844/Gemini_Generated_Image_vlbqtevlbqtevlbq_quz809.png",
+    image: "https://res.cloudinary.com/dnlb02zp9/image/upload/v1774892293/IMG_5156_ow9icg.jpg",
     imageAlt: "Pentair RFC Series radial flow carbon cartridges",
     shortDescription: "Radial flow carbon cartridges for chemical reduction.",
     description: [
@@ -109,7 +109,7 @@ export const products: Product[] = [
     name: "PENTAIR COCONUT SHELL CARBON CARTRIDGES",
     category: "Replacement Cartridges",
     price: "$135.00 + GST",
-    image: "https://res.cloudinary.com/dnlb02zp9/image/upload/v1774890842/Gemini_Generated_Image_wfd3wywfd3wywfd3_ph0x1h.png",
+    image: "https://res.cloudinary.com/dnlb02zp9/image/upload/v1774892294/IMG_5157_bewjhh.jpg",
     imageAlt: "Pentair Coconut Shell Carbon Cartridges enhanced with KDF",
     shortDescription:
       "Enhanced with KDF. Minimize heavy metals and chemicals for water filtration.",

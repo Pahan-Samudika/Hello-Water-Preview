@@ -24,14 +24,14 @@ export function ProductCard({
   return (
     <Card
       className={cn(
-        "group relative mx-auto w-full max-w-sm overflow-hidden rounded-2xl border-0 pt-0",
+        "group relative mx-auto w-full max-w-sm gap-0 overflow-hidden rounded-2xl border-0 p-0",
         className,
       )}
     >
       <img
         src={image}
         alt={imageAlt}
-        className="aspect-[4/5] w-full max-h-96 object-cover transition duration-300 ease-out group-hover:scale-105 group-hover:blur-[2px]"
+        className="block aspect-[4/5] w-full max-h-96 object-cover transition duration-300 ease-out group-hover:scale-105 group-hover:blur-[2px]"
       />
 
       <div className="pointer-events-none absolute right-3 bottom-3 z-20 rounded-full bg-black/65 px-3 py-1.5 text-2xl font-medium text-white backdrop-blur-sm transition-opacity duration-200 group-hover:opacity-0">
