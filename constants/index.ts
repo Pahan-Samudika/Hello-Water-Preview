@@ -49,18 +49,18 @@ export const stats = [
   },
   {
     icon: TargetIcon,
-    value: "70+",
-    description: "Successful Projects",
+    value: "6",
+    description: "All States Covered",
   },
   {
     icon: StarIcon,
     value: "550+",
-    description: "Customer Reviews",
+    description: "Google Reviews",
   },
   {
     icon: MedalIcon,
     value: "25",
-    description: "Achieve Awards",
+    description: "Achievement Awards",
   },
 ];
 
@@ -68,16 +68,16 @@ export const aboutHighlights = [
   {
     title: "Our Mission",
     description:
-      "We provide advanced whole-house water filtration systems that deliver clean, great-tasting, highly purified water from every tap. Our goal is to improve your health while supporting a more sustainable future.",
+      "With solutions designed for performance, simplicity, & long-term trust. Our goal is making clean, high-quality water accessible to every household, improve your health while supporting a more sustainable future.",
   },
   {
     title: "Why Choose Us?",
     description:
-      "Our Australian-certified water filtration systems are built for harsh local conditions. They are reliable, durable, and designed to improve water quality, safety, and taste for your entire home.",
+      "Our Australian-certified water filtration systems are built for harsh local conditions. They are reliable, durable, & designed to improve water quality, safety, & taste for your entire home.",
   },
   {
     title: "Our Team",
     description:
-      "With over 20 years of experience, our experts design, install, and maintain water purification systems across Australia, delivering trusted solutions tailored to your home.",
+      "With over 20 years of experience, our experts design, install, & maintain water filtration systems, delivering trusted solutions across Australia. ",
   },
 ];
