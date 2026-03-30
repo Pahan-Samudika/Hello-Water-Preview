@@ -1,8 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { QuantityCounter } from "@/components/custom/quantity-counter";
-import { Button } from "@/components/ui/button";
 import {
   fetchWooCommerceProductBySlug,
   type WooCommerceProduct,
@@ -81,15 +79,6 @@ export default async function ProductViewPage({
             className="prose prose-sm dark:prose-invert max-w-none"
             dangerouslySetInnerHTML={{ __html: descriptionHtml }}
           />
-
-          <div className="space-y-2">
-            <label htmlFor="product-quantity" className="text-sm font-medium">
-              Quantity
-            </label>
-            <QuantityCounter />
-          </div>
-
-          <Button className="w-full sm:w-auto">Add to Cart</Button>
         </div>
       </div>
     </section>

@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { MenuIcon, SearchIcon, ShoppingCart } from "lucide-react";
+import { MenuIcon, SearchIcon } from "lucide-react";
 import { ModeToggle } from "@/components/custom/theme-button";
 
 import LogoSVG from "@/assets/svg/logo.svg";
@@ -58,10 +58,6 @@ const Navbar = ({ navigationData }: { navigationData: NavigationItem }) => {
           <Button variant="ghost" size="icon">
             <SearchIcon />
             <span className="sr-only">Search</span>
-          </Button>
-          <Button variant="ghost" size="icon">
-            <ShoppingCart />
-            <span className="sr-only">Cart</span>
           </Button>
           <ModeToggle />
           <DropdownMenu>
