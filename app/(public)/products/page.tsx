@@ -3,7 +3,7 @@ import { products } from "@/constants/products";
 
 export default async function ProductsPage() {
   return (
-    <section className="mx-auto w-full max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+    <section className="mx-auto w-full max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
       <div className="mb-8 max-w-2xl space-y-3">
         <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">Products</h1>
         <p className="text-muted-foreground">
