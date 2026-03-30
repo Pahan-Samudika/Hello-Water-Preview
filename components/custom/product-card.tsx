@@ -14,6 +14,7 @@ type ProductCardProps = {
 
 export function ProductCard({
   name,
+  description,
   price,
   image,
   imageAlt,
@@ -42,8 +43,13 @@ export function ProductCard({
           <p className="line-clamp-6 text-3xl font-semibold text-white">
             {name}
           </p>
+          {description ? (
+            <p className="mt-3 line-clamp-3 text-sm leading-6 text-white/80">
+              {description}
+            </p>
+          ) : null}
 
-          <div className="mt-3 flex flex-col gap-3 w-full">
+          <div className="mt-3 flex w-full flex-col gap-3">
             <span className="text-lg font-medium text-white/90 text-start">{price}</span>
             <Button
               size="sm"

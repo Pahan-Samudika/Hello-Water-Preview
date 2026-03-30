@@ -1,36 +1,12 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import {
-  fetchWooCommerceProductBySlug,
-  type WooCommerceProduct,
-} from "@/utils/fetchUtil";
+import { getProductBySlug, products } from "@/constants/products";
 
-function formatProductPrice(product: WooCommerceProduct) {
-  const prices = product.prices;
-
-  if (!prices?.price) {
-    return "Price on request";
-  }
-
-  const minorUnit = prices.currency_minor_unit ?? 2;
-  const amount = Number(prices.price);
-
-  if (Number.isNaN(amount)) {
-    return `${prices.currency_symbol}${prices.price}`;
-  }
-
-  return new Intl.NumberFormat("en-AU", {
-    style: "currency",
-    currency: prices.currency_code || "AUD",
-  }).format(amount / 10 ** minorUnit);
-}
-
-function sanitizeProductHtml(input: string) {
-  return input
-    .replace(/<script[\s\S]*?>[\s\S]*?<\/script>/gi, "")
-    .replace(/\son\w+=(?:"[^"]*"|'[^']*'|[^\s>]+)/gi, "")
-    .replace(/javascript:/gi, "");
+export function generateStaticParams() {
+  return products.map((product) => ({
+    slug: product.slug,
+  }));
 }
 
 export default async function ProductViewPage({
@@ -39,17 +15,11 @@ export default async function ProductViewPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const product = await fetchWooCommerceProductBySlug(slug);
+  const product = getProductBySlug(slug);
 
   if (!product) {
     notFound();
   }
-
-  const imageSrc = product.images?.[0]?.src;
-  const imageAlt = product.images?.[0]?.alt || product.name;
-  const descriptionHtml = sanitizeProductHtml(
-    product.description || product.short_description || "",
-  );
 
   return (
     <section className="mx-auto w-full max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
@@ -59,26 +29,47 @@ export default async function ProductViewPage({
 
       <div className="mt-6 grid gap-8 lg:grid-cols-2">
         <div className="overflow-hidden rounded-2xl border bg-muted/20">
-          {imageSrc ? (
-            <img src={imageSrc} alt={imageAlt} className="h-full w-full object-cover" />
-          ) : (
-            <div className="flex h-96 items-center justify-center text-sm text-muted-foreground">
-              No image available
-            </div>
-          )}
+          <img
+            src={product.image}
+            alt={product.imageAlt}
+            className="h-full w-full object-cover"
+          />
         </div>
 
         <div className="space-y-5 rounded-2xl border p-6">
+          <p className="text-sm font-medium uppercase tracking-[0.2em] text-muted-foreground">
+            {product.category}
+          </p>
           <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
             {product.name}
           </h1>
 
-          <p className="text-2xl font-semibold">{formatProductPrice(product)}</p>
+          <p className="text-2xl font-semibold">{product.price}</p>
 
-          <div
-            className="prose prose-sm dark:prose-invert max-w-none"
-            dangerouslySetInnerHTML={{ __html: descriptionHtml }}
-          />
+          <p className="text-base leading-7 text-muted-foreground">
+            {product.shortDescription}
+          </p>
+
+          <div className="space-y-4">
+            {product.description.map((paragraph) => (
+              <p key={paragraph} className="text-sm leading-7 text-muted-foreground">
+                {paragraph}
+              </p>
+            ))}
+          </div>
+
+          <div className="rounded-2xl border bg-muted/30 p-5">
+            <h2 className="text-sm font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+              Key Features
+            </h2>
+            <ul className="mt-4 space-y-3">
+              {product.features.map((feature) => (
+                <li key={feature} className="text-sm leading-6 text-foreground">
+                  {feature}
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
     </section>
