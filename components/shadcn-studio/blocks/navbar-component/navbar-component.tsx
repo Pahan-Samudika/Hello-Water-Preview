@@ -27,75 +27,60 @@ const Navbar = ({ navigationData }: { navigationData: NavItem[] }) => {
   const leftItems = navigationData.slice(0, midpoint);
   const rightItems = navigationData.slice(midpoint);
 
+  const renderNavItems = (items: NavItem[]) =>
+    items.map((item) =>
+      item.children ? (
+        <DropdownMenu key={item.title}>
+          <DropdownMenuTrigger className="flex items-center gap-1 hover:text-primary focus:outline-none cursor-pointer">
+            {item.title}
+            <ChevronDown className="w-4 h-4 opacity-50" />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent
+            align="start"
+            className="bg-background/80 backdrop-blur-xl border-primary/20 min-w-[150px]"
+          >
+            <DropdownMenuGroup>
+              {item.children.map((child) => (
+                <DropdownMenuItem
+                  key={child.href}
+                  className="focus:bg-primary/10"
+                >
+                  <Link href={child.href} className="w-full">
+                    {child.title}
+                  </Link>
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuGroup>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      ) : (
+        <Link key={item.href} href={item.href} className="hover:text-primary">
+          {item.title}
+        </Link>
+      )
+    );
+
   return (
     <header className="dark:bg-[radial-gradient(35%_128px_at_50%_0%,--theme(--color-foreground/.1),transparent)] fixed sticky top-0 z-50 h-17.5 border-b border-primary/70 backdrop-blur-xl supports-[backdrop-filter]:bg-background/90 shadow-sm">
-      <div className="mx-auto relative flex max-w-7xl items-center gap-8 px-4 py-4 sm:px-6">
+      <div className="mx-auto relative flex max-w-7xl items-center gap-8 px-4 py-4 sm:px-6 h-full">
         <Link href="/" className="flex items-center gap-3 md:hidden">
           <Image src={LogoSVG} alt="Logo" className="w-5" priority />
         </Link>
 
-        <div className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-8 font-medium md:flex lg:gap-16">
-          {leftItems.map((item) => (
-            item.children ? (
-              <DropdownMenu key={item.title}>
-                <DropdownMenuTrigger className="flex items-center gap-1 hover:text-primary focus:outline-none cursor-pointer">
-                  {item.title}
-                  <ChevronDown className="w-4 h-4 opacity-50" />
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="start" className="bg-background/80 backdrop-blur-xl border-primary/20 min-w-[150px]">
-                  <DropdownMenuGroup>
-                    {item.children.map((child) => (
-                      <DropdownMenuItem key={child.href} className="focus:bg-primary/10">
-                        <Link href={child.href} className="w-full">
-                          {child.title}
-                        </Link>
-                      </DropdownMenuItem>
-                    ))}
-                  </DropdownMenuGroup>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            ) : (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="hover:text-primary"
-              >
-                {item.title}
-              </Link>
-            )
-          ))}
-          <Link href="/" className="flex items-center gap-3">
-            <Image src={LogoSVG} alt="Logo" className="w-5" priority />
+        {/* Desktop Navigation - Centered Logo Layout */}
+        <div className="absolute inset-x-0 hidden h-full items-center font-medium md:flex pointer-events-none">
+          <div className="flex-1 flex justify-end gap-8 lg:gap-16 pointer-events-auto pr-8 lg:pr-16">
+            {renderNavItems(leftItems)}
+          </div>
+          <Link
+            href="/"
+            className="flex items-center pointer-events-auto shrink-0 transition-transform hover:scale-110"
+          >
+            <Image src={LogoSVG} alt="Logo" className="w-6" priority />
           </Link>
-          {rightItems.map((item) => (
-            item.children ? (
-              <DropdownMenu key={item.title}>
-                <DropdownMenuTrigger className="flex items-center gap-1 hover:text-primary focus:outline-none cursor-pointer">
-                  {item.title}
-                  <ChevronDown className="w-4 h-4 opacity-50" />
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="start" className="bg-background/80 backdrop-blur-xl border-primary/20 min-w-[150px]">
-                  <DropdownMenuGroup>
-                    {item.children.map((child) => (
-                      <DropdownMenuItem key={child.href} className="focus:bg-primary/10">
-                        <Link href={child.href} className="w-full">
-                          {child.title}
-                        </Link>
-                      </DropdownMenuItem>
-                    ))}
-                  </DropdownMenuGroup>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            ) : (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="hover:text-primary"
-              >
-                {item.title}
-              </Link>
-            )
-          ))}
+          <div className="flex-1 flex justify-start gap-8 lg:gap-16 pointer-events-auto pl-8 lg:pl-16">
+            {renderNavItems(rightItems)}
+          </div>
         </div>
 
         <div className="ml-auto flex items-center gap-2">
