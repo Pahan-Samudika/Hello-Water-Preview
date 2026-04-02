@@ -99,9 +99,9 @@ const HeroSection = ({ menudata }: { menudata: MenuData[] }) => {
         {/* Hero Header */}
         <div className="grid grid-cols-1 items-center gap-6 gap-y-10 md:gap-y-12 lg:min-h-[min(68vh,640px)] lg:grid-cols-5 lg:gap-x-10">
           <div className="flex w-full flex-col justify-center gap-5 max-lg:items-center lg:col-span-3 lg:h-full">
-            <h1 className="text-3xl leading-[1.29167] font-semibold text-balance max-lg:text-center sm:text-4xl lg:text-5xl">
-              Every Drop{" "}
-              <span className="bg-linear-to-r from-primary via-sky-500 to-cyan-400 bg-clip-text text-transparent">
+            <h1 className="text-3xl leading-[1.29167] font-bold text-balance max-lg:text-center sm:text-5xl lg:text-6xl">
+              Every Drop{" "}<br/>
+              <span className="bg-linear-to-r from-primary via-sky-500 to-cyan-400 bg-clip-text text-transparent sm:text-6xl lg:text-7xl">
                 Matters!
               </span>
             </h1>
@@ -112,15 +112,25 @@ const HeroSection = ({ menudata }: { menudata: MenuData[] }) => {
               your family every single day.
             </p>
 
-            <div className="flex items-center gap-4">
+            <div className="flex w-full flex-col items-stretch gap-3 sm:w-auto sm:flex-row sm:items-center sm:gap-4">
               <Button
+                variant="outline"
                 size="lg"
-                className="group relative w-fit overflow-hidden rounded-full text-base before:absolute before:inset-0 before:rounded-[inherit] before:bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.5)_50%,transparent_75%,transparent_100%)] before:bg-[length:250%_250%,100%_100%] before:bg-[position:200%_0,0_0] before:bg-no-repeat before:transition-[background-position_0s_ease] before:duration-1000 hover:before:bg-[position:-100%_0,0_0] has-[>svg]:px-6 dark:before:bg-[linear-gradient(45deg,transparent_25%,rgba(0,0,0,0.2)_50%,transparent_75%,transparent_100%)]"
+                className="w-full rounded-full border-white/40 bg-white/10 text-base text-foreground backdrop-blur-sm hover:bg-white/20 sm:w-fit has-[>svg]:px-6 dark:border-white/20 dark:bg-white/5 dark:hover:bg-white/10"
                 render={<a href="products" />}
                 nativeButton={false}
               >
                 Explore Our Products
                 <ArrowRightIcon className="transition-transform duration-200 group-hover:translate-x-0.5" />
+              </Button>
+              <Button
+                size="lg"
+                className="group relative w-full overflow-hidden rounded-full px-4 text-base before:absolute before:inset-0 before:rounded-[inherit] before:bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.5)_50%,transparent_75%,transparent_100%)] before:bg-[length:250%_250%,100%_100%] before:bg-[position:200%_0,0_0] before:bg-no-repeat before:transition-[background-position_0s_ease] before:duration-1000 hover:before:bg-[position:-100%_0,0_0] sm:w-fit has-[>svg]:px-6 dark:before:bg-[linear-gradient(45deg,transparent_25%,rgba(0,0,0,0.2)_50%,transparent_75%,transparent_100%)]"
+                render={<a href="products" />}
+                nativeButton={false}
+              >
+                Get A Free Water Assessment
+
               </Button>
             </div>
 
