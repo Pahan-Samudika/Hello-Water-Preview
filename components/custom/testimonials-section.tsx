@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 import { InfiniteSlider } from "@/components/ui/infinite-slider";
+import { MotionWrapper } from "@/components/custom/motion-wrapper";
 import {
 	Avatar,
 	AvatarFallback,
@@ -98,18 +99,26 @@ export function TestimonialsSection() {
 	return (
 		<section className="relative py-24">
 			<div className="mx-auto max-w-6xl">
-				<div className="mx-auto flex flex-col items-center justify-center gap-4">
+				<MotionWrapper
+					className="mx-auto flex flex-col items-center justify-center gap-4"
+					initial={{ opacity: 0, y: 20 }}
+					whileInView={{ opacity: 1, y: 0 }}
+					transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+					viewport={{ once: true, margin: "-50px" }}
+				>
 					<div className="flex justify-center">
-						<div className="rounded-lg border px-4 py-1">Testimonials</div>
+						<div className="rounded-full bg-primary/10 text-primary border-primary/20 border px-4 py-1.5 font-semibold text-sm tracking-wide uppercase">
+							Testimonials
+						</div>
 					</div>
 
-					<h2 className="font-bold text-3xl tracking-tighter text-center lg:text-4xl">
+					<h2 className="font-bold text-3xl tracking-tighter text-center lg:text-5xl text-balance">
 						Satisfaction in Every Drop!
 					</h2>
-					<p className="text-center text-muted-foreground text-sm">
+					<p className="text-center text-muted-foreground sm:text-lg">
 						See what our customers have to say about us.
 					</p>
-				</div>
+				</MotionWrapper>
 
 				<div
 					className={cn(
