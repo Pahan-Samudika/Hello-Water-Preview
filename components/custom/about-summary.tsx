@@ -82,9 +82,9 @@ export const AboutSummary = () => {
             viewport={{ once: true, margin: "-80px" }}
           >
             <motion.div className="flex justify-center" variants={fadeUp}>
-              <div className="rounded-lg border px-4 py-1">
-                Our Story
-              </div>
+						<div className="rounded-lg bg-primary/10 text-primary border-primary/20 border px-4 py-1.5 font-semibold text-sm tracking-wide">
+							Our Story
+						</div>
             </motion.div>
             <motion.div className="max-w-2xl space-y-4" variants={fadeUp}>
               <h2 className="text-3xl font-bold tracking-tight text-balance text-foreground sm:text-4xl lg:text-5xl">
