@@ -15,11 +15,11 @@ export const products: Product[] = [
   {
     id: 1,
     slug: "the-bottle-water-plant-whole-house-micro-filtration",
-    name: "The Bottle Water Plant Whole House Micro Water Filtration",
+    name: "The Whole House Bottle Water Plant",
     category: "Whole House",
     price: "Call for Price",
     image: "https://res.cloudinary.com/dnlb02zp9/image/upload/v1774892292/IMG_5153_wftjgy.jpg",
-    imageAlt: "The Bottle Water Plant Whole House Micro Water Filtration system",
+    imageAlt: "The Whole House Bottle Water Plant",
     shortDescription:
       "Whole House Micron Water Filtration. 7-10 Business Delivery Days, 12 Months Warranty Included.",
     description: [
@@ -42,7 +42,7 @@ export const products: Product[] = [
   {
     id: 2,
     slug: "uv-radiation-micro-filtration-system",
-    name: "UV Radiation Micro Filtration System",
+    name: "UV Water Treatment & Micro Filtration System",
     category: "UV Purification",
     price: "Call for Price",
     image: "https://res.cloudinary.com/dnlb02zp9/image/upload/v1774892293/IMG_5154_jlxwkq.jpg",
@@ -64,7 +64,7 @@ export const products: Product[] = [
   {
     id: 3,
     slug: "micron-replacement-cartridge",
-    name: "MICRON REPLACEMENT CARTRIDGE DUAL – PENTAIR DGD 1",
+    name: "Pentek DGD Series",
     category: "Replacement Cartridges",
     price: "$49.00 + GST",
     image: "https://res.cloudinary.com/dnlb02zp9/image/upload/v1774892292/IMG_5155_uf4ckc.jpg",
@@ -85,7 +85,7 @@ export const products: Product[] = [
   {
     id: 4,
     slug: "pentair-chemical-reduction-cartriges",
-    name: "CHEMICAL REDUCTION PENTAIR RFC SERIES RADIAL FLOW CARBON CARTRIDGES",
+    name: "Pentek RFC Series",
     category: "Replacement Cartridges",
     price: "$95.00 + GST",
     image: "https://res.cloudinary.com/dnlb02zp9/image/upload/v1774892293/IMG_5156_ow9icg.jpg",
@@ -106,7 +106,7 @@ export const products: Product[] = [
   {
     id: 5,
     slug: "pentair-coconut-shell-carbon-cartridges",
-    name: "PENTAIR COCONUT SHELL CARBON CARTRIDGES",
+    name: "Pentek DBC Series",
     category: "Replacement Cartridges",
     price: "$135.00 + GST",
     image: "https://res.cloudinary.com/dnlb02zp9/image/upload/v1774892294/IMG_5157_bewjhh.jpg",
