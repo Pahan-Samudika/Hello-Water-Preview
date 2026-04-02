@@ -150,7 +150,7 @@ export default function FAQPage() {
 
   return (
     <div className="relative overflow-hidden w-full min-h-screen">
-      <section className="mx-auto w-full max-w-6xl px-6 py-8 md:py-12 sm:px-6 lg:px-8">
+      <section className="mx-auto w-full max-w-6xl px-6 py-8 md:py-16 sm:px-6 lg:px-8">
         <MotionWrapper 
           className="mb-12 space-y-4"
           variants={{

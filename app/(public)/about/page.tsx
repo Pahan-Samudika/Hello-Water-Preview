@@ -1,9 +1,9 @@
 "use client";
 
-import { TestimonialsSection } from "@/components/custom/testimonials-section";
 import AboutUs from "@/components/shadcn-studio/blocks/about-us-section/about-us-section";
 import { stats } from "@/constants";
 import { MotionWrapper } from "@/components/custom/motion-wrapper";
+import { HowItWorks } from "@/components/custom/how-it-works";
 
 export default function AboutPage() {
   return (
@@ -18,7 +18,7 @@ export default function AboutPage() {
             },
           }}
           initial="hidden"
-          animate="visible"
+          whileInView="visible"
         >
           <MotionWrapper
             variants={{
@@ -50,9 +50,9 @@ export default function AboutPage() {
         </MotionWrapper>
 
         <AboutUs stats={stats} />
-
-        <TestimonialsSection />
       </section>
+
+      <HowItWorks />
     </div>
   );
 }
