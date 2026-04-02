@@ -4,12 +4,11 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { ContactCard } from "@/components/custom/contact-card";
 import { MailIcon, PhoneIcon, MapPinIcon } from "lucide-react";
-import { MotionWrapper } from "@/components/custom/motion-wrapper";
 
 export default function ContactPage() {
   return (
     <div className="relative overflow-hidden w-full min-h-screen">
-      <section className="mx-auto w-full max-w-7xl px-6 py-8 md:py-12 sm:px-6 lg:px-8 lg:py-16">
+      <section className="mx-auto w-full max-w-7xl px-6 py-8 md:py-16 sm:px-6 lg:px-8 lg:py-16">
         <div className="mx-auto w-full max-w-5xl">
           <ContactCard
             contactInfo={[

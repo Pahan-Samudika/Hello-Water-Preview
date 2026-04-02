@@ -8,7 +8,7 @@ import { MotionWrapper } from "@/components/custom/motion-wrapper";
 export default function AboutPage() {
   return (
     <div className="relative overflow-hidden w-full min-h-screen">
-      <section className="mx-auto w-full max-w-6xl px-6 py-8 md:py-12 sm:px-6 lg:px-8">
+      <section className="mx-auto w-full max-w-6xl px-6 py-8 md:py-16 sm:px-6 lg:px-8">
         <MotionWrapper 
           className="mb-8 max-w-7xl space-y-4"
           variants={{
@@ -26,7 +26,7 @@ export default function AboutPage() {
               visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } },
             }}
           >
-            <h1 className="text-3xl font-bold tracking-tight sm:text-5xl lg:text-6xl text-balance">
+            <h1 className="text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl text-balance">
               About Us
             </h1>
           </MotionWrapper>

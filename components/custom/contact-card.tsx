@@ -46,8 +46,8 @@ export function ContactCard({
 					visible: { opacity: 1, x: 0, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] as const } },
 				}}
 			>
-				<div className="relative space-y-6">
-					<h1 className="text-3xl font-bold tracking-tight sm:text-5xl lg:text-6xl text-balance">
+				<div className="relative space-y-4">
+					<h1 className="text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl text-balance">
 						{title}
 					</h1>
 					<p className="max-w-xl text-muted-foreground text-base lg:text-lg">
