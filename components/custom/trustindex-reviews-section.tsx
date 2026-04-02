@@ -54,7 +54,9 @@ export function TrustindexReviewsSection() {
               visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as const } },
             }}
           >
-						<div className="rounded-lg border px-4 py-1">Ratings & Reviews</div>
+						<div className="rounded-lg bg-primary/10 text-primary border-primary/20 border px-4 py-1.5 font-semibold text-sm tracking-wide">
+							Ratings & Reviews
+						</div>
 					</motion.div>
           <motion.div
             className="space-y-3"

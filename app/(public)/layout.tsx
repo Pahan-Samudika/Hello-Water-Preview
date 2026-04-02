@@ -20,6 +20,10 @@ const navigationData = [
     title: "Contact Us",
     href: "/contact",
   },
+  {
+    title: "FAQs",
+    href: "/faq",
+  },
 ];
 
 export default function PublicLayout({ children }: { children: ReactNode }) {
