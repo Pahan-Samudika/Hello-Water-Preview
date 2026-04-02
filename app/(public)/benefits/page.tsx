@@ -10,9 +10,14 @@ import {
   Coins, 
   Zap, 
   Leaf,
+  Waves,
+  ShieldCheck,
+  Coffee,
+  TrendingUp,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { MotionWrapper } from "@/components/custom/motion-wrapper";
+import { Timeline, TimelineData } from "@/components/custom/timeline";
 
 const benefits = [
   {
@@ -71,6 +76,51 @@ const benefits = [
     color: "text-green-500",
     bg: "bg-green-500/10"
   }
+];
+
+const timelineData: TimelineData[] = [
+  {
+    timeframe: "Day 1-3",
+    title: "Cleaner, fresher water taste & smell",
+    description: "Sediment & chlorine taste/odor are immediately reduced; water is noticeably smoother.",
+    icon: Droplets,
+  },
+  {
+    timeframe: "Week 1",
+    title: "No more chlorine or chemical aftertaste",
+    description: "Chemicals like chlorine, chloramine & fluoride are filtered out, making water taste natural.",
+    icon: Waves,
+  },
+  {
+    timeframe: "Week 2–4",
+    title: "Softer water on skin & hair",
+    description: "Minerals & impurities that cause dryness or irritation start to be reduced, improving skin & hair feel.",
+    icon: Sparkles,
+  },
+  {
+    timeframe: "Month 1–3",
+    title: "Reduced scale buildup",
+    description: "Hard water minerals start being minimized, protecting appliances & reducing limescale in taps, kettles, & showers.",
+    icon: ShieldCheck,
+  },
+  {
+    timeframe: "Month 3–6",
+    title: "Improved coffee, tea, & cooking results",
+    description: "Purified water enhances the taste & aroma of beverages & food.",
+    icon: Coffee,
+  },
+  {
+    timeframe: "Month 6–12",
+    title: "Noticeable health & hydration benefits",
+    description: "Cleaner water encourages more daily consumption; fewer contaminants support overall wellness.",
+    icon: HeartPulse,
+  },
+  {
+    timeframe: "Year 1–2",
+    title: "Long-term appliance protection",
+    description: "Water quality stays consistently high; system pays for itself in avoided repairs & savings on bottled water.",
+    icon: TrendingUp,
+  },
 ];
 
 export default function BenefitsPage() {
@@ -165,6 +215,26 @@ export default function BenefitsPage() {
             </MotionWrapper>
           ))}
         </MotionWrapper>
+      </section>
+
+      {/* Timeline Section */}
+      <section className="mx-auto w-full max-w-6xl px-6 py-16 md:py-24 sm:px-6 lg:px-8 border-t border-border/40">
+        <MotionWrapper 
+          className="text-center mb-16 space-y-4"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
+            The Transformation Journey
+          </h2>
+          <p className="text-muted-foreground sm:text-lg max-w-3xl mx-auto">
+            What you will notice after installation and how your water quality evolves over time.
+          </p>
+        </MotionWrapper>
+
+        <Timeline items={timelineData} />
       </section>
     </div>
   );
