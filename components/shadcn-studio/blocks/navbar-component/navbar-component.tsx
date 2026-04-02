@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { MenuIcon, SearchIcon } from "lucide-react";
+import { ChevronDown, MenuIcon, SearchIcon } from "lucide-react";
 import { ModeToggle } from "@/components/custom/theme-button";
 
 import LogoSVG from "@/assets/svg/logo.svg";
@@ -13,12 +13,16 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-type NavigationItem = {
+type NavItem = {
   title: string;
   href: string;
-}[];
+  children?: {
+    title: string;
+    href: string;
+  }[];
+};
 
-const Navbar = ({ navigationData }: { navigationData: NavigationItem }) => {
+const Navbar = ({ navigationData }: { navigationData: NavItem[] }) => {
   const midpoint = Math.ceil(navigationData.length / 2);
   const leftItems = navigationData.slice(0, midpoint);
   const rightItems = navigationData.slice(midpoint);
@@ -32,25 +36,65 @@ const Navbar = ({ navigationData }: { navigationData: NavigationItem }) => {
 
         <div className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-8 font-medium md:flex lg:gap-16">
           {leftItems.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="hover:text-primary"
-            >
-              {item.title}
-            </Link>
+            item.children ? (
+              <DropdownMenu key={item.title}>
+                <DropdownMenuTrigger className="flex items-center gap-1 hover:text-primary focus:outline-none cursor-pointer">
+                  {item.title}
+                  <ChevronDown className="w-4 h-4 opacity-50" />
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="start" className="bg-background/80 backdrop-blur-xl border-primary/20 min-w-[150px]">
+                  <DropdownMenuGroup>
+                    {item.children.map((child) => (
+                      <DropdownMenuItem key={child.href} className="focus:bg-primary/10">
+                        <Link href={child.href} className="w-full">
+                          {child.title}
+                        </Link>
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuGroup>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="hover:text-primary"
+              >
+                {item.title}
+              </Link>
+            )
           ))}
           <Link href="/" className="flex items-center gap-3">
             <Image src={LogoSVG} alt="Logo" className="w-5" priority />
           </Link>
           {rightItems.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="hover:text-primary"
-            >
-              {item.title}
-            </Link>
+            item.children ? (
+              <DropdownMenu key={item.title}>
+                <DropdownMenuTrigger className="flex items-center gap-1 hover:text-primary focus:outline-none cursor-pointer">
+                  {item.title}
+                  <ChevronDown className="w-4 h-4 opacity-50" />
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="start" className="bg-background/80 backdrop-blur-xl border-primary/20 min-w-[150px]">
+                  <DropdownMenuGroup>
+                    {item.children.map((child) => (
+                      <DropdownMenuItem key={child.href} className="focus:bg-primary/10">
+                        <Link href={child.href} className="w-full">
+                          {child.title}
+                        </Link>
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuGroup>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="hover:text-primary"
+              >
+                {item.title}
+              </Link>
+            )
           ))}
         </div>
 
@@ -71,11 +115,20 @@ const Navbar = ({ navigationData }: { navigationData: NavigationItem }) => {
             <DropdownMenuContent className="w-56" align="end">
               <DropdownMenuGroup>
                 {navigationData.map((item, index) => (
-                  <DropdownMenuItem key={index}>
-                    <Link href={item.href} className="w-full">
-                      {item.title}
-                    </Link>
-                  </DropdownMenuItem>
+                  <div key={index}>
+                    <DropdownMenuItem>
+                      <Link href={item.href} className="w-full font-semibold">
+                        {item.title}
+                      </Link>
+                    </DropdownMenuItem>
+                    {item.children?.map((child, childIndex) => (
+                      <DropdownMenuItem key={`${index}-${childIndex}`} className="pl-6 opacity-80">
+                        <Link href={child.href} className="w-full">
+                          {child.title}
+                        </Link>
+                      </DropdownMenuItem>
+                    ))}
+                  </div>
                 ))}
               </DropdownMenuGroup>
             </DropdownMenuContent>

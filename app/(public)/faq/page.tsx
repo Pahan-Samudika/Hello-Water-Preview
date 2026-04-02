@@ -191,6 +191,7 @@ export default function FAQPage() {
           {faqCategories.map((category, catIndex) => (
             <MotionWrapper
               key={category.title}
+              id={category.title === "Product & Benefits" ? "benefits" : undefined}
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, margin: "-100px" }}
