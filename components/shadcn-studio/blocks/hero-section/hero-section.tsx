@@ -6,8 +6,6 @@ import { ArrowRightIcon } from "lucide-react";
 
 import Autoplay from "embla-carousel-autoplay";
 
-import { Separator } from "@/components/ui/separator";
-
 import { Button } from "@/components/ui/button";
 import {
   type CarouselApi,
@@ -29,7 +27,6 @@ export type MenuData = {
 const HeroSection = ({ menudata }: { menudata: MenuData[] }) => {
   const [mainApi, setMainApi] = useState<CarouselApi>();
   const [thumbApi, setThumbApi] = useState<CarouselApi>();
-  const [commentsApi, setCommentsApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
 
   useEffect(() => {
@@ -43,11 +40,10 @@ const HeroSection = ({ menudata }: { menudata: MenuData[] }) => {
 
       setCurrent(selectedIndex);
 
-      // Sync all carousels with main carousel
+      // Sync with thumb carousel if exists
       thumbApi?.scrollTo(selectedIndex);
-      commentsApi?.scrollTo(selectedIndex);
     });
-  }, [mainApi, thumbApi, commentsApi]);
+  }, [mainApi, thumbApi]);
 
   useEffect(() => {
     if (!thumbApi) {
@@ -59,27 +55,10 @@ const HeroSection = ({ menudata }: { menudata: MenuData[] }) => {
 
       setCurrent(selectedIndex);
 
-      // Sync main and comments carousel with thumbnail carousel
+      // Sync main carousel with thumbnail carousel
       mainApi?.scrollTo(selectedIndex);
-      commentsApi?.scrollTo(selectedIndex);
     });
-  }, [thumbApi, mainApi, commentsApi]);
-
-  useEffect(() => {
-    if (!commentsApi) {
-      return;
-    }
-
-    commentsApi.on("select", () => {
-      const selectedIndex = commentsApi.selectedScrollSnap();
-
-      setCurrent(selectedIndex);
-
-      // Sync main and thumbnail carousel with comments carousel
-      mainApi?.scrollTo(selectedIndex);
-      thumbApi?.scrollTo(selectedIndex);
-    });
-  }, [commentsApi, mainApi, thumbApi]);
+  }, [thumbApi, mainApi]);
 
   const handleThumbClick = useCallback(
     (index: number) => {
@@ -170,39 +149,12 @@ const HeroSection = ({ menudata }: { menudata: MenuData[] }) => {
               <Button
                 size="lg"
                 className="group relative w-full overflow-hidden rounded-full px-4 text-base before:absolute before:inset-0 before:rounded-[inherit] before:bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.5)_50%,transparent_75%,transparent_100%)] before:bg-[length:250%_250%,100%_100%] before:bg-[position:200%_0,0_0] before:bg-no-repeat before:transition-[background-position_0s_ease] before:duration-1000 hover:before:bg-[position:-100%_0,0_0] sm:w-fit has-[>svg]:px-6 dark:before:bg-[linear-gradient(45deg,transparent_25%,rgba(0,0,0,0.2)_50%,transparent_75%,transparent_100%)]"
-                render={<a href="products" />}
+                render={<a href="enquiry" />}
                 nativeButton={false}
               >
                 Get A Free Water Assessment
 
               </Button>
-            </motion.div>
-
-            <motion.div variants={itemVariants}>
-              <Carousel
-                className="mt-6 hidden w-full items-center justify-center sm:flex lg:col-span-2"
-                setApi={setCommentsApi}
-                opts={{
-                  loop: true,
-                }}
-              >
-                <CarouselContent>
-                  {menudata.map((item) => (
-                    <CarouselItem
-                      key={item.id}
-                      className="flex h-full min-h-14 items-center justify-start gap-4 lg:items-center"
-                    >
-                      <img
-                        src={item.userAvatar}
-                        alt={item.imgAlt}
-                        className="border-background size-10 rounded-full border-4"
-                      />
-                      <div className="bg-primary hidden !h-6 !w-1 !rounded-full sm:block" />
-                      <p className="text-card-foreground">{item.userComment}</p>
-                    </CarouselItem>
-                  ))}
-                </CarouselContent>
-              </Carousel>
             </motion.div>
           </motion.div>
 

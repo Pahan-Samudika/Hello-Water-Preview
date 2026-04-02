@@ -14,8 +14,7 @@ type StatItem = {
 const AboutUs = ({ stats }: { stats: StatItem }) => {
   return (
     <section className="bg-background">
-      <div className="mx-auto max-w-7xl">
-        <MotionWrapper 
+      <MotionWrapper 
           className="grid gap-4 md:grid-cols-2 xl:grid-cols-3"
           variants={{
             hidden: {},
@@ -76,7 +75,6 @@ const AboutUs = ({ stats }: { stats: StatItem }) => {
             ))}
           </div>
         </MotionWrapper>
-      </div>
     </section>
   );
 };
