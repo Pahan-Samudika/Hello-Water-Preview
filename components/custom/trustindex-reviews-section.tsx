@@ -42,10 +42,13 @@ export function TrustindexReviewsSection() {
 					</div>
           <div className="space-y-3">
             <h2 className="text-3xl font-bold tracking-tight text-balance sm:text-4xl lg:text-5xl">
-              Satisfaction in Every Drop
+              <span className="bg-linear-to-r from-primary via-sky-500 to-cyan-400 bg-clip-text text-transparent">
+                Satisfaction {" "}
+              </span>
+                in Every Drop
             </h2>
             <p className="mx-auto max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-               Discover why our customers love Hello Water and how we deliver pure, refreshing hydration with every sip.
+               See what our customers have to say about us
             </p>
           </div>
         </div>
