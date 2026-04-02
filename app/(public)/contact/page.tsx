@@ -10,12 +10,7 @@ export default function ContactPage() {
   return (
     <div className="relative overflow-hidden w-full min-h-screen">
       <section className="mx-auto w-full max-w-7xl px-6 py-8 md:py-12 sm:px-6 lg:px-8 lg:py-16">
-        <MotionWrapper 
-          className="mx-auto w-full max-w-5xl"
-          initial={{ opacity: 0, scale: 0.98, y: 20 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-        >
+        <div className="mx-auto w-full max-w-5xl">
           <ContactCard
             contactInfo={[
               {
@@ -60,7 +55,7 @@ export default function ContactPage() {
               </Button>
             </form>
           </ContactCard>
-        </MotionWrapper>
+        </div>
       </section>
     </div>
   );
