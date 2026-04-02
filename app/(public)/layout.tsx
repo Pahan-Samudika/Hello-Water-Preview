@@ -15,14 +15,15 @@ const navigationData = [
   {
     title: "About Us",
     href: "/about",
+    children: [
+      { title: "Who We Are", href: "/about" },
+      { title: "FAQs", href: "/faq" },
+      { title: "Benefits", href: "/benefits" },
+    ],
   },
   {
     title: "Contact Us",
     href: "/contact",
-  },
-  {
-    title: "FAQs",
-    href: "/faq",
   },
 ];
 
