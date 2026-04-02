@@ -30,22 +30,28 @@ const HIGHLIGHTS = [
 export const AboutSummary = () => {
   return (
     <section className="relative overflow-hidden px-6 py-16 sm:px-6 sm:py-24">
-    
-
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col items-center gap-12 px-2 py-4 text-center sm:px-4 sm:py-6">
-          <div className="max-w-2xl space-y-4">
-            <h2 className="text-3xl font-bold tracking-tight text-balance text-foreground sm:text-4xl lg:text-5xl">
-              The Hello Water{" "}
-              <span className="bg-linear-to-r from-primary via-sky-500 to-cyan-400 bg-clip-text text-transparent">
-                Difference
-              </span>
-            </h2>
-            <p className="text-base leading-relaxed text-muted-foreground sm:text-lg">
-              At Hello Water Filtration, we provide honest advice and
-              professional installation for whole-home water filtration systems.
-              We believe every home deserves clean, safe water from every tap.
-            </p>
+          <div className="flex flex-col gap-4 text-center">
+            <div className="flex justify-center">
+              <div className="rounded-lg border px-4 py-1">
+                Our Story
+              </div>
+            </div>
+            <div className="max-w-2xl space-y-4">
+              <h2 className="text-3xl font-bold tracking-tight text-balance text-foreground sm:text-4xl lg:text-5xl">
+                The Hello Water{" "}
+                <span className="bg-linear-to-r from-primary via-sky-500 to-cyan-400 bg-clip-text text-transparent">
+                  Difference
+                </span>
+              </h2>
+              <p className="text-base leading-relaxed text-muted-foreground sm:text-lg">
+                At Hello Water Filtration, we provide honest advice and
+                professional installation for whole-home water filtration
+                systems. We believe every home deserves clean, safe water from
+                every tap.
+              </p>
+            </div>
           </div>
 
           <div className="grid w-full grid-cols-1 gap-8 sm:grid-cols-3">
@@ -69,14 +75,14 @@ export const AboutSummary = () => {
             ))}
           </div>
 
-          <div className="pt-4">
+          <div className="pt-2">
             <Button
               size="lg"
               className="group relative w-fit overflow-hidden rounded-full px-10 text-base before:absolute before:inset-0 before:rounded-[inherit] before:bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.5)_50%,transparent_75%,transparent_100%)] before:bg-[length:250%_250%,100%_100%] before:bg-[position:200%_0,0_0] before:bg-no-repeat before:transition-[background-position_0s_ease] before:duration-1000 hover:before:bg-[position:-100%_0,0_0] dark:before:bg-[linear-gradient(45deg,transparent_25%,rgba(0,0,0,0.2)_50%,transparent_75%,transparent_100%)]"
               render={<Link href="/about" />}
               nativeButton={false}
             >
-              Read Our Story
+              Read More
               <ArrowRightIcon className="transition-transform duration-200 group-hover:translate-x-0.5" />
             </Button>
           </div>
