@@ -8,11 +8,24 @@ import { Button } from "@/components/ui/button"
 
 export function ModeToggle() {
   const { resolvedTheme, setTheme } = useTheme()
+  const [mounted, setMounted] = React.useState(false)
+
+  // Avoid hydration mismatch
+  React.useEffect(() => {
+    setMounted(true)
+  }, [])
 
   const handleToggle = React.useCallback(() => {
-    const current = resolvedTheme === "dark" ? "dark" : "light"
-    setTheme(current === "dark" ? "light" : "dark")
+    setTheme(resolvedTheme === "dark" ? "light" : "dark")
   }, [resolvedTheme, setTheme])
+
+  if (!mounted) {
+    return (
+      <Button variant="outline" size="icon" disabled>
+        <div className="h-[1.2rem] w-[1.2rem]" />
+      </Button>
+    )
+  }
 
   return (
     <Button variant="outline" size="icon" onClick={handleToggle}>
