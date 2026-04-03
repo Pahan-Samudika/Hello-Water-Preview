@@ -43,7 +43,7 @@ const Navbar = ({ navigationData }: { navigationData: NavItem[] }) => {
               {item.children.map((child) => (
                 <DropdownMenuItem
                   key={child.href}
-                  className="focus:bg-primary/10"
+                  className="focus:bg-primary focus:text-primary cursor-pointer"
                 >
                   <Link href={child.href} className="w-full">
                     {child.title}
@@ -61,7 +61,7 @@ const Navbar = ({ navigationData }: { navigationData: NavItem[] }) => {
     );
 
   return (
-    <header className="dark:bg-[radial-gradient(35%_128px_at_50%_0%,--theme(--color-foreground/.1),transparent)] fixed sticky top-0 z-50 h-17.5 border-b border-primary/70 backdrop-blur-xl supports-[backdrop-filter]:bg-background/90 shadow-sm">
+    <header className="dark:bg-[radial-gradient(35%_128px_at_50%_0%,--theme(--color-foreground/.1),transparent)] sticky top-0 z-50 h-17.5 border-b border-primary/70 backdrop-blur-xl supports-[backdrop-filter]:bg-background/90 shadow-sm">
       <div className="mx-auto relative flex max-w-7xl items-center gap-8 px-4 py-4 sm:px-6 h-full">
         <Link href="/" className="flex items-center gap-3 md:hidden">
           <Image src={LogoSVG} alt="Logo" className="w-5" priority />
@@ -83,7 +83,7 @@ const Navbar = ({ navigationData }: { navigationData: NavItem[] }) => {
           </div>
         </div>
 
-        <div className="ml-auto flex items-center gap-2">
+        <div className="ml-auto relative z-10 flex items-center gap-2">
           <Button variant="ghost" size="icon">
             <SearchIcon />
             <span className="sr-only">Search</span>
