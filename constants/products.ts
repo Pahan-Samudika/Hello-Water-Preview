@@ -45,7 +45,7 @@ export const products: Product[] = [
     name: "UV Water Treatment & Micro Filtration System",
     category: "UV Purification",
     price: "Call for Price",
-    image: "https://res.cloudinary.com/dnlb02zp9/image/upload/v1774892293/IMG_5154_jlxwkq.jpg",
+    image: "https://res.cloudinary.com/dnlb02zp9/image/upload/v1775210312/IMG_5633_flxnla.jpg",
     imageAlt: "UV Radiation Micro Filtration System all-in-one unit",
     shortDescription: "UV Water Purification System Australia (DIY Installation)",
     description: [
@@ -71,7 +71,7 @@ export const products: Product[] = [
     name: "Pentek DGD Series",
     category: "Replacement Cartridges",
     price: "$49.00 + GST",
-    image: "https://res.cloudinary.com/dnlb02zp9/image/upload/v1774892292/IMG_5155_uf4ckc.jpg",
+    image: "https://res.cloudinary.com/dnlb02zp9/image/upload/v1775210313/IMG_5632_shvqsa.jpg",
     imageAlt: "Micron Replacement Cartridge Dual for sediment reduction",
     shortDescription: "For Sediment Reduction",
     description: [
