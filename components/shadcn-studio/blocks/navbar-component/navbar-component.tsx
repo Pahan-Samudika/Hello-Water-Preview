@@ -84,10 +84,10 @@ const Navbar = ({ navigationData }: { navigationData: NavItem[] }) => {
         </div>
 
         <div className="ml-auto relative z-10 flex items-center gap-2">
-          <Button variant="ghost" size="icon">
+          {/* <Button variant="ghost" size="icon">
             <SearchIcon />
             <span className="sr-only">Search</span>
-          </Button>
+          </Button> */}
           <ModeToggle />
           <DropdownMenu>
             <DropdownMenuTrigger
