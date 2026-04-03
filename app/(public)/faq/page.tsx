@@ -250,7 +250,7 @@ export default function FAQPage() {
                         >
                           <span className={cn(
                             "text-base md:text-lg font-semibold transition-colors pr-8",
-                            isOpen ? "text-primary" : "text-foreground group-hover:text-primary/70"
+                            isOpen ? "text-accent" : "text-foreground group-hover:text-primary/70"
                           )}>
                             {item.question}
                           </span>
@@ -275,7 +275,7 @@ export default function FAQPage() {
                               transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
                               className="overflow-hidden"
                             >
-                              <div className="px-6 pb-6 text-muted-foreground leading-relaxed text-sm md:text-base">
+                              <div className="px-6 pb-6 leading-relaxed text-sm md:text-base">
                                 <div className="h-px w-full bg-linear-to-r from-primary/30 via-transparent to-transparent mb-4" />
                                 {item.answer}
                               </div>
