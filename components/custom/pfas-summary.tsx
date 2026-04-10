@@ -36,20 +36,18 @@ export const PFASSummary = () => {
             whileInView="visible"
             viewport={{ once: true }}
           >
-            {/* 1. Topic */}
             <motion.div variants={fadeUp} className="space-y-2">
-              <div className="inline-block rounded-lg bg-red-500/10 px-3 py-1 text-xs font-bold tracking-widest text-red-500 border border-red-500/20 uppercase">
-                Critical Concern
+              <div className="inline-block rounded-lg bg-red-500/10 px-4 py-1.5 text-sm font-semibold tracking-wide text-red-500 border border-red-500/20">
+                What are PFAS?
               </div>
               <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-5xl leading-[1.1]">
-                What are PFAS?{" "}
+                The  {" "}
                 <span className="bg-linear-to-r from-red-500 via-orange-500 to-amber-500 bg-clip-text text-transparent">
-                  The hidden threat in your water
+                  Hidden Threat 
                 </span>
+                {" "} in Your Water
               </h2>
             </motion.div>
-
-            {/* 2. Description (Middle) */}
             <div className="space-y-8">
               <motion.div 
                 variants={fadeUp} 
@@ -70,17 +68,6 @@ export const PFASSummary = () => {
                   modified coconut granular activated carbon & redox technology can reduce PFAS significantly. 
                   Providing clean drinking water, devoid of any harmful chemicals.
                 </p>
-              </motion.div>
-
-              <motion.div variants={fadeUp} className="pt-4 flex flex-wrap justify-center gap-4">
-                  <div className="flex items-center gap-3 rounded-2xl border border-white/20 bg-white/10 px-4 py-3 backdrop-blur-md">
-                     <div className="size-2 rounded-full bg-green-500 animate-pulse" />
-                     <span className="text-sm font-semibold">99% PFAS Reduction</span>
-                  </div>
-                  <div className="flex items-center gap-3 rounded-2xl border border-white/20 bg-white/10 px-4 py-3 backdrop-blur-md">
-                     <div className="size-2 rounded-full bg-blue-500 animate-pulse" />
-                     <span className="text-sm font-semibold">Stage-3 Redox Filter</span>
-                  </div>
               </motion.div>
             </div>
 
