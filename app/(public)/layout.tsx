@@ -14,9 +14,9 @@ const navigationData = [
   },
   {
     title: "About Us",
-    href: "/about",
+    href: "/about-us",
     children: [
-      { title: "Who We Are", href: "/about" },
+      { title: "Who We Are", href: "/about-us" },
       { title: "FAQs", href: "/faq" },
       { title: "Benefits", href: "/benefits" },
     ],

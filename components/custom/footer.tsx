@@ -31,7 +31,7 @@ const footerLinks: FooterSection[] = [
 		label: "Company",
 		links: [
 			{ title: "FAQs", href: "/faq" },
-			{ title: "About Us", href: "#" },
+			{ title: "About Us", href: "/about-us" },
 			{ title: "Privacy Policy", href: "#" },
 			{ title: "T&S", href: "#" },
 		],

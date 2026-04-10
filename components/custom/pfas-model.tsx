@@ -171,7 +171,7 @@ const PFOSMolecule = () => {
 
 export const PFASModel = () => {
   return (
-    <div className="h-[120px] w-full cursor-grab active:cursor-grabbing md:h-[180px] lg:h-[220px]">
+    <div className="h-[120px] w-full md:h-[180px] lg:h-[220px]">
       <Canvas shadows dpr={[1, 2]} gl={{ antialias: true }}>
         <PerspectiveCamera makeDefault position={[0, 0, 10]} fov={40} />
         <ambientLight intensity={0.7} />
