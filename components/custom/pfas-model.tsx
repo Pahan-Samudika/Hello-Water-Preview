@@ -2,7 +2,7 @@
 
 import React, { useMemo, useRef } from "react";
 import { Canvas } from "@react-three/fiber";
-import { Float, PerspectiveCamera, Environment, ContactShadows, OrbitControls } from "@react-three/drei";
+import { Float, PerspectiveCamera, Environment, ContactShadows, OrbitControls, Center } from "@react-three/drei";
 import * as THREE from "three";
 
 const COLORS = {
@@ -171,18 +171,20 @@ const PFOSMolecule = () => {
 
 export const PFASModel = () => {
   return (
-    <div className="h-[450px] w-full cursor-grab active:cursor-grabbing md:h-[550px] lg:h-[650px]">
+    <div className="h-[120px] w-full cursor-grab active:cursor-grabbing md:h-[180px] lg:h-[220px]">
       <Canvas shadows dpr={[1, 2]} gl={{ antialias: true }}>
-        <PerspectiveCamera makeDefault position={[0, 0, 12]} fov={40} />
+        <PerspectiveCamera makeDefault position={[0, 0, 10]} fov={40} />
         <ambientLight intensity={0.7} />
         <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={2.5} castShadow />
         <pointLight position={[-10, -10, -10]} intensity={1.5} color="#3b82f6" />
         
         <Float speed={1.5} rotationIntensity={0.6} floatIntensity={0.4}>
-           <PFOSMolecule />
+          <Center>
+            <PFOSMolecule />
+          </Center>
         </Float>
 
-        <OrbitControls enableZoom={false} makeDefault />
+        <OrbitControls enableZoom={false} enableRotate={false} makeDefault />
         <Environment preset="city" />
         <ContactShadows position={[0, -2.5, 0]} opacity={0.3} scale={15} blur={2.5} far={5} />
       </Canvas>
