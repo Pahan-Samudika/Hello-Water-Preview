@@ -15,7 +15,7 @@ export default function ContactPage() {
               {
                 icon: <MailIcon />,
                 label: "Email",
-                value: "support@hellowater.example",
+                value: "support@hellowaterfiltration.com.au",
               },
               {
                 icon: <PhoneIcon />,
