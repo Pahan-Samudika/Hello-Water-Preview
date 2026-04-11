@@ -93,7 +93,7 @@ export const products: Product[] = [
   },
   {
     id: 4,
-    slug: "pentair-chemical-reduction-cartriges",
+    slug: "pentair-chemical-reduction-cartridges",
     name: "Pentek RFC Series",
     category: "Cartridges",
     price: "$95.00 + GST",

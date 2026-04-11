@@ -250,7 +250,7 @@ export default function FAQPage() {
                         >
                           <span className={cn(
                             "text-base md:text-lg font-semibold transition-colors pr-8",
-                            isOpen ? "text-accent" : "text-foreground group-hover:text-primary/70"
+                            isOpen ? "text-primary" : "text-foreground group-hover:text-primary/70"
                           )}>
                             {item.question}
                           </span>
