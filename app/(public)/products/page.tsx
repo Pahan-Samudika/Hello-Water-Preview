@@ -3,11 +3,14 @@ import { products } from "@/constants/products";
 import { MotionWrapper } from "@/components/custom/motion-wrapper";
 
 export default async function ProductsPage() {
+  const filtrationSystems = products.filter((p) => p.category === "Filtration Systems");
+  const cartridges = products.filter((p) => p.category === "Cartridges");
+
   return (
     <div className="relative overflow-hidden w-full min-h-screen">
       <section className="mx-auto w-full max-w-6xl px-6 py-8 md:py-16 sm:px-6 lg:px-8">
         <MotionWrapper 
-          className="mb-8 space-y-4"
+          className="mb-12 space-y-4"
           variants={{
             hidden: {},
             visible: {
@@ -41,50 +44,111 @@ export default async function ProductsPage() {
           </MotionWrapper>
         </MotionWrapper>
 
-        <MotionWrapper
-          className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
-          variants={{
-            hidden: { opacity: 0 },
-            visible: {
-              opacity: 1,
-              transition: {
-                staggerChildren: 0.15,
-                delayChildren: 0.2,
-              },
-            },
-          }}
-          initial="hidden"
-          animate="visible"
-        >
-          {products.map((product) => (
+        {/* Filtration Systems Section */}
+        {filtrationSystems.length > 0 && (
+          <div className="mb-16">
             <MotionWrapper
-              key={product.id}
               variants={{
-                hidden: { opacity: 0, y: 30, scale: 0.95 },
+                hidden: { opacity: 0, x: -20 },
+                visible: { opacity: 1, x: 0, transition: { duration: 0.6, delay: 0.3 } },
+              }}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              className="mb-8"
+            >
+              <h2 className="text-center sm:text-left text-2xl font-bold text-foreground sm:text-3xl">Filtration Systems</h2>
+            </MotionWrapper>
+            
+            <MotionWrapper
+              className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
+              variants={{
+                hidden: { opacity: 0 },
                 visible: {
                   opacity: 1,
-                  y: 0,
-                  scale: 1,
-                  transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as const },
+                  transition: {
+                    staggerChildren: 0.15,
+                  },
                 },
               }}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
             >
-              <ProductCard
-                name={product.name}
-                description={product.shortDescription}
-                price={product.price}
-                image={product.image}
-                imageAlt={product.imageAlt}
-                href={`/products/${product.slug}`}
-              />
+              {filtrationSystems.map((product) => (
+                <ProductGridItem key={product.id} product={product} />
+              ))}
             </MotionWrapper>
-          ))}
-        </MotionWrapper>
+          </div>
+        )}
+
+        {/* Cartridges Section */}
+        {cartridges.length > 0 && (
+          <div className="mb-16">
+            <MotionWrapper
+              variants={{
+                hidden: { opacity: 0, x: -20 },
+                visible: { opacity: 1, x: 0, transition: { duration: 0.6 } },
+              }}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              className="mb-8"
+            >
+              <h2 className="text-center sm:text-left text-2xl font-bold text-foreground sm:text-3xl">Cartridges</h2>
+            </MotionWrapper>
+
+            <MotionWrapper
+              className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
+              variants={{
+                hidden: { opacity: 0 },
+                visible: {
+                  opacity: 1,
+                  transition: {
+                    staggerChildren: 0.15,
+                  },
+                },
+              }}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+            >
+              {cartridges.map((product) => (
+                <ProductGridItem key={product.id} product={product} />
+              ))}
+            </MotionWrapper>
+          </div>
+        )}
 
         {products.length === 0 && (
           <p className="mt-6 text-sm text-muted-foreground">No products found.</p>
         )}
       </section>
     </div>
+  );
+}
+
+function ProductGridItem({ product }: { product: any }) {
+  return (
+    <MotionWrapper
+      variants={{
+        hidden: { opacity: 0, y: 30, scale: 0.95 },
+        visible: {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as const },
+        },
+      }}
+    >
+      <ProductCard
+        name={product.name}
+        description={product.shortDescription}
+        price={product.price}
+        image={product.image}
+        imageAlt={product.imageAlt}
+        href={`/products/${product.slug}`}
+      />
+    </MotionWrapper>
   );
 }
