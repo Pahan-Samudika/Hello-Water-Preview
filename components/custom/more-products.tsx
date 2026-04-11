@@ -10,6 +10,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import Autoplay from "embla-carousel-autoplay";
 
 interface MoreProductsProps {
   currentProductSlug: string;
@@ -24,7 +25,7 @@ export function MoreProducts({ currentProductSlug }: MoreProductsProps) {
   if (relatedProducts.length === 0) return null;
 
   return (
-    <section className="mt-10 md:mt-20 space-y-10 pt-10 md:pt-20">
+    <section className="mt-10 md:mt-20 space-y-5 md:space-y-10 pt-10 md:pt-20">
       <div className="flex flex-col gap-2">
         <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-primary/70 pl-1">
           Explore Our Collection
@@ -35,6 +36,11 @@ export function MoreProducts({ currentProductSlug }: MoreProductsProps) {
       </div>
 
       <Carousel
+        plugins={[
+          Autoplay({
+            delay: 4000,
+          }),
+        ]}
         opts={{
           align: "start",
           loop: true,
