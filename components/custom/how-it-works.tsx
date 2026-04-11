@@ -50,7 +50,7 @@ export const HowItWorks = () => {
   return (
     <section className="relative py-20 px-6 sm:px-10 lg:px-16 overflow-hidden">
 
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-6xl mx-auto sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-10">
           <motion.div

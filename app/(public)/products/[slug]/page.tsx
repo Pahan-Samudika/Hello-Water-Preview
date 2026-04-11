@@ -4,6 +4,7 @@ import { ArrowLeft } from "lucide-react";
 
 import { getProductBySlug, products } from "@/constants/products";
 import { MotionWrapper } from "@/components/custom/motion-wrapper";
+import { MoreProducts } from "@/components/custom/more-products";
 
 export function generateStaticParams() {
   return products.map((product) => ({
@@ -60,7 +61,7 @@ export default async function ProductViewPage({
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
-              className="space-y-5 rounded-[2.5rem] border bg-background p-6 sm:p-8 lg:p-10 shadow-xl"
+              className="space-y-5 rounded-[2.5rem] border bg-background p-6 sm:p-8 lg:p-10 shadow-xl h-full"
             >
               <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary/80">
                 {product.category}
@@ -77,16 +78,6 @@ export default async function ProductViewPage({
                 {product.shortDescription}
               </p>
 
-              <div className="grid gap-3 sm:grid-cols-2 pt-2">
-                {product.features.slice(0, 4).map((feature) => (
-                  <div
-                    key={feature}
-                    className="rounded-2xl border border-primary/10 bg-primary/5 px-4 py-3 text-sm leading-6 text-foreground/90 font-medium tracking-tight"
-                  >
-                    {feature}
-                  </div>
-                ))}
-              </div>
             </MotionWrapper>
           </div>
 
@@ -130,6 +121,15 @@ export default async function ProductViewPage({
                 </div>
               </div>
             </article>
+          </MotionWrapper>
+
+          <MotionWrapper
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          >
+            <MoreProducts currentProductSlug={product.slug} />
           </MotionWrapper>
         </div>
       </section>
