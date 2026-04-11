@@ -42,6 +42,10 @@ export default function ContactPage() {
                 <Input type="email" placeholder="you@example.com" className="h-12 rounded-xl border-input/40 shadow-xs focus-visible:ring-primary/50 focus-visible:border-primary/50" />
               </div>
               <div className="flex flex-col gap-2">
+                <Label className="pl-1 text-sm font-medium text-foreground/80">Suburb</Label>
+                <Input type="text" placeholder="Your suburb" className="h-12 rounded-xl border-input/40 shadow-xs focus-visible:ring-primary/50 focus-visible:border-primary/50" />
+              </div>
+              <div className="flex flex-col gap-2">
                 <Label className="pl-1 text-sm font-medium text-foreground/80">Phone</Label>
                 <Input type="phone" placeholder="04xx xxx xxx" className="h-12 rounded-xl border-input/40 shadow-xs focus-visible:ring-primary/50 focus-visible:border-primary/50" />
               </div>
