@@ -23,9 +23,9 @@ type TestimonialsComponentProps = {
 
 const TestimonialsComponent = ({ testimonials }: TestimonialsComponentProps) => {
   return (
-    <section className='py-8'>
+    <section className='py-16 sm:py-24'>
       <Carousel
-        className='mx-auto grid max-w-7xl grid-cols-1 items-center gap-11 px-4 sm:px-6 md:grid-cols-2 lg:px-8'
+        className='mx-auto grid max-w-6xl grid-cols-1 items-center gap-8 md:gap-11 px-6 sm:px-6 lg:px-8 md:grid-cols-2'
         opts={{
           align: 'start',
           slidesToScroll: 1
@@ -34,11 +34,11 @@ const TestimonialsComponent = ({ testimonials }: TestimonialsComponentProps) => 
         {/* Left Content */}
         <div className='space-y-4 md:space-y-16'>
           <div className='space-y-4'>
-            <h2 className='text-2xl font-bold sm:text-3xl lg:text-4xl tracking-tight'>
+            <h2 className='text-3xl md:text-5xl font-bold tracking-tight'>
               Trusted by <span className="bg-linear-to-r from-primary via-sky-500 to-cyan-400 bg-clip-text text-transparent">Families</span> and <span className="bg-linear-to-r from-primary via-sky-500 to-cyan-400 bg-clip-text text-transparent">Businesses</span>
             </h2>
             <p className='text-muted-foreground text-sm sm:text-lg'>
-              See why thousands of Australians trust Hello Water for their daily hydration and pure water needs.
+              Our customers love our products, and we love them for it. Here’s what they have to say
             </p>
           </div>
 
@@ -56,13 +56,13 @@ const TestimonialsComponent = ({ testimonials }: TestimonialsComponentProps) => 
 
         {/* Right Testimonial Carousel */}
         <div className='relative'>
-          <CarouselContent className='sm:-ml-6'>
+          <CarouselContent className='-ml-4 sm:-ml-6'>
             {testimonials.map((testimonial, index) => (
-              <CarouselItem key={index} className='sm:pl-6'>
+              <CarouselItem key={index} className='pl-4 sm:pl-6'>
                 <div className='flex flex-col gap-10'>
                   <div className='space-y-2'>
                     <p className='h-14 text-8xl'>&ldquo;</p>
-                    <p className='text-muted-foreground text-sm font-medium sm:text-sm lg:text-lg text-justify'>
+                    <p className='text-sm sm:text-sm lg:text-lg text-justify'>
                       {testimonial.content}
                     </p>
                   </div>
