@@ -57,7 +57,7 @@ export const PFASSummary = () => {
                 <p className="text-justify">
                   PFAS (per- & polyfluoroalkyl substances) are known “forever chemicals” hiding in everyday products; 
                   from non-stick cookware to food packaging, fire retardant forms & waterproof fabrics. 
-                  They seep into the environment through residential and industrial waste, landfills and as leachate, 
+                  They seep into the environment through residential & industrial waste, landfills & as leachate, 
                   eventually making their way into your drinking water. You can’t see them, taste them, or smell them; 
                   but they can stay in your water & your body for years.
                 </p>
