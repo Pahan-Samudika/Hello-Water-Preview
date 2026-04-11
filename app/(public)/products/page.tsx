@@ -143,7 +143,7 @@ function ProductGridItem({ product }: { product: any }) {
     >
       <ProductCard
         name={product.name}
-        description={product.shortDescription}
+        description={product.cardDescription}
         price={product.price}
         image={product.image}
         imageAlt={product.imageAlt}

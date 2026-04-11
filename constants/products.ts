@@ -6,6 +6,7 @@ export type Product = {
   price: string;
   image: string;
   imageAlt: string;
+  cardDescription: string;
   shortDescription: string;
   description: string[];
   features: string[];
@@ -20,8 +21,8 @@ export const products: Product[] = [
     price: "Call for Price",
     image: "https://res.cloudinary.com/dnlb02zp9/image/upload/v1774892292/IMG_5153_wftjgy.jpg",
     imageAlt: "The Whole House Bottle Water Plant",
-    shortDescription:
-      "Whole House Micron Water Filtration",
+    cardDescription: "Whole House Micron Water Filtration",
+    shortDescription: "A comprehensive 5-level purification system that treats water at its entry point, providing bottled-quality water from every tap in your home for drinking, bathing, & laundry.",
     description: [
       "The Hello Water Whole Home Purification System uses an advanced 5-level, 3-stage process to treat water at the point it enters your home, ensuring every tap provides clean, filtered water for drinking, bathing, & laundry.",
       "Stage 1 utilizes powerful dual-gradient sediment filtration technology (0.5 micron nominal) to capture sand, silt, rust & organic material, preventing physical contaminants from entering your plumbing & extending the life of downstream filters.",
@@ -47,7 +48,8 @@ export const products: Product[] = [
     price: "Call for Price",
     image: "https://res.cloudinary.com/dnlb02zp9/image/upload/v1775210312/IMG_5633_flxnla.jpg",
     imageAlt: "UV Radiation Micro Filtration System all-in-one unit",
-    shortDescription: "UV Water Purification System Australia (DIY Installation)",
+    cardDescription: "UV Water Purification System",
+    shortDescription: "An advanced all-in-one sterilization system that uses high-performance ultraviolet technology to eliminate 99.9999% of bacteria, combined with multi-stage filtration for pure, chemical-free water.",
     description: [
       "The Pentair®/Pentek® UV Micro Filtration System is a complete whole-house solution that combines advanced multi-stage filtration with high-performance ultraviolet sterilization for pure, safe water.",
       "The core UV technology is tested to eliminate 99.9999% of harmful bacteria, such as E. coli, using a natural, chemical-free purification process that is safe for your family & the environment.",
@@ -73,7 +75,8 @@ export const products: Product[] = [
     price: "$49.00 + GST",
     image: "https://res.cloudinary.com/dnlb02zp9/image/upload/v1775210313/IMG_5632_shvqsa.jpg",
     imageAlt: "Micron Replacement Cartridge Dual for sediment reduction",
-    shortDescription: "For Sediment Reduction",
+    cardDescription: "For Sediment Reduction",
+    shortDescription: "A high-capacity sediment reduction cartridge made from 100% pure polypropylene, offering up to three times the dirt-holding capacity of standard filters to protect your home's plumbing & appliances.",
     description: [
       "DGD Series cartridges are manufactured from 100% pure polypropylene & are specifically designed for use in Pentair®/Pentek® Big Blue filter housings.",
       "Engineered for purity, these cartridges do not impart any taste, odor, or colour to the water being filtered. The polypropylene construction also provides excellent chemical resistance and is naturally resistant to bacterial growth, ensuring reliable & hygienic filtration.",
@@ -96,7 +99,8 @@ export const products: Product[] = [
     price: "$95.00 + GST",
     image: "https://res.cloudinary.com/dnlb02zp9/image/upload/v1774892293/IMG_5156_ow9icg.jpg",
     imageAlt: "Pentair RFC Series radial flow carbon cartridges",
-    shortDescription: "Radial flow carbon cartridges for chemical reduction",
+    cardDescription: "Radial flow carbon cartridges for chemical reduction",
+    shortDescription: "Premium radial-flow carbon cartridges designed to significantly reduce chlorine, unpleasant tastes, & odours while maintaining high water pressure, ideal for point-of-entry home filtration.",
     description: [
       "RFC Series cartridges from Pentair®/Pentek® are engineered for reliable, high-performance water filtration. Each cartridge is built with a 70-micron porous polyethylene outer shell & durable polypropylene end-caps, ensuring long-lasting structural integrity & consistent performance.",
       "The 4½-inch diameter cartridge use a spun polypropylene core for added strength in higher-capacity applications. Between the outer shell & the core is a bed of high-quality granular activated carbon (GAC), designed to effectively reduce chlorine, unpleasant tastes, & odours from water.",
@@ -117,8 +121,8 @@ export const products: Product[] = [
     price: "$135.00 + GST",
     image: "https://res.cloudinary.com/dnlb02zp9/image/upload/v1774892294/IMG_5157_bewjhh.jpg",
     imageAlt: "Pentair Coconut Shell Carbon Cartridges enhanced with KDF",
-    shortDescription:
-      "Enhanced with KDF. Minimize heavy metals and chemicals for water filtration",
+    cardDescription: "Enhanced with KDF. Minimize heavy metals and chemicals for water filtration",
+    shortDescription: "An advanced coconut-shell carbon filter enhanced with KDF-55 media, specifically engineered to reduce heavy metals & harmful chemicals while preventing lime & scale buildup in your pipes.",
     description: [
       "DBC Series cartridges from Pentair®/Pentek® are designed to deliver high-capacity filtration & enhanced protection against scale buildup. Each cartridge is enhanced with KDF 55 media, which helps inhibit the formation of lime & scale buildup that can damage plumbing systems & household appliances.",
       "These cartridges are constructed using high-performance granular activated coconut shell carbon, providing effective reduction of chlorine, chloramine, fluoride, micro-plastics, unpleasant tastes, & odours in water. To further improve filtration performance, they include a 5-micron spun-bonded polypropylene post-sediment element, which increases dirt-holding capacity & captures fine particles.",
