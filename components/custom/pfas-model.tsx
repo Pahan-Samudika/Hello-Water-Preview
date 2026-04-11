@@ -171,9 +171,9 @@ const PFOSMolecule = () => {
 
 export const PFASModel = () => {
   return (
-    <div className="h-[120px] w-full md:h-[180px] lg:h-[220px]">
+    <div className="h-full w-full min-h-[300px] sm:min-h-[300px] lg:min-h-[400px]">
       <Canvas shadows dpr={[1, 2]} gl={{ antialias: true }}>
-        <PerspectiveCamera makeDefault position={[0, 0, 10]} fov={40} />
+        <PerspectiveCamera makeDefault position={[0, 0, 16]} fov={40} />
         <ambientLight intensity={0.7} />
         <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={2.5} castShadow />
         <pointLight position={[-10, -10, -10]} intensity={1.5} color="#3b82f6" />
@@ -184,7 +184,7 @@ export const PFASModel = () => {
           </Center>
         </Float>
 
-        <OrbitControls enableZoom={false} enableRotate={false} makeDefault />
+        <OrbitControls enableZoom={false} enableRotate={true} makeDefault />
         <Environment preset="city" />
         <ContactShadows position={[0, -2.5, 0]} opacity={0.3} scale={15} blur={2.5} far={5} />
       </Canvas>
