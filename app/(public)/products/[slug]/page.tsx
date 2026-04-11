@@ -4,6 +4,7 @@ import { ArrowLeft } from "lucide-react";
 
 import { getProductBySlug, products } from "@/constants/products";
 import { MotionWrapper } from "@/components/custom/motion-wrapper";
+import { MoreProducts } from "@/components/custom/more-products";
 
 export function generateStaticParams() {
   return products.map((product) => ({
@@ -130,6 +131,15 @@ export default async function ProductViewPage({
                 </div>
               </div>
             </article>
+          </MotionWrapper>
+
+          <MotionWrapper
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          >
+            <MoreProducts currentProductSlug={product.slug} />
           </MotionWrapper>
         </div>
       </section>
