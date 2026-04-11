@@ -5,6 +5,7 @@ import { ArrowLeft } from "lucide-react";
 import { getProductBySlug, products } from "@/constants/products";
 import { MotionWrapper } from "@/components/custom/motion-wrapper";
 import { MoreProducts } from "@/components/custom/more-products";
+import { SmartImage } from "@/components/ui/smart-image";
 
 export function generateStaticParams() {
   return products.map((product) => ({
@@ -50,7 +51,7 @@ export default async function ProductViewPage({
               transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
               className="overflow-hidden rounded-[2.5rem] border bg-muted/20 shadow-xl"
             >
-              <img
+              <SmartImage
                 src={product.image}
                 alt={product.imageAlt}
                 className="block aspect-square w-full object-cover"

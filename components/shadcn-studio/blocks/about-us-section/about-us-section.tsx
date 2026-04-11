@@ -4,6 +4,7 @@ import type { ComponentType } from "react";
 import { aboutHighlights } from "@/constants";
 import { CircleCheck } from "lucide-react";
 import { MotionWrapper } from "@/components/custom/motion-wrapper";
+import { SmartImage } from "@/components/ui/smart-image";
 
 type StatItem = {
   icon: ComponentType;
@@ -51,7 +52,7 @@ const AboutUs = ({ stats }: { stats: StatItem }) => {
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           viewport={{ once: true, margin: "-100px" }}
         >
-          <img
+          <SmartImage
             src="https://res.cloudinary.com/dnlb02zp9/image/upload/v1771561659/nd1np6qyyfcetzpo0efv_yrbnyh.webp"
             alt="About us illustration"
             className="max-h-[500px] w-full rounded-2xl object-cover shadow-xl"

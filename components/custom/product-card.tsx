@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
+import { SmartImage } from "@/components/ui/smart-image";
 
 type ProductCardProps = {
   name: string;
@@ -30,7 +31,7 @@ export function ProductCard({
         className,
       )}
     >
-      <img
+      <SmartImage
         src={image}
         alt={imageAlt}
         className="block aspect-[4/5] w-full max-h-96 object-cover transition duration-500 ease-out lg:group-hover:scale-105 lg:group-hover:blur-[2px]"

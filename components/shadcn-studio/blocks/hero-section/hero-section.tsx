@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/carousel";
 import { cn } from "@/lib/utils";
 import { motion } from "motion/react";
+import { SmartImage } from "@/components/ui/smart-image";
 
 export type MenuData = {
   id: number;
@@ -178,7 +179,7 @@ const HeroSection = ({ menudata }: { menudata: MenuData[] }) => {
                     key={item.id}
                     className="flex w-full items-center justify-center"
                   >
-                    <img
+                    <SmartImage
                       src={item.img}
                       alt={item.imgAlt}
                       className="h-[320px] w-full rounded-2xl object-cover sm:h-[420px] lg:h-[min(68vh,640px)]"

@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "motion/react";
+import { SmartImage } from "@/components/ui/smart-image";
 
 const HIGHLIGHTS = [
   {
@@ -158,7 +159,7 @@ export const AboutSummary = () => {
             whileInView="visible"
             viewport={{ once: true, margin: "-80px" }}
           >
-            <img
+            <SmartImage
               src="https://res.cloudinary.com/dnlb02zp9/image/upload/v1774936885/IMG_5179.JPG_hkxhpw.jpg"
               alt="About us illustration"
               className="w-full rounded-[1.75rem] border border-white/30 object-cover shadow-[0_20px_60px_rgba(15,23,42,0.14)]"
