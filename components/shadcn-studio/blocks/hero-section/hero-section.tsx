@@ -182,7 +182,8 @@ const HeroSection = ({ menudata }: { menudata: MenuData[] }) => {
                     <SmartImage
                       src={item.img}
                       alt={item.imgAlt}
-                      className="h-[320px] w-full rounded-2xl object-cover sm:h-[420px] lg:h-[min(68vh,640px)]"
+                      className="h-full w-full object-cover"
+                      containerClassName="h-[320px] sm:h-[420px] lg:h-[min(68vh,640px)] rounded-2xl"
                     />
                   </CarouselItem>
                 ))}

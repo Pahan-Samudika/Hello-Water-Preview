@@ -53,7 +53,7 @@ export function SmartImage({
   const imageSrc = typeof src === "string" ? src : src?.src;
 
   return (
-    <div className={cn("relative overflow-hidden group/image", containerClassName)}>
+    <div className={cn("relative overflow-hidden group/image w-full", containerClassName)}>
       <AnimatePresence>
         {isLoading && (
           <motion.div
