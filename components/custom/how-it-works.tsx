@@ -11,8 +11,8 @@ import { cn } from "@/lib/utils";
 
 const STEPS = [
   {
-    title: "Book Your Free Inspection",
-    description: "Schedule a complimentary on-site visit, including a full water analysis & pressure test.",
+    title: "Book Your Free Appointment or call",
+    description: "Schedule a complimentary on-site visit, including a field water analysis & in line pressure test, or a video call with one of our experts.",
   },
   {
     title: "Receive Your Quote Instantly",

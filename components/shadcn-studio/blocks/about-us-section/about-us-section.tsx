@@ -63,7 +63,7 @@ const AboutUs = ({ stats }: { stats: StatItem }) => {
             {stats.map((stat, index) => (
               <div
                 key={index}
-                className="flex flex-col items-center justify-center gap-2.5 text-center"
+                className="flex flex-col items-center justify-center gap-2.5 text-center max-w-[250px]"
               >
                 <div className="flex size-14 items-center justify-center rounded-2xl bg-primary/10 text-primary [&>svg]:size-7">
                   <stat.icon />

@@ -44,7 +44,7 @@ export const menudata = [
 export const stats = [
   {
     icon: SparklesIcon,
-    value: "20+",
+    value: "25+",
     description: "Years of Experience",
   },
   {
@@ -55,12 +55,12 @@ export const stats = [
   {
     icon: StarIcon,
     value: "150+",
-    description: "Google Reviews",
+    description: "Genuine & Verified 5 Star Only Google Reviews",
   },
   {
     icon: MedalIcon,
-    value: "25",
-    description: "Achievement Awards",
+    value: "4",
+    description: "Independent Australian and Global certifications",
   },
 ];
 
@@ -68,16 +68,16 @@ export const aboutHighlights = [
   {
     title: "Our Mission",
     description:
-      "With solutions designed for performance, simplicity, & long-term trust. Our goal is making clean, high-quality water accessible to every household, improve your health while supporting a more sustainable future.",
-  },
-  {
-    title: "Why Choose Us?",
-    description:
-      "Our Australian-certified water filtration systems are built for harsh local conditions. They are reliable, durable, & designed to improve water quality, safety, & taste for your entire home.",
+      "Our systems are engineered for performance, simplicity, and durability. We aim to deliver clean, high‑quality water to every home while improving your health & wellness and reducing environmental impact by removing the need for plastic water bottles.",
   },
   {
     title: "Our Team",
     description:
-      "With over 20 years of experience, our experts design, install, & maintain water filtration systems, delivering trusted solutions across Australia. ",
+      "With over 25 years of collective experience, our expert design and engineering team, technical support specialists, sales professionals, and licensed plumbing partners work together to install and maintain advanced water filtration systems—delivering trusted, high‑quality solutions across Australia.",
+  },
+  {
+    title: "Why Choose Us?",
+    description:
+      "We are 100% Australian owned. Our Australian‑certified water filtration systems are engineered for the unique water conditions of every state of Australia. They’re reliable, durable, and built to last. By keeping marketing and sales costs low, we offer realistic pricing—making world‑class technology truly affordable for everyday Australian households.",
   },
 ];

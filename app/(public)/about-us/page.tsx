@@ -21,7 +21,7 @@ export default function AboutPage() {
   return (
     <div className="relative overflow-hidden w-full min-h-screen">
       <section className="mx-auto w-full max-w-6xl px-6 py-8 md:py-16 sm:px-6 lg:px-8">
-        <MotionWrapper 
+        <MotionWrapper
           className="mb-8 max-w-7xl space-y-4"
           variants={{
             hidden: {},
@@ -49,15 +49,12 @@ export default function AboutPage() {
             }}
           >
             <p className="text-justify text-muted-foreground sm:text-lg">
-              At Hello Water Filtration®, we believe the water in your home should be as clean & safe as it looks, because what you can’t see matters most.
-              <br/>
-              <br/>
-              Featuring premium third-party certifications, including NSF International Standard 42, Australian Water Quality Centre AS/NZS 4020 for Drinking Water Product Testing Standards, Watermark Certification, & the Asthma Council Certification for Sensitive Choice, it is the most certified system currently available. 
-              We specialise in whole-home water filtration systems that remove chlorine, chloramine, heavy metals, & everyday contaminants, delivering better water from every tap. From your morning shower to the glass you drink at night, we’re here to improve the quality of water you use every single day.
-              <br/>
-              <br/>
-              Our approach is simple: Honest advice, tailored solutions, & a professional installation you can rely on. Because when your water is better, your home -& your health- are too.
-            </p>
+              At Hello Water Filtration®, we believe the water in your home should be as clean & safe and tasty as it looks, because what you can’t see matters most.
+              <br />
+              <br />
+              Featuring worlds leading Pentair™ premium Water filtration Cartridges, media and other components, the system independently certified by  NSF International Standard 42 for material safety and integrity, Australian Water Quality Centre AS/NZS 4020 for Drinking Water Product Testing Standards, Watermark Certification, & the Australian Asthma Council Certification for Sensitive Choice, it is the most certified system currently available in Australian Market.
+              We specialise in whole-home water filtration systems that remove chlorine, chloramine, heavy metals, & everyday contaminants in the drinking water as a result of environment pollution, delivering better water from every tap, shower, and your hot water system. From your morning shower to the glass you drink at night, we’re here to improve the quality of water you use every single day.
+              </p>
           </MotionWrapper>
         </MotionWrapper>
 
@@ -65,7 +62,7 @@ export default function AboutPage() {
       </section>
 
       <HowItWorks />
-      
+
       <TestimonialsComponent testimonials={mappedTestimonials} />
 
       <TrustindexTestimonialsSection />
