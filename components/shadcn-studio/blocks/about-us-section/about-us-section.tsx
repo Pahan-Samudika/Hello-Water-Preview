@@ -80,8 +80,8 @@ const AboutUs = ({ stats }: { stats: StatItem }) => {
             />
             Your browser does not support the video tag.
           </video>
-          {/* Overlay Gradient */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+          {/* Cinematic Gradient Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/80" />
         </div>
 
         {/* Stats Bar - Refined Crystal Panel */}
