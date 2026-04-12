@@ -21,7 +21,7 @@ const getIcon = (title: string) => {
 
 const AboutUs = ({ stats }: { stats: StatItem }) => {
   return (
-    <section className="bg-background py-16">
+    <section className="bg-background">
       <MotionWrapper
         className="grid gap-6 md:grid-cols-2 lg:grid-cols-3"
         variants={{
@@ -74,25 +74,36 @@ const AboutUs = ({ stats }: { stats: StatItem }) => {
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
         </div>
 
-        {/* Stats Bar - Float over image on large screens, stack below on small */}
-        <div className="bg-background/80 backdrop-blur-2xl border border-white/10 shadow-2xl rounded-[2.5rem] p-8 mt-[-4rem] mx-auto w-[calc(100%-2rem)] max-w-6xl relative z-10 lg:mt-[-5rem]">
-          <div className="grid grid-cols-2 gap-8 lg:grid-cols-4 lg:gap-12">
-            {stats.map((stat, index) => (
-              <div
-                key={index}
-                className="flex flex-col items-center text-center space-y-3"
-              >
-                <div className="flex size-14 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-lg shadow-primary/20 ring-4 ring-primary/10">
-                  <stat.icon />
+        {/* Stats Bar - Refined Crystal Panel */}
+        <div className="mx-auto w-[calc(100%-2rem)] max-w-6xl relative z-10 mt-[-4rem] lg:mt-[-6rem]">
+          <div className="bg-background/60 backdrop-blur-3xl border border-white/10 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.2)] rounded-[3rem] p-10 lg:p-14 overflow-hidden group">
+            {/* Subtle decorative elements */}
+            <div className="absolute -top-24 -right-24 size-64 bg-primary/5 blur-3xl rounded-full" />
+            <div className="absolute -bottom-24 -left-24 size-64 bg-secondary/5 blur-3xl rounded-full" />
+
+            <div className="relative grid grid-cols-2 gap-y-12 gap-x-8 lg:grid-cols-4 lg:gap-x-0">
+              {stats.map((stat, index) => (
+                <div
+                  key={index}
+                  className={`flex flex-col items-center text-center space-y-5 lg:px-8 ${
+                    index !== stats.length - 1 ? "lg:border-r lg:border-border/40" : ""
+                  }`}
+                >
+                  <div className="flex size-16 items-center justify-center rounded-[1.25rem] bg-primary text-primary-foreground shadow-xl shadow-primary/20 ring-8 ring-primary/5 transition-transform duration-500 group-hover:scale-105">
+                    <stat.icon/>
+                  </div>
+                  
+                  <div className="flex flex-col gap-1 sm:gap-4">
+                    <span className="text-4xl font-black tracking-tighter bg-gradient-to-b from-foreground to-foreground/70 bg-clip-text text-transparent sm:text-5xl lg:text-6xl">
+                      {stat.value}
+                    </span>
+                    <p className="text-xs font-bold text-muted-foreground max-w-[160px] leading-tight sm:text-sm">
+                      {stat.description}
+                    </p>
+                  </div>
                 </div>
-                <div className="flex flex-col">
-                  <span className="text-4xl font-extrabold tracking-tighter sm:text-5xl">{stat.value}</span>
-                  <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/80 sm:text-xs">
-                    {stat.description}
-                  </p>
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </MotionWrapper>

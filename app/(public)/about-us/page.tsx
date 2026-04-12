@@ -52,7 +52,7 @@ export default function AboutPage() {
               visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } },
             }}
           >
-            <div className="my-8 md:my-14 mx-auto w-full max-w-xs sm:max-w-md lg:max-w-lg">
+            <div className="my-8 md:my-14 mx-auto w-full max-w-[250px] sm:max-w-md lg:max-w-lg">
               <img src={txtLogoBlack.src} alt="Hello Water" className="w-full h-auto mx-auto dark:hidden" />
               <img src={txtLogoWhite.src} alt="Hello Water" className="hidden w-full h-auto mx-auto dark:block" />
             </div>
