@@ -65,11 +65,21 @@ const AboutUs = ({ stats }: { stats: StatItem }) => {
       >
         {/* Main Visual Container */}
         <div className="relative overflow-hidden rounded-3xl shadow-2xl">
-          <SmartImage
-            src="https://res.cloudinary.com/dnlb02zp9/image/upload/v1771561659/nd1np6qyyfcetzpo0efv_yrbnyh.webp"
-            alt="About Hello Water"
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            poster="https://res.cloudinary.com/dnlb02zp9/image/upload/v1771561659/nd1np6qyyfcetzpo0efv_yrbnyh.webp"
             className="aspect-video w-full object-cover sm:max-h-[600px]"
-          />
+          >
+            <source 
+              src="https://res.cloudinary.com/dnlb02zp9/video/upload/f_auto,q_auto/v1775988476/hellowater_gzuvvy.mp4" 
+              type="video/mp4" 
+            />
+            Your browser does not support the video tag.
+          </video>
           {/* Overlay Gradient */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
         </div>
@@ -94,7 +104,7 @@ const AboutUs = ({ stats }: { stats: StatItem }) => {
                   </div>
                   
                   <div className="flex flex-col gap-1 sm:gap-4">
-                    <span className="text-4xl font-black tracking-tighter bg-gradient-to-b from-foreground to-foreground/70 bg-clip-text text-transparent sm:text-5xl lg:text-6xl">
+                    <span className="text-4xl font-bold tracking-tighter bg-gradient-to-b from-foreground to-foreground/70 bg-clip-text text-transparent sm:text-5xl lg:text-6xl">
                       {stat.value}
                     </span>
                     <p className="text-xs font-bold text-muted-foreground max-w-[160px] leading-tight sm:text-sm">
