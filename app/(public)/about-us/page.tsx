@@ -6,6 +6,8 @@ import { stats } from "@/constants";
 import { MotionWrapper } from "@/components/custom/motion-wrapper";
 import { HowItWorks } from "@/components/custom/how-it-works";
 import { testimonials as rawTestimonials } from "@/constants/testimonials";
+import txtLogoWhite from "@/assets/svg/txtlogo-white.svg";
+import txtLogoBlack from "@/assets/svg/txtlogo-black.svg";
 
 export default function AboutPage() {
   // Map testimonials data for the component
@@ -48,13 +50,24 @@ export default function AboutPage() {
               visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } },
             }}
           >
+            <div className="my-12 mx-auto max-w-lg">
+              <img src={txtLogoBlack.src} alt="Hello Water" className="w-full mx-auto dark:hidden" />
+              <img src={txtLogoWhite.src} alt="Hello Water" className="hidden w-full mx-auto dark:block" />
+            </div>
+          </MotionWrapper>
+          <MotionWrapper
+            variants={{
+              hidden: { opacity: 0, y: 20 },
+              visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } },
+            }}
+          >
             <p className="text-justify text-muted-foreground sm:text-lg">
               At Hello Water Filtration®, we believe the water in your home should be as clean & safe and tasty as it looks, because what you can’t see matters most.
               <br />
               <br />
               Featuring worlds leading Pentair™ premium Water filtration Cartridges, media and other components, the system independently certified by  NSF International Standard 42 for material safety and integrity, Australian Water Quality Centre AS/NZS 4020 for Drinking Water Product Testing Standards, Watermark Certification, & the Australian Asthma Council Certification for Sensitive Choice, it is the most certified system currently available in Australian Market.
               We specialise in whole-home water filtration systems that remove chlorine, chloramine, heavy metals, & everyday contaminants in the drinking water as a result of environment pollution, delivering better water from every tap, shower, and your hot water system. From your morning shower to the glass you drink at night, we’re here to improve the quality of water you use every single day.
-              </p>
+            </p>
           </MotionWrapper>
         </MotionWrapper>
 
