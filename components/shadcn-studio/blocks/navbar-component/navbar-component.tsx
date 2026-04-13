@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ChevronDown, MenuIcon, SearchIcon } from "lucide-react";
+import { ChevronDown, MenuIcon, SearchIcon, PhoneCall } from "lucide-react";
 import { ModeToggle } from "@/components/custom/theme-button";
 
 import LogoSVG from "@/assets/svg/logo.svg";
@@ -63,12 +63,12 @@ const Navbar = ({ navigationData }: { navigationData: NavItem[] }) => {
   return (
     <header className="dark:bg-[radial-gradient(35%_128px_at_50%_0%,--theme(--color-foreground/.1),transparent)] sticky top-0 z-50 h-17.5 border-b border-primary/70 backdrop-blur-xl supports-[backdrop-filter]:bg-background/90 shadow-sm">
       <div className="mx-auto relative flex max-w-7xl items-center gap-8 px-4 py-4 sm:px-6 h-full">
-        <Link href="/" className="flex items-center gap-3 md:hidden">
+        <Link href="/" className="flex items-center gap-3 lg:hidden">
           <Image src={LogoSVG} alt="Logo" className="w-5" priority />
         </Link>
 
         {/* Desktop Navigation - Centered Logo Layout */}
-        <div className="absolute inset-x-0 hidden h-full items-center font-medium md:flex pointer-events-none">
+        <div className="absolute inset-x-0 hidden h-full items-center font-medium lg:flex pointer-events-none">
           <div className="flex-1 flex justify-end gap-8 lg:gap-16 pointer-events-auto pr-8 lg:pr-16">
             {renderNavItems(leftItems)}
           </div>
@@ -88,10 +88,16 @@ const Navbar = ({ navigationData }: { navigationData: NavItem[] }) => {
             <SearchIcon />
             <span className="sr-only">Search</span>
           </Button> */}
-          <ModeToggle />
+          {/* <ModeToggle /> */}
+          <a href="tel:0498588725" 
+            className="bg-primary/30 hover:bg-primary/10 inline-flex items-center px-4 py-2 text-sm font-medium rounded-full gap-2 transition-colors"
+          >
+            <PhoneCall className="w-4 h-4" />
+            0498 588 725
+          </a>
           <DropdownMenu>
             <DropdownMenuTrigger
-              className="md:hidden"
+              className="lg:hidden"
               render={<Button variant="outline" size="icon" />}
             >
               <MenuIcon />
