@@ -19,6 +19,7 @@ const navigationData = [
       { title: "Who We Are", href: "/about-us" },
       { title: "FAQs", href: "/faq" },
       { title: "Benefits", href: "/benefits" },
+      { title: "Technology", href: "/technology" },
     ],
   },
   {

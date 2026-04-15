@@ -156,7 +156,7 @@ export default function BenefitsPage() {
               visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as const } },
             }}
           >
-            <p className="text-muted-foreground sm:text-lg">
+            <p className="text-muted-foreground sm:text-lg text-justify">
               Concerned about the quality of your tap water? Eliminate impurities, unpleasant odours, & harmful contaminants that impact both taste & safety.
             </p>
           </MotionWrapper>
