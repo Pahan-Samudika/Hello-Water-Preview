@@ -9,10 +9,6 @@ const navigationData = [
     href: "/",
   },
   {
-    title: "Products",
-    href: "/products",
-  },
-  {
     title: "About Us",
     href: "/about-us",
     children: [
@@ -21,6 +17,10 @@ const navigationData = [
       { title: "Benefits", href: "/benefits" },
       { title: "Technology", href: "/technology" },
     ],
+  },
+  {
+    title: "Products",
+    href: "/products",
   },
   {
     title: "Contact Us",
