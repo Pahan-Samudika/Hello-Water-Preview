@@ -2,7 +2,6 @@
 import { MotionWrapper } from "@/components/custom/motion-wrapper";
 import { SmartImage } from "@/components/ui/smart-image";
 import { cn } from "@/lib/utils";
-import { motion } from "motion/react";
 
 const technologyFeatures = [
   {
@@ -76,33 +75,43 @@ export default function BenefitsPage() {
 
         <section className="relative mt-20 md:mt-32">
           <div className="text-center mb-16 md:mb-24">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <span className="inline-block px-4 py-1.5 mb-4 text-sm font-semibold tracking-wider text-primary bg-primary/10 rounded-lg border border-primary/20">
-              Innovation
-            </span>
-            <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-6 text-foreground">
-              Here’s What Makes Us {" "}
-              <span className="bg-linear-to-r from-primary via-sky-500 to-cyan-400 bg-clip-text text-transparent">
-                Different
+            <MotionWrapper
+              variants={{
+                hidden: { opacity: 0, y: 20 },
+                visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } },
+              }}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+            >
+              <span className="inline-block px-4 py-1.5 mb-4 text-sm font-semibold tracking-wider text-primary bg-primary/10 rounded-lg border border-primary/20">
+                Innovation
               </span>
-            </h2>
-            <p className="max-w-2xl mx-auto text-lg text-muted-foreground">
-              Discover the engineering and thought process behind our advanced 5-level, 3-stage filtration ecosystem.
-            </p>
-          </motion.div>
-        </div>
+              <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-6 text-foreground">
+                Here’s What Makes Us {" "}
+                <span className="bg-gradient-to-r from-primary via-sky-500 to-cyan-400 bg-clip-text text-transparent">
+                  Different
+                </span>
+              </h2>
+              <p className="max-w-3xl mx-auto text-lg text-muted-foreground">
+                Discover the engineering and thought process behind our advanced 5-level, 3-stage filtration ecosystem.
+              </p>
+            </MotionWrapper>
+          </div>
 
           <div className="space-y-12 md:space-y-12 relative pb-12 mt-12">
             {technologyFeatures.map((feature, index) => {
               const isEven = index % 2 === 0;
               return (
-                <div
+                <MotionWrapper
                   key={index}
+                  variants={{
+                    hidden: { opacity: 0, y: 50 },
+                    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } }
+                  }}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, margin: "-50px" }}
                   className={cn(
                     "flex flex-col items-center group relative",
                     isEven ? "md:flex-row" : "md:flex-row-reverse"
@@ -132,7 +141,7 @@ export default function BenefitsPage() {
                       <div className="relative z-10">
                         <div className="inline-flex h-1.5 w-12 bg-primary rounded-full mb-6 transition-all duration-500 group-hover:w-20" />
                         
-                        <h3 className="text-xl md:text-2xl lg:text-3xl font-extrabold tracking-tight text-foreground leading-[1.15] mb-6 drop-shadow-[0_2px_10px_rgba(255,255,255,0.4)] dark:drop-shadow-sm">
+                        <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold text-foreground leading-[1.15] mb-6 drop-shadow-[0_2px_10px_rgba(255,255,255,0.4)] dark:drop-shadow-sm">
                           {feature.title}
                         </h3>
                         
@@ -142,7 +151,7 @@ export default function BenefitsPage() {
                       </div>
                     </div>
                   </div>
-                </div>
+                </MotionWrapper>
               );
             })}
           </div>
