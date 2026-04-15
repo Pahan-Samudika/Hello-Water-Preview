@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/custom/theme-provider";
 import TawkMessenger from "@/components/custom/tawk-messenger";
 import { Toaster } from "sonner";
+import { GoogleAnalytics } from "@next/third-parties/google";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -43,6 +44,9 @@ export default function RootLayout({
           <TawkMessenger />
           <Toaster position="top-center" richColors />
         </ThemeProvider>
+        {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID ? (
+          <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
+        ) : null}
       </body>
     </html>
   );
