@@ -184,7 +184,7 @@ export const PFASModel = () => {
           </Center>
         </Float>
 
-        <OrbitControls enableZoom={false} enableRotate={true} makeDefault />
+        <OrbitControls enableZoom={false} enableRotate={false} makeDefault />
         <Environment preset="city" />
         <ContactShadows position={[0, -2.5, 0]} opacity={0.3} scale={15} blur={2.5} far={5} />
       </Canvas>
