@@ -39,7 +39,7 @@ export default async function ProductsPage() {
             }}
           >
             <p className="text-muted-foreground sm:text-lg">
-              Explore our range of high-quality water filtration products designed to provide you with clean, safe, and great-tasting water.
+              Explore our range of high-quality water filtration products designed to provide you with clean, safe, & great-tasting water.
             </p>
           </MotionWrapper>
         </MotionWrapper>

@@ -14,7 +14,7 @@ export const menudata = [
     img: "https://res.cloudinary.com/dnlb02zp9/image/upload/v1771561660/coz3uyrltwb0qmq2yuir_evprgj.webp",
     imgAlt: "plate-2",
     userComment:
-      "Just had a complete home water filtration system installed and it’s been working perfectly.",
+      "Just had a complete home water filtration system installed & it’s been working perfectly.",
     userAvatar: "https://cdn.shadcnstudio.com/ss-assets/avatar/avatar-46.png",
   },
   {
@@ -28,7 +28,7 @@ export const menudata = [
     id: 4,
     img: "https://res.cloudinary.com/dnlb02zp9/image/upload/v1771561659/nd1np6qyyfcetzpo0efv_yrbnyh.webp",
     imgAlt: "plate-4",
-    userComment: "Installed in 2024 December. Happy with product and service…",
+    userComment: "Installed in 2024 December. Happy with product & service…",
     userAvatar: "https://cdn.shadcnstudio.com/ss-assets/avatar/avatar-58.png",
   },
   {
@@ -60,7 +60,7 @@ export const stats = [
   {
     icon: MedalIcon,
     value: "4",
-    description: "Independent Australian and Global certifications",
+    description: "Independent Australian & Global certifications",
   },
 ];
 
@@ -68,16 +68,16 @@ export const aboutHighlights = [
   {
     title: "Our Mission",
     description:
-      "Our systems are engineered for performance, simplicity, and durability. We aim to deliver clean, high‑quality water to every home while improving your health & wellness and reducing environmental impact by removing the need for plastic water bottles.",
+      "Our systems are engineered for performance, simplicity, & durability. We aim to deliver clean, high‑quality water to every home while improving your health & wellness & reducing environmental impact by removing the need for plastic water bottles.",
   },
   {
     title: "Our Team",
     description:
-      "With over 25 years of collective experience, our expert design and engineering team, technical support specialists, sales professionals, and licensed plumbing partners work together to install and maintain advanced water filtration systems—delivering trusted, high‑quality solutions across Australia.",
+      "With over 25 years of collective experience, our expert design & engineering team, technical support specialists, sales professionals, & licensed plumbing partners work together to install & maintain advanced water filtration systems—delivering trusted, high‑quality solutions across Australia.",
   },
   {
     title: "Why Choose Us?",
     description:
-      "We are 100% Australian owned. Our Australian‑certified water filtration systems are engineered for the unique water conditions of every state of Australia. They’re reliable, durable, and built to last. By keeping marketing and sales costs low, we offer realistic pricing—making world‑class technology truly affordable for everyday Australian households.",
+      "We are 100% Australian owned. Our Australian‑certified water filtration systems are engineered for the unique water conditions of every state of Australia. They’re reliable, durable, & built to last. By keeping marketing & sales costs low, we offer realistic pricing—making world‑class technology truly affordable for everyday Australian households.",
   },
 ];

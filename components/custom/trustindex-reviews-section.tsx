@@ -88,7 +88,7 @@ export function TrustindexReviewsSection() {
           ) : (
             <p className="text-center text-sm text-muted-foreground">
               Trustindex widget is not configured. Add
-              `NEXT_PUBLIC_TRUSTINDEX_LIGHT_SCRIPT_SRC` and
+              `NEXT_PUBLIC_TRUSTINDEX_LIGHT_SCRIPT_SRC` &
               `NEXT_PUBLIC_TRUSTINDEX_DARK_SCRIPT_SRC` to your environment.
             </p>
           )}

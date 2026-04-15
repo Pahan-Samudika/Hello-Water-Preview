@@ -27,7 +27,7 @@ const faqCategories = [
       },
       {
         question: "Does your system remove fluoride, chlorine & chloramine?",
-        answer: "Yes. Our carbon filtration stage significantly reduces fluoride, chlorine & chloramine, which improves taste, smell, & reduces skin & hair dryness and hair fall. Overall improving your health."
+        answer: "Yes. Our carbon filtration stage significantly reduces fluoride, chlorine & chloramine, which improves taste, smell, & reduces skin & hair dryness & hair fall. Overall improving your health."
       },
       {
         question: "Does the system reduce hard water?",

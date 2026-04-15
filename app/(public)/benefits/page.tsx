@@ -230,7 +230,7 @@ export default function BenefitsPage() {
             The Transformation Journey
           </h2>
           <p className="text-muted-foreground sm:text-lg max-w-3xl mx-auto">
-            What you will notice after installation and how your water quality evolves over time.
+            What you will notice after installation & how your water quality evolves over time.
           </p>
         </MotionWrapper>
 

@@ -58,7 +58,7 @@ export function TrustindexTestimonialsSection() {
               What Customers Say <span className="bg-linear-to-r from-primary via-sky-500 to-cyan-400 bg-clip-text text-transparent">About Us</span>
             </h2>
             <p className='text-muted-foreground text-sm sm:text-lg'>
-              See why thousands of Australians trust Hello Water for their daily hydration and pure water needs.
+              See why thousands of Australians trust Hello Water for their daily hydration & pure water needs.
             </p>
           </motion.div>
         </motion.div>

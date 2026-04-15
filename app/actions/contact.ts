@@ -11,7 +11,7 @@ export async function submitContactForm(formData: FormData) {
   const message = formData.get("message") as string;
 
   if (!name || !email || !message) {
-    return { success: false, error: "Name, email, and message are required." };
+    return { success: false, error: "Name, email, & message are required." };
   }
 
   try {

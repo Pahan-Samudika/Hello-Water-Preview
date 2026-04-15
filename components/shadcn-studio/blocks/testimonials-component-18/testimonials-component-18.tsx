@@ -34,10 +34,10 @@ const TestimonialsComponent = ({ testimonials }: TestimonialsComponentProps) => 
         <div className='space-y-4 md:space-y-16'>
           <div className='space-y-4'>
             <h2 className='text-3xl md:text-5xl font-bold tracking-tight'>
-              Trusted by <span className="bg-linear-to-r from-primary via-sky-500 to-cyan-400 bg-clip-text text-transparent">Families</span> and <span className="bg-linear-to-r from-primary via-sky-500 to-cyan-400 bg-clip-text text-transparent">Businesses</span>
+              Trusted by <span className="bg-linear-to-r from-primary via-sky-500 to-cyan-400 bg-clip-text text-transparent">Families</span> & <span className="bg-linear-to-r from-primary via-sky-500 to-cyan-400 bg-clip-text text-transparent">Businesses</span>
             </h2>
             <p className='text-muted-foreground text-sm sm:text-lg'>
-              Our customers love our products, and we love them for it. Here’s what they have to say
+              Our customers love our products, & we love them for it. Here’s what they have to say
             </p>
           </div>
 

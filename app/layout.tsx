@@ -21,7 +21,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Hello Water Filtration",
   description:
-    "Hello Water is a water filtration company dedicated to providing clean and healthy water solutions for homes and businesses. With a commitment to quality and customer satisfaction, Hello Water offers a range of innovative filtration systems designed to improve water quality and promote a healthier lifestyle.",
+    "Hello Water is a water filtration company dedicated to providing clean & healthy water solutions for homes & businesses. With a commitment to quality & customer satisfaction, Hello Water offers a range of innovative filtration systems designed to improve water quality & promote a healthier lifestyle.",
 };
 
 export default function RootLayout({

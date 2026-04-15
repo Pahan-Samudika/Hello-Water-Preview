@@ -79,7 +79,7 @@ export const products: Product[] = [
     shortDescription: "A high-capacity sediment reduction cartridge made from 100% pure polypropylene, offering up to three times the dirt-holding capacity of standard filters to protect your home's plumbing & appliances.",
     description: [
       "DGD Series cartridges are manufactured from 100% pure polypropylene & are specifically designed for use in Pentair®/Pentek® Big Blue filter housings.",
-      "Engineered for purity, these cartridges do not impart any taste, odor, or colour to the water being filtered. The polypropylene construction also provides excellent chemical resistance and is naturally resistant to bacterial growth, ensuring reliable & hygienic filtration.",
+      "Engineered for purity, these cartridges do not impart any taste, odor, or colour to the water being filtered. The polypropylene construction also provides excellent chemical resistance & is naturally resistant to bacterial growth, ensuring reliable & hygienic filtration.",
       "The advanced design of the DGD Series combines efficient pre-filtration with selective final filtration, delivering up to three times the dirt-holding capacity of comparable sediment cartridges. This capacity even exceeds that of traditional spun or string-wound filters of the same size.",
       "A larger cartridge diameter reduces the particle load on the filter media, allowing it to operate effectively at higher flow velocities while maintaining strong filtration performance. In addition, the effective filtration depth is increased to 233% of standard cartridges, significantly improving particulate reduction & extending filter life.",
       "Thanks to their robust design & high performance, DGD Series cartridges are an excellent choice for residential, rural & municipal water filtration applications.",
@@ -104,7 +104,7 @@ export const products: Product[] = [
     description: [
       "RFC Series cartridges from Pentair®/Pentek® are engineered for reliable, high-performance water filtration. Each cartridge is built with a 70-micron porous polyethylene outer shell & durable polypropylene end-caps, ensuring long-lasting structural integrity & consistent performance.",
       "The 4½-inch diameter cartridge use a spun polypropylene core for added strength in higher-capacity applications. Between the outer shell & the core is a bed of high-quality granular activated carbon (GAC), designed to effectively reduce chlorine, unpleasant tastes, & odours from water.",
-      "The RFC Series uses a unique radial flow design, allowing water to pass efficiently through the carbon media. This design delivers the key benefits of GAC filtration -low pressure drop and excellent contaminant reduction- while significantly minimizing the release of carbon fines, which are often associated with traditional GAC cartridges.",
+      "The RFC Series uses a unique radial flow design, allowing water to pass efficiently through the carbon media. This design delivers the key benefits of GAC filtration -low pressure drop & excellent contaminant reduction- while significantly minimizing the release of carbon fines, which are often associated with traditional GAC cartridges.",
       "RFC Series cartridges are ideal for point-of-entry (POE) filtration systems & other high-flow residential applications where consistent water quality & reliable performance are essential.",
     ],
     features: [
@@ -121,7 +121,7 @@ export const products: Product[] = [
     price: "$135.00 + GST",
     image: "https://res.cloudinary.com/dnlb02zp9/image/upload/v1774892294/IMG_5157_bewjhh.jpg",
     imageAlt: "Pentair Coconut Shell Carbon Cartridges enhanced with KDF",
-    cardDescription: "Enhanced with KDF. Minimize heavy metals and chemicals for water filtration",
+    cardDescription: "Enhanced with KDF. Minimize heavy metals & chemicals for water filtration",
     shortDescription: "An advanced coconut-shell carbon filter enhanced with KDF-55 media, specifically engineered to reduce heavy metals & harmful chemicals while preventing lime & scale buildup in your pipes.",
     description: [
       "DBC Series cartridges from Pentair®/Pentek® are designed to deliver high-capacity filtration & enhanced protection against scale buildup. Each cartridge is enhanced with KDF 55 media, which helps inhibit the formation of lime & scale buildup that can damage plumbing systems & household appliances.",

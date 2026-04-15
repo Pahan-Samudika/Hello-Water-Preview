@@ -95,7 +95,7 @@ export const AboutSummary = () => {
                 </span>
               </h2>
               <p className="text-base leading-relaxed text-muted-foreground sm:text-lg">
-                At Hello Water Filtration, we provide honest advice and
+                At Hello Water Filtration, we provide honest advice &
                 professional installation for whole-home water filtration
                 systems. We believe every home deserves clean, safe water from
                 every tap.

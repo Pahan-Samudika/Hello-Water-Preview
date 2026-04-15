@@ -94,7 +94,7 @@ export default function BenefitsPage() {
                 </span>
               </h2>
               <p className="max-w-3xl mx-auto text-lg text-muted-foreground">
-                Discover the engineering and thought process behind our advanced 5-level, 3-stage filtration ecosystem.
+                Discover the engineering & thought process behind our advanced 5-level, 3-stage filtration ecosystem.
               </p>
             </MotionWrapper>
           </div>

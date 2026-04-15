@@ -55,7 +55,7 @@ export default function ContactPage() {
                 className: "col-span-2",
               },
             ]}
-            description="Have a question about filters, installation, or support? Send us a message and our team will get back to you within one business day."
+            description="Have a question about filters, installation, or support? Send us a message & our team will get back to you within one business day."
             title="Get in Touch"
           >
             <form action={handleSubmit} className="w-full space-y-5 lg:space-y-6">

@@ -21,7 +21,7 @@ const HIGHLIGHTS = [
   {
     icon: FilterIcon,
     title: "3-Stage Filtration",
-    description: "Advanced media precisely targeting and stripping out chlorine, heavy metals, & complex contaminants.",
+    description: "Advanced media precisely targeting & stripping out chlorine, heavy metals, & complex contaminants.",
   },
   {
     icon: ShieldCheckIcon,
@@ -102,7 +102,7 @@ export const TechnologySummary = () => {
                 {" "} Forever Chemicals
               </h2>
               <p className="text-base leading-relaxed text-muted-foreground mx-auto">
-                Protecting your home means making sure your water is truly safe. Our powerful 5-level, 3-stage filtration system acts as the ultimate barrier for your home. It removes harmful &apos;forever chemicals&apos; like PFAS, heavy metals, and everyday pollutants, so you can drink with complete peace of mind.
+                Protecting your home means making sure your water is truly safe. Our powerful 5-level, 3-stage filtration system acts as the ultimate barrier for your home. It removes harmful &apos;forever chemicals&apos; like PFAS, heavy metals, & everyday pollutants, so you can drink with complete peace of mind.
               </p>
             </motion.div>
           </motion.div>

@@ -55,7 +55,7 @@ const AboutUs = ({ stats }: { stats: StatItem }) => {
         })}
       </MotionWrapper>
 
-      {/* Video/Image and Stats Section */}
+      {/* Video/Image & Stats Section */}
       <MotionWrapper
         className="relative mt-20"
         initial={{ opacity: 0, y: 40 }}

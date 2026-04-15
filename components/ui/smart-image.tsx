@@ -17,7 +17,7 @@ interface SmartImageProps extends Omit<ImageProps, "onLoad" | "src"> {
 
 /**
  * A professional image component that shows a loading spinner until the image is fully loaded.
- * It also applies a smooth fade-in and blur-out transition once ready.
+ * It also applies a smooth fade-in & blur-out transition once ready.
  */
 export function SmartImage({
   src,
