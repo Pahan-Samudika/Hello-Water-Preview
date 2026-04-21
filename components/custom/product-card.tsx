@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { SmartImage } from "@/components/ui/smart-image";
@@ -11,6 +12,7 @@ type ProductCardProps = {
   price: string;
   image: string;
   imageAlt: string;
+  recent?: boolean;
   href?: string;
   className?: string;
 };
@@ -21,6 +23,7 @@ export function ProductCard({
   price,
   image,
   imageAlt,
+  recent = false,
   href = "#",
   className,
 }: ProductCardProps) {
@@ -36,6 +39,12 @@ export function ProductCard({
         alt={imageAlt}
         className="block aspect-[4/5] w-full max-h-96 object-cover transition duration-500 ease-out lg:group-hover:scale-105 lg:group-hover:blur-[2px]"
       />
+
+      {recent ? (
+        <Badge className="bg-primary/70 text-primary-foreground pointer-events-none absolute left-3 top-3 z-50 h-auto rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wide shadow-md">
+          New
+        </Badge>
+      ) : null}
 
       {/* Floating Price (hidden on mobile, visible on desktop until hover) */}
       <div className="pointer-events-none absolute right-3 bottom-3 z-20 hidden rounded-full bg-black/65 px-3 py-1.5 text-xl font-medium text-white backdrop-blur-sm transition-opacity duration-200 lg:block lg:group-hover:opacity-0">
