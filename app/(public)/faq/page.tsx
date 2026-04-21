@@ -52,6 +52,18 @@ const faqCategories = [
       {
         question: "Will the water pressure drop?",
         answer: "No. Our high-flow design is built to maintain strong water pressure throughout your home."
+      },
+      {
+        question: "What is the Hello Water Filtration system for larger homes & semi commercial properties?",
+        answer: "The system is a high-performance whole-home filtration setup designed for larger homes & semi-commercial properties, delivering up to 119 litres per minute flow rate. It uses upgraded filtration media including DGD sediment filtration & EnnoPure ePureFlo Activated Carbon Fibre (ACF) technology."
+      },
+      {
+        question: "How is it different from the standard system?",
+        answer: "The Standard system is designed for typical residential homes, offering balanced whole-home filtration through sediment, carbon, & ion-exchange softening for everyday water quality improvement. The Advanced system is built for higher demand homes & semi-commercial use, enhanced sediment filtration using DGD gradient density cartridges, & EnnoPure ePureFlo ACF carbon technology that reduces chlorine taste & odour up to 2x more effectively than standard cartridges."
+      },
+      {
+        question: "Does it improve water quality more than the standard system?",
+        answer: "Yes. It provides stronger sediment removal, improved chlorine taste & odour reduction, & higher flow performance for larger households."
       }
     ]
   },
