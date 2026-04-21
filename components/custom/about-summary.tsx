@@ -160,7 +160,7 @@ export const AboutSummary = () => {
             viewport={{ once: true, margin: "-80px" }}
           >
             <SmartImage
-              src="https://res.cloudinary.com/dnlb02zp9/image/upload/v1774936885/IMG_5179.JPG_hkxhpw.jpg"
+              src="https://res.cloudinary.com/dnlb02zp9/image/upload/v1776746641/IMG_8138_udij9b.webp"
               alt="About us illustration"
               className="w-full rounded-[1.75rem] border border-white/30 object-cover shadow-[0_20px_60px_rgba(15,23,42,0.14)]"
             />
