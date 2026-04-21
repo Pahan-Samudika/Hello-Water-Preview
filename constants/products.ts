@@ -4,6 +4,7 @@ export type Product = {
   name: string;
   category: string;
   price: string;
+  recent?: boolean;
   image: string;
   imageAlt: string;
   cardDescription: string;
@@ -15,10 +16,47 @@ export type Product = {
 export const products: Product[] = [
   {
     id: 1,
+    slug: "whole-home-filtration-system",
+    name: "Whole Home Filtration System",
+    category: "Filtration Systems",
+    price: "Call for Price",
+    recent: true,
+    image: "https://res.cloudinary.com/dnlb02zp9/image/upload/v1776745180/system_sp5eut.webp",
+    imageAlt: "Whole Home Filtration System",
+    cardDescription: "Whole Home Micron Water Filtration System",
+    shortDescription: "A powerful point-of-entry filtration system using gradient density sediment filtration & Activated Carbon Fibre technology to protect every tap in your home.",
+    description: [
+      "The Hello Water Whole Home Filtration System delivers powerful point-of-entry filtration using advanced cartridge technology & a rugged, high-performance design. Built to protect every tap in your home, it combines gradient density sediment filtration with an Activated Carbon Fibre (ACF) cartridge to target both physical & chemical contaminants.",
+      "DGD Series cartridges (0.5 micron nominal), made from 100% pure polypropylene, capture sand, silt, rust, clay & microplastics with high efficiency. Their gradient density design filters larger particles first, then finer contaminants deeper within the cartridge, maximising dirt-holding capacity, maintaining strong flow, & extending filter life.",
+      "At its core is the EnnoPure ePureFlo ACF cartridge, engineered for advanced chemical filtration. It reduces chlorine taste & odour by 2x compared to regular cartridges, while also targeting PFAS, VOCs & other chemical contaminants. By combining sediment filtration & carbon block performance in one media, it delivers high adsorption without releasing carbon fines.",
+      "Housed in a marine-grade stainless steel cabinet, the system is built for durability in harsh conditions. A patented ventilation system prevents heat build-up, while a built-in bypass line & pressure adjustment valve provide flexibility, control & consistent performance.",
+      "With a peak flow rate of up to 119 litres per minute, it is ideal for larger homes & semi-commercial applications requiring high-volume, reliable water supply.",
+    ],
+    features: [
+      "Advanced multi-stage whole home filtration",
+      "Dual-gradient sediment filtration (0.5 micron nominal)",
+      "Proprietary ACF (Activated Carbon Fibre) technology",
+      "PFAS Certified GE Water Technology, VOC & chemical contaminant reduction",
+      "Reduces fluoride, lead, manganese, other heavy metals & scale-forming minerals",
+      "Bacteriostatic filter media",
+      "Marine-grade stainless steel cabinet with 3 colour options",
+      "SS316 bracket with polished mirror finish",
+      "Patented ventilation system for heat & pressure management",
+      "Built-in bypass line for flexible water access",
+      "Integrated bronze pressure adjustment valve",
+      "20\" high-capacity filter housings with double buna O-ring sealing",
+      "NSF/ANSI 42, 53, 401 & WaterMark certified components",
+      "Ideal for large residential & semi-commercial applications",
+      "Up to 119L/min high-flow capacity",
+    ],
+  },
+  {
+    id: 2,
     slug: "the-bottle-water-plant-whole-house-micro-filtration",
     name: "The Whole House Bottle Water Plant",
     category: "Filtration Systems",
     price: "Call for Price",
+    recent: false,
     image: "https://res.cloudinary.com/dnlb02zp9/image/upload/v1774892292/IMG_5153_wftjgy.jpg",
     imageAlt: "The Whole House Bottle Water Plant",
     cardDescription: "Whole House Micron Water Filtration",
@@ -41,11 +79,12 @@ export const products: Product[] = [
     ],
   },
   {
-    id: 2,
+    id: 3,
     slug: "uv-radiation-micro-filtration-system",
     name: "UV Water Treatment & Micro Filtration System",
     category: "Filtration Systems",
     price: "Call for Price",
+    recent: false,
     image: "https://res.cloudinary.com/dnlb02zp9/image/upload/v1775210312/IMG_5633_flxnla.jpg",
     imageAlt: "UV Radiation Micro Filtration System all-in-one unit",
     cardDescription: "UV Water Purification System",
@@ -68,11 +107,12 @@ export const products: Product[] = [
     ],
   },
   {
-    id: 3,
+    id: 4,
     slug: "micron-replacement-cartridge",
     name: "Pentek DGD Series",
     category: "Cartridges",
     price: "$49.00 + GST",
+    recent: false,
     image: "https://res.cloudinary.com/dnlb02zp9/image/upload/v1775210313/IMG_5632_shvqsa.jpg",
     imageAlt: "Micron Replacement Cartridge Dual for sediment reduction",
     cardDescription: "For Sediment Reduction",
@@ -92,11 +132,12 @@ export const products: Product[] = [
     ],
   },
   {
-    id: 4,
+    id: 5,
     slug: "pentair-chemical-reduction-cartridges",
     name: "Pentek RFC Series",
     category: "Cartridges",
     price: "$95.00 + GST",
+    recent: false,
     image: "https://res.cloudinary.com/dnlb02zp9/image/upload/v1774892293/IMG_5156_ow9icg.jpg",
     imageAlt: "Pentair RFC Series radial flow carbon cartridges",
     cardDescription: "Radial flow carbon cartridges for chemical reduction",
@@ -114,11 +155,12 @@ export const products: Product[] = [
     ],
   },
   {
-    id: 5,
+    id: 6,
     slug: "pentair-coconut-shell-carbon-cartridges",
     name: "Pentek DBC Series",
     category: "Cartridges",
     price: "$135.00 + GST",
+    recent: false,
     image: "https://res.cloudinary.com/dnlb02zp9/image/upload/v1774892294/IMG_5157_bewjhh.jpg",
     imageAlt: "Pentair Coconut Shell Carbon Cartridges enhanced with KDF",
     cardDescription: "Enhanced with KDF. Minimize heavy metals & chemicals for water filtration",
