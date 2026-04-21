@@ -1,5 +1,5 @@
 import { ProductCard } from "@/components/custom/product-card";
-import { products } from "@/constants/products";
+import { products, type Product } from "@/constants/products";
 import { MotionWrapper } from "@/components/custom/motion-wrapper";
 
 export default async function ProductsPage() {
@@ -128,7 +128,7 @@ export default async function ProductsPage() {
   );
 }
 
-function ProductGridItem({ product }: { product: any }) {
+function ProductGridItem({ product }: { product: Product }) {
   return (
     <MotionWrapper
       variants={{
@@ -147,6 +147,7 @@ function ProductGridItem({ product }: { product: any }) {
         price={product.price}
         image={product.image}
         imageAlt={product.imageAlt}
+        recent={product.recent}
         href={`/products/${product.slug}`}
       />
     </MotionWrapper>

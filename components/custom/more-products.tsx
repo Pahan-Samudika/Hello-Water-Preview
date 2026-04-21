@@ -57,6 +57,7 @@ export function MoreProducts({ currentProductSlug }: MoreProductsProps) {
                   price={product.price}
                   image={product.image}
                   imageAlt={product.imageAlt}
+                  recent={product.recent}
                   href={`/products/${product.slug}`}
                   className="shadow-md hover:shadow-xl transition-all duration-300 lg:shadow-md h-full"
                 />
