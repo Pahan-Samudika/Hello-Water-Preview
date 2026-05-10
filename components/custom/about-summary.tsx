@@ -83,9 +83,9 @@ export const AboutSummary = () => {
             viewport={{ once: true, margin: "-80px" }}
           >
             <motion.div className="flex justify-center" variants={fadeUp}>
-						<div className="rounded-lg bg-primary/10 text-primary border-primary/20 border px-4 py-1.5 font-semibold text-sm tracking-wide">
-							Our Story
-						</div>
+              <div className="rounded-lg bg-primary/10 text-primary border-primary/20 border px-4 py-1.5 font-semibold text-sm tracking-wide">
+                Our Story
+              </div>
             </motion.div>
             <motion.div className="space-y-4" variants={fadeUp}>
               <h2 className="text-3xl font-bold tracking-tight text-balance text-foreground sm:text-4xl lg:text-5xl">
@@ -95,10 +95,12 @@ export const AboutSummary = () => {
                 </span>
               </h2>
               <p className="text-base leading-relaxed text-muted-foreground sm:text-lg">
-                At Hello Water Filtration, we provide honest advice &
-                professional installation for whole-home water filtration
-                systems. We believe every home deserves clean, safe water from
-                every tap.
+                At Hello Water Filtration, we provide honest advice & professional installation of whole
+                home systems designed to deliver clean, safe water to every tap. Backed by leading
+                third-party certifications — including NSF Standard 42, 53 & 401, AS/NZS 4020 Drinking
+                Water Testing, WaterMark & Asthma Council Sensitive Choice — it’s the most
+                comprehensively certified system available for quality, safety & everyday family
+                wellbeing.
               </p>
             </motion.div>
           </motion.div>

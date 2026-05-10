@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef, useCallback } from "react";
+import Image from "next/image";
 
 import { ArrowRightIcon } from "lucide-react";
 
@@ -16,6 +17,7 @@ import {
 import { cn } from "@/lib/utils";
 import { motion } from "motion/react";
 import { SmartImage } from "@/components/ui/smart-image";
+import { certifications } from "@/constants/certifications";
 
 export type MenuData = {
   id: number;
@@ -115,7 +117,7 @@ const HeroSection = ({ menudata }: { menudata: MenuData[] }) => {
             animate="visible"
           >
             <motion.h1
-              className="text-3xl leading-[1.29167] font-bold text-balance max-lg:text-center sm:text-5xl lg:text-6xl"
+              className="text-4xl md:leading-[1.29167] font-bold text-balance max-lg:text-center sm:text-5xl lg:text-6xl"
               variants={itemVariants}
             >
               Every Drop{" "}<br/>
@@ -156,6 +158,37 @@ const HeroSection = ({ menudata }: { menudata: MenuData[] }) => {
                 Get A Free Water Assessment
 
               </Button>
+            </motion.div>
+            <motion.div
+              variants={itemVariants}
+              className="mt-10 flex w-full max-w-3xl flex-col gap-6 max-lg:items-center"
+            >
+              <div className="shrink-0">
+                <p className="text-[10px] font-black tracking-widest text-primary uppercase leading-tight">
+                  System Certifications and Standards*
+                </p>
+              </div>
+
+              <div className="flex flex-nowrap items-start gap-x-3 md:gap-x-6 gap-y-4 max-lg:justify-center">
+                {certifications.map((cert, index) => (
+                  <div key={cert.title} className="flex items-center gap-6">
+                    <div className="flex flex-col items-center gap-1.5 text-center transition-transform hover:scale-105">
+                      <div className="relative h-8 md:h-12 w-auto flex items-center justify-center px-2">
+                        <Image 
+                          src={cert.logo} 
+                          alt={cert.title} 
+                          className="h-full w-auto object-contain"
+                          width={100}
+                          height={100}
+                        />
+                      </div>
+                      <p className="hidden md:block md:text-[8px] leading-[1.1] text-zinc-500 font-medium max-w-[100px] line-clamp-2 uppercase">
+                        {cert.subtitle}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </motion.div>
           </motion.div>
 

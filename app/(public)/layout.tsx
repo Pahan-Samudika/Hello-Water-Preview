@@ -16,6 +16,7 @@ const navigationData = [
       { title: "FAQs", href: "/faq" },
       { title: "Benefits", href: "/benefits" },
       { title: "Technology", href: "/technology" },
+      { title: "Certifications", href: "/certifications" },
     ],
   },
   {
