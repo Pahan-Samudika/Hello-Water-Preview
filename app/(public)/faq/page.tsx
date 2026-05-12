@@ -163,7 +163,7 @@ export default function FAQPage() {
   return (
     <div className="relative overflow-hidden w-full min-h-screen">
       <section className="mx-auto w-full max-w-6xl px-6 py-8 md:py-16 sm:px-6 lg:px-8">
-        <MotionWrapper 
+        <MotionWrapper
           className="mb-12 space-y-4"
           variants={{
             hidden: {},
@@ -217,7 +217,7 @@ export default function FAQPage() {
               }}
               className="space-y-6"
             >
-              <MotionWrapper 
+              <MotionWrapper
                 className="flex items-center gap-4 pb-3 border-b border-border/50"
                 variants={{
                   hidden: { opacity: 0, x: -20 },
@@ -251,8 +251,8 @@ export default function FAQPage() {
                       <div
                         className={cn(
                           "group rounded-3xl border transition-all duration-300",
-                          isOpen 
-                            ? "border-primary/40 bg-white/40 shadow-xl shadow-primary/5 backdrop-blur-xl dark:border-primary/20 dark:bg-white/10" 
+                          isOpen
+                            ? "border-primary/40 bg-white/40 shadow-xl shadow-primary/5 backdrop-blur-xl dark:border-primary/20 dark:bg-white/10"
                             : "border-white/35 bg-white/35 hover:border-primary/30 hover:bg-white/50 backdrop-blur-md shadow-sm dark:border-white/10 dark:bg-white/5"
                         )}
                       >
@@ -277,7 +277,7 @@ export default function FAQPage() {
                             <ChevronDown className="w-5 h-5" />
                           </motion.div>
                         </button>
-                        
+
                         <AnimatePresence initial={false}>
                           {isOpen && (
                             <motion.div
@@ -313,9 +313,9 @@ export default function FAQPage() {
         >
           <div className="absolute top-[-20%] right-[-10%] w-64 h-64 bg-primary/10 blur-[100px] -z-10" />
           <div className="absolute bottom-[-20%] left-[-10%] w-64 h-64 bg-sky-400/10 blur-[100px] -z-10" />
-          
+
           <div className="flex size-16 items-center justify-center rounded-2xl bg-primary/10 text-primary mx-auto mb-6 shadow-inner ring-1 ring-white/50">
-             <HelpCircle className="w-8 h-8" />
+            <HelpCircle className="w-8 h-8" />
           </div>
           <h2 className="text-3xl md:text-4xl font-bold mb-4 tracking-tight">Can't find the answer you're looking for?</h2>
           <p className="text-muted-foreground text-lg mb-10 max-w-2xl mx-auto">
@@ -329,7 +329,7 @@ export default function FAQPage() {
               nativeButton={false}
             >
               <PhoneCall className="w-5 h-5 mr-2" />
-              0498 588 725
+              1300 515 469
             </Button>
             <Button
               size="lg"

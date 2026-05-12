@@ -89,11 +89,11 @@ const Navbar = ({ navigationData }: { navigationData: NavItem[] }) => {
             <span className="sr-only">Search</span>
           </Button> */}
           {/* <ModeToggle /> */}
-          <a href="tel:0498588725" 
+          <a href="tel:0498588725"
             className="bg-primary/30 hover:bg-primary/10 inline-flex items-center px-4 py-2 text-sm font-medium rounded-full gap-2 transition-colors"
           >
             <PhoneCall className="w-4 h-4" />
-            0498 588 725
+            1300 515 469
           </a>
           <DropdownMenu>
             <DropdownMenuTrigger
