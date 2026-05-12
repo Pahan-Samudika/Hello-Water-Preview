@@ -61,7 +61,7 @@ export function Header() {
         className={cn(
           "fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300 ease-out",
           {
-          "":
+            "":
               scrolled,
           }
         )}
@@ -141,7 +141,7 @@ export function Header() {
                 className="bg-primary/30 hover:bg-primary/10 inline-flex items-center px-3 py-1.5 text-sm font-medium rounded-full gap-2 transition-colors"
               >
                 <PhoneCall className="w-3.5 h-3.5" />
-                0498 588 725
+                1300 515 469
               </a>
             </div>
 

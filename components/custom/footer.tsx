@@ -109,7 +109,7 @@ export function Footer() {
 								Victoria 3805
 							</span>
 						</p>
-						<p>0498 588 725</p>
+						<p>1300 515 469</p>
 					</div>
 				</AnimatedContainer>
 

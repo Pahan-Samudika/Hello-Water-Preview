@@ -46,7 +46,7 @@ export default function ContactPage() {
               {
                 icon: <PhoneIcon />,
                 label: "Phone",
-                value: "0498 588 725",
+                value: "1300 515 469",
               },
               {
                 icon: <MapPinIcon />,
