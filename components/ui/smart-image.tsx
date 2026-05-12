@@ -5,6 +5,7 @@ import Image, { ImageProps } from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { Spinner } from "@/components/ui/spinner";
+import placeholderImage from "@/assets/placeholders/image.webp";
 
 interface SmartImageProps extends Omit<ImageProps, "onLoad" | "src"> {
   src: string | any;
@@ -49,8 +50,10 @@ export function SmartImage({
     }
   }, []);
 
-  // Determine the actual src string
-  const imageSrc = typeof src === "string" ? src : src?.src;
+  // Determine the final source to use, ensuring we have a valid fallback
+  const finalSrc = src || placeholderImage;
+  const imageSrc = typeof finalSrc === "string" ? finalSrc : finalSrc.src;
+  const fallbackSrc = placeholderImage.src;
 
   return (
     <div className={cn("relative overflow-hidden group/image w-full", containerClassName)}>
@@ -79,11 +82,15 @@ export function SmartImage({
       >
         {useNextImage ? (
           <Image
-            src={src}
+            src={finalSrc}
             alt={alt}
             className={className}
             onLoad={handleLoad}
-            onError={handleError}
+            onError={(e) => {
+              // Handle next/image errors by setting hasError
+              setHasError(true);
+              handleError();
+            }}
             {...(props as any)}
           />
         ) : (
@@ -93,7 +100,17 @@ export function SmartImage({
             alt={alt}
             className={cn("h-full w-full", className, hasError && "opacity-0")}
             onLoad={handleLoad}
-            onError={handleError}
+            onError={(e) => {
+              // Show placeholder on error
+              const target = e.currentTarget;
+              if (target.src !== fallbackSrc) {
+                target.src = fallbackSrc;
+                setHasError(false);
+                setIsLoading(true);
+              } else {
+                handleError();
+              }
+            }}
             {...(props as any)}
           />
         )}

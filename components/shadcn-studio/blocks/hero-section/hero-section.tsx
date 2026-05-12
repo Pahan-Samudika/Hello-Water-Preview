@@ -216,7 +216,7 @@ const HeroSection = ({ menudata }: { menudata: MenuData[] }) => {
                       src={item.img}
                       alt={item.imgAlt}
                       className="h-full w-full object-cover"
-                      containerClassName="h-[320px] sm:h-[420px] lg:h-[min(68vh,640px)] rounded-2xl"
+                      containerClassName="aspect-[5/3] w-full sm:aspect-auto sm:h-[420px] lg:h-[min(68vh,640px)] rounded-2xl"
                     />
                   </CarouselItem>
                 ))}

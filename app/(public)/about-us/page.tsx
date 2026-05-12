@@ -79,7 +79,7 @@ export default function AboutPage() {
 
       <HowItWorks />
 
-      <TestimonialsComponent testimonials={mappedTestimonials} />
+      {/* <TestimonialsComponent testimonials={mappedTestimonials} /> */}
 
       <TrustindexTestimonialsSection />
     </div>

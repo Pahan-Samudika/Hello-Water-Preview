@@ -123,7 +123,7 @@ export const TechnologySummary = () => {
               >
                 <div className="relative z-10 flex flex-col items-start gap-5">
                   <div className="flex size-14 items-center justify-center rounded-2xl bg-white dark:bg-black/50 text-foreground shadow-md ring-1 ring-black/5 dark:ring-white/10 group-hover:bg-primary group-hover:text-white transition-all duration-500 transform group-hover:scale-110">
-                    <item.icon className="size-7" />
+                    <item.icon className="size-7 text-primary" />
                   </div>
                   <div>
                     <h3 className="text-xl font-bold text-foreground mb-3 transition-colors duration-300">
