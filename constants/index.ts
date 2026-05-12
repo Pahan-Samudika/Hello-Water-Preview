@@ -54,7 +54,7 @@ export const stats = [
   },
   {
     icon: StarIcon,
-    value: "150+",
+    value: "170+",
     description: "Genuine & Verified 5 Star Only Google Reviews",
   },
   {

@@ -8,6 +8,7 @@ import { PhoneCall, ChevronDown } from "lucide-react";
 import { MobileNav } from "@/components/mobile-nav";
 
 import LogoSVG from "@/assets/svg/logo.svg";
+import TxtLogoSVG from "@/assets/svg/txtlogo-white.svg";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -77,20 +78,27 @@ export function Header() {
         >
           <nav
             className={cn(
-              "flex h-18 w-full items-center justify-between px-8 md:h-16 md:transition-all md:ease-out",
+              "relative flex h-18 w-full items-center justify-between px-8 md:h-16 md:transition-all md:ease-out",
               {
                 "md:px-4": scrolled,
               }
             )}
           >
-            {/* Logo - Left side */}
+            {/* Logo - Left side (Mobile: Icon + Text, Desktop: Text only) */}
             <Link
               href="/"
-              className="flex items-center gap-4 rounded-md p-2"
+              className="z-10 flex items-center gap-4 rounded-md p-2"
             >
-              <Image src={LogoSVG} alt="HelloWater Logo" className="h-8 w-auto" priority />
-              <span className="text-md font-semibold tracking-tight">Hello Water Filtration</span>
+              <Image src={LogoSVG} alt="HelloWater Logo" className="h-8 w-auto md:hidden" priority />
+              <Image src={TxtLogoSVG} alt="Hello Water Filtration" className="h-5 w-auto" priority />
             </Link>
+
+            {/* Logo Icon - Exact Horizontal Center (Desktop only) */}
+            <div className="pointer-events-none absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 md:flex">
+              <Link href="/" className="pointer-events-auto">
+                <Image src={LogoSVG} alt="HelloWater Logo" className="h-8 w-auto" priority />
+              </Link>
+            </div>
 
             {/* Desktop nav links */}
             <div className="hidden items-center gap-2 md:flex">
