@@ -78,83 +78,87 @@ export function Header() {
         >
           <nav
             className={cn(
-              "relative flex h-18 w-full items-center justify-between px-8 md:h-16 md:transition-all md:ease-out",
+              "relative flex h-18 w-full items-center justify-between px-4 md:h-16 md:px-8 md:transition-all md:ease-out",
               {
                 "md:px-4": scrolled,
               }
             )}
           >
-            {/* Logo - Left side (Mobile: Icon + Text, Desktop: Text only) */}
-            <Link
-              href="/"
-              className="z-10 flex items-center gap-4 rounded-md p-2"
-            >
-              <Image src={LogoSVG} alt="HelloWater Logo" className="h-8 w-auto md:hidden" priority />
-              <Image src={TxtLogoSVG} alt="Hello Water Filtration" className="h-5 w-auto" priority />
-            </Link>
-
-            {/* Logo Icon - Exact Horizontal Center (Desktop only) */}
-            <div className="pointer-events-none absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 md:flex">
-              <Link href="/" className="pointer-events-auto">
-                <Image src={LogoSVG} alt="HelloWater Logo" className="h-8 w-auto" priority />
+            {/* Left: Text Logo (Mobile & Desktop) */}
+            <div className="z-10 flex flex-1 justify-start">
+              <Link
+                href="/"
+                className="flex items-center rounded-md p-2"
+              >
+                <Image src={TxtLogoSVG} alt="Hello Water Filtration" className="h-4.5 w-auto md:h-5" priority />
               </Link>
             </div>
 
-            {/* Desktop nav links */}
-            <div className="hidden items-center gap-2 md:flex">
-              <div className="flex items-center">
-                {navigationData.map((item) =>
-                  item.children ? (
-                    <DropdownMenu key={item.title}>
-                      <DropdownMenuTrigger
-                        className="flex items-center gap-1 cursor-pointer"
-                        render={<Button size="sm" variant="ghost" />}
-                      >
-                        {item.title}
-                        <ChevronDown className="w-3.5 h-3.5 opacity-50" />
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent
-                        align="start"
-                        className="bg-background/80 backdrop-blur-xl border-primary/20 min-w-[150px]"
-                      >
-                        <DropdownMenuGroup>
-                          {item.children.map((child) => (
-                            <DropdownMenuItem
-                              key={child.href}
-                              className="cursor-pointer"
-                            >
-                              <Link href={child.href} className="w-full">
-                                {child.title}
-                              </Link>
-                            </DropdownMenuItem>
-                          ))}
-                        </DropdownMenuGroup>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  ) : (
-                    <Button
-                      key={item.href}
-                      size="sm"
-                      variant="ghost"
-                      render={<Link href={item.href} />}
-                      nativeButton={false}
-                    >
-                      {item.title}
-                    </Button>
-                  )
-                )}
-              </div>
-              <a
-                href="tel:0498588725"
-                className="bg-primary/30 hover:bg-primary/10 inline-flex items-center px-3 py-1.5 text-sm font-medium rounded-full gap-2 transition-colors"
-              >
-                <PhoneCall className="w-3.5 h-3.5" />
-                1300 515 469
-              </a>
+            {/* Center: Droplet Logo (Mobile & Desktop) */}
+            <div className="absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2">
+              <Link href="/">
+                <Image src={LogoSVG} alt="HelloWater Logo" className="h-9 w-auto" priority />
+              </Link>
             </div>
 
-            {/* Mobile nav */}
-            <MobileNav />
+            {/* Right: Desktop nav links + Phone CTA / Mobile Hamburger */}
+            <div className="z-10 flex flex-1 items-center justify-end gap-2 md:gap-4">
+              {/* Desktop nav links */}
+              <div className="hidden items-center gap-2 md:flex">
+                <div className="flex items-center">
+                  {navigationData.map((item) =>
+                    item.children ? (
+                      <DropdownMenu key={item.title}>
+                        <DropdownMenuTrigger
+                          className="flex items-center gap-1 cursor-pointer"
+                          render={<Button size="sm" variant="ghost" />}
+                        >
+                          {item.title}
+                          <ChevronDown className="w-3.5 h-3.5 opacity-50" />
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent
+                          align="start"
+                          className="bg-background/80 backdrop-blur-xl border-primary/20 min-w-[150px]"
+                        >
+                          <DropdownMenuGroup>
+                            {item.children.map((child) => (
+                              <DropdownMenuItem
+                                key={child.href}
+                                className="cursor-pointer"
+                              >
+                                <Link href={child.href} className="w-full">
+                                  {child.title}
+                                </Link>
+                              </DropdownMenuItem>
+                            ))}
+                          </DropdownMenuGroup>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    ) : (
+                      <Button
+                        key={item.href}
+                        size="sm"
+                        variant="ghost"
+                        render={<Link href={item.href} />}
+                        nativeButton={false}
+                      >
+                        {item.title}
+                      </Button>
+                    )
+                  )}
+                </div>
+                <a
+                  href="tel:1300515469"
+                  className="bg-primary/30 hover:bg-primary/10 inline-flex items-center px-3 py-1.5 text-sm font-medium rounded-full gap-2 transition-colors"
+                >
+                  <PhoneCall className="w-3.5 h-3.5" />
+                  1300 515 469
+                </a>
+              </div>
+
+              {/* Mobile nav */}
+              <MobileNav />
+            </div>
           </nav>
         </header>
       </div>
