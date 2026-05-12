@@ -106,19 +106,19 @@ export default async function ProductViewPage({
                   ))}
                 </div>
 
-                <div className="rounded-[2rem] bg-muted/40 p-6 sm:p-8 border border-white/5 dark:border-white/10">
-                  <h3 className="text-xl font-bold">Key features</h3>
-                  <div className="mt-6 grid gap-4 flex-wrap sm:grid-cols-2">
+                <div className="rounded-[2rem] bg-muted/30 p-6 sm:p-8 border border-white/5 dark:border-white/10">
+                  <h3 className="text-xl font-bold tracking-tight">Key Features</h3>
+                  <ul className="mt-6 grid gap-x-8 gap-y-3 sm:grid-cols-2">
                     {product.features.map((feature) => (
-                      <div
+                      <li
                         key={feature}
-                        className="rounded-2xl border bg-background shadow-xs px-5 py-3.5 text-sm leading-6 flex items-center gap-3 font-medium text-foreground/90"
+                        className="flex items-start gap-3 text-sm leading-relaxed text-muted-foreground"
                       >
-                        <div className="size-1.5 rounded-full bg-primary shrink-0" />
+                        <svg className="mt-1 size-4 shrink-0 text-primary" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
                         {feature}
-                      </div>
+                      </li>
                     ))}
-                  </div>
+                  </ul>
                 </div>
               </div>
             </article>
