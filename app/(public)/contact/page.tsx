@@ -1,3 +1,5 @@
+"use client";
+
 import { ContactCard } from "@/components/custom/contact-card";
 import { ContactForm } from "@/components/custom/contact-form";
 import { MailIcon, PhoneIcon, MapPinIcon } from "lucide-react";
