@@ -1,14 +1,14 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
-import Image, { ImageProps } from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, type ImgHTMLAttributes } from "react";
+import Image, { ImageProps, type StaticImageData } from "next/image";
+import { motion, AnimatePresence } from "motion/react";
 import { cn } from "@/lib/utils";
 import { Spinner } from "@/components/ui/spinner";
 import placeholderImage from "@/assets/placeholders/image.webp";
 
 interface SmartImageProps extends Omit<ImageProps, "onLoad" | "src"> {
-  src: string | any;
+  src: string | StaticImageData;
   alt: string;
   useNextImage?: boolean;
   containerClassName?: string;
@@ -31,7 +31,6 @@ export function SmartImage({
 }: SmartImageProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
-  const imgRef = useRef<HTMLImageElement>(null);
 
   const handleLoad = () => {
     setIsLoading(false);
@@ -43,17 +42,15 @@ export function SmartImage({
     setHasError(true);
   };
 
-  useEffect(() => {
-    // Check if image is already cached/loaded
-    if (imgRef.current?.complete) {
-      handleLoad();
-    }
-  }, []);
-
   // Determine the final source to use, ensuring we have a valid fallback
   const finalSrc = src || placeholderImage;
   const imageSrc = typeof finalSrc === "string" ? finalSrc : finalSrc.src;
   const fallbackSrc = placeholderImage.src;
+  const handleImageRef = (node: HTMLImageElement | null) => {
+    if (node?.complete && node.naturalWidth > 0 && isLoading) {
+      queueMicrotask(handleLoad);
+    }
+  };
 
   return (
     <div className={cn("relative overflow-hidden group/image w-full", containerClassName)}>
@@ -71,13 +68,12 @@ export function SmartImage({
       </AnimatePresence>
 
       <motion.div
-        initial={{ opacity: 0, scale: 1.05, filter: "blur(10px)" }}
+        initial={{ opacity: 1, scale: 1 }}
         animate={{ 
-          opacity: isLoading ? 0 : 1,
-          scale: isLoading ? 1.05 : 1,
-          filter: isLoading ? "blur(10px)" : "blur(0px)"
+          opacity: 1,
+          scale: 1,
         }}
-        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: 0.2, ease: "easeOut" }}
         className="h-full w-full"
       >
         {useNextImage ? (
@@ -86,16 +82,16 @@ export function SmartImage({
             alt={alt}
             className={className}
             onLoad={handleLoad}
-            onError={(e) => {
+            onError={() => {
               // Handle next/image errors by setting hasError
               setHasError(true);
               handleError();
             }}
-            {...(props as any)}
+            {...props}
           />
         ) : (
           <img
-            ref={imgRef}
+            ref={handleImageRef}
             src={imageSrc}
             alt={alt}
             className={cn("h-full w-full", className, hasError && "opacity-0")}
@@ -111,7 +107,7 @@ export function SmartImage({
                 handleError();
               }
             }}
-            {...(props as any)}
+            {...(props as ImgHTMLAttributes<HTMLImageElement>)}
           />
         )}
       </motion.div>

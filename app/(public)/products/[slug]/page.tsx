@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
@@ -6,11 +7,39 @@ import { getProductBySlug, products } from "@/constants/products";
 import { MotionWrapper } from "@/components/custom/motion-wrapper";
 import { MoreProducts } from "@/components/custom/more-products";
 import { SmartImage } from "@/components/ui/smart-image";
+import { JsonLd } from "@/components/seo/json-ld";
+import { createMetadata } from "@/lib/seo";
+import { breadcrumbsJsonLd, productJsonLd } from "@/lib/structured-data";
 
 export function generateStaticParams() {
   return products.map((product) => ({
     slug: product.slug,
   }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const product = getProductBySlug(slug);
+
+  if (!product) {
+    return createMetadata({
+      title: "Product Not Found",
+      path: `/products/${slug}`,
+      noIndex: true,
+    });
+  }
+
+  return createMetadata({
+    title: product.name,
+    description: product.shortDescription,
+    path: `/products/${product.slug}`,
+    image: product.image || "/opengraph-image",
+    keywords: [product.category, product.name],
+  });
 }
 
 export default async function ProductViewPage({
@@ -27,6 +56,16 @@ export default async function ProductViewPage({
 
   return (
     <div className="relative overflow-hidden w-full min-h-screen">
+      <JsonLd
+        data={[
+          breadcrumbsJsonLd([
+            { name: "Home", path: "/" },
+            { name: "Products", path: "/products" },
+            { name: product.name, path: `/products/${product.slug}` },
+          ]),
+          productJsonLd(product),
+        ]}
+      />
       <section className="mx-auto w-full max-w-6xl px-6 py-8 md:py-12 sm:px-6 lg:px-8">
         <div className="space-y-8 md:space-y-12">
           <MotionWrapper

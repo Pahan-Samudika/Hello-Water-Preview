@@ -207,7 +207,7 @@ const HeroSection = ({ menudata }: { menudata: MenuData[] }) => {
               }}
             >
               <CarouselContent>
-                {menudata.map((item) => (
+                {menudata.map((item, index) => (
                   <CarouselItem
                     key={item.id}
                     className="flex w-full items-center justify-center"
@@ -215,6 +215,12 @@ const HeroSection = ({ menudata }: { menudata: MenuData[] }) => {
                     <SmartImage
                       src={item.img}
                       alt={item.imgAlt}
+                      useNextImage
+                      fill
+                      priority={index === 0}
+                      loading={index === 0 ? "eager" : "lazy"}
+                      fetchPriority={index === 0 ? "high" : "auto"}
+                      sizes="(min-width: 1024px) 33vw, (min-width: 640px) 90vw, 100vw"
                       className="h-full w-full object-cover"
                       containerClassName="aspect-[5/3] w-full sm:aspect-auto sm:h-[420px] lg:h-[min(68vh,640px)] rounded-2xl"
                     />

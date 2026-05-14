@@ -8,7 +8,7 @@ type ContactInfoProps = React.ComponentProps<"div"> & {
 	value: string;
 };
 
-type ContactCardProps = React.ComponentProps<"div"> & {
+type ContactCardProps = React.ComponentProps<typeof MotionWrapper> & {
 	// Content props
 	title?: string;
 	description?: string;
@@ -37,7 +37,7 @@ export function ContactCard({
 			}}
 			initial="hidden"
 			animate="visible"
-			{...(props as any)}
+			{...props}
 		>
 			<MotionWrapper
 				className="col-span-1 flex flex-col justify-center px"

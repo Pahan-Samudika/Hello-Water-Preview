@@ -17,19 +17,34 @@ export function TrustindexReviewsSection() {
       return;
     }
 
-    const scriptSrc =
-      resolvedTheme === "dark" ? darkScriptSrc : lightScriptSrc;
+    const loadWidget = () => {
+      const scriptSrc =
+        resolvedTheme === "dark" ? darkScriptSrc : lightScriptSrc;
 
-    container.innerHTML = "";
+      container.innerHTML = "";
 
-    const script = document.createElement("script");
-    script.src = scriptSrc;
-    script.async = true;
-    script.defer = true;
+      const script = document.createElement("script");
+      script.src = scriptSrc;
+      script.async = true;
+      script.defer = true;
 
-    container.appendChild(script);
+      container.appendChild(script);
+    };
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry?.isIntersecting) {
+          loadWidget();
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "300px 0px" }
+    );
+
+    observer.observe(container);
 
     return () => {
+      observer.disconnect();
       container.innerHTML = "";
     };
   }, [darkScriptSrc, lightScriptSrc, resolvedTheme]);

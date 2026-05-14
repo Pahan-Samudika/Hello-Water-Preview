@@ -1,12 +1,13 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
 import { useState } from "react";
 import { ChevronDown, HelpCircle, MessageCircle, PhoneCall, Wrench, Settings, CreditCard, ShieldCheck, Waves, ArrowRightIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { MotionWrapper } from "@/components/custom/motion-wrapper";
+import { JsonLd } from "@/components/seo/json-ld";
 
 const faqCategories = [
   {
@@ -159,6 +160,20 @@ const faqCategories = [
 
 export default function FAQPage() {
   const [activeId, setActiveId] = useState<string | null>(null);
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqCategories.flatMap((category) =>
+      category.items.map((item) => ({
+        "@type": "Question",
+        name: item.question,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: item.answer,
+        },
+      }))
+    ),
+  };
 
   const toggleAccordion = (id: string) => {
     setActiveId(activeId === id ? null : id);
@@ -166,6 +181,7 @@ export default function FAQPage() {
 
   return (
     <div className="relative overflow-hidden w-full min-h-screen">
+      <JsonLd data={faqJsonLd} />
       <section className="mx-auto w-full max-w-6xl px-6 py-8 md:py-16 sm:px-6 lg:px-8">
         <MotionWrapper
           className="mb-12 space-y-4"
@@ -198,7 +214,7 @@ export default function FAQPage() {
             }}
           >
             <p className="text-muted-foreground sm:text-lg">
-              Everything you need to know about Hello Water Filtration. If you can't find your answer here, reach out to our team.
+              Everything you need to know about Hello Water Filtration. If you cannot find your answer here, reach out to our team.
             </p>
           </MotionWrapper>
         </MotionWrapper>
@@ -262,6 +278,8 @@ export default function FAQPage() {
                       >
                         <button
                           onClick={() => toggleAccordion(id)}
+                          aria-expanded={isOpen}
+                          aria-controls={`faq-answer-${id}`}
                           className="w-full px-6 py-5 flex items-center justify-between text-left focus:outline-none"
                         >
                           <span className={cn(
@@ -285,6 +303,7 @@ export default function FAQPage() {
                         <AnimatePresence initial={false}>
                           {isOpen && (
                             <motion.div
+                              id={`faq-answer-${id}`}
                               initial={{ height: 0, opacity: 0 }}
                               animate={{ height: "auto", opacity: 1 }}
                               exit={{ height: 0, opacity: 0 }}
@@ -321,9 +340,9 @@ export default function FAQPage() {
           <div className="flex size-16 items-center justify-center rounded-2xl bg-primary/10 text-primary mx-auto mb-6 shadow-inner ring-1 ring-white/50">
             <HelpCircle className="w-8 h-8" />
           </div>
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 tracking-tight">Can't find the answer you're looking for?</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 tracking-tight">Cannot find the answer you are looking for?</h2>
           <p className="text-muted-foreground text-lg mb-10 max-w-2xl mx-auto">
-            Our water specialists are here to provide expert advice tailored to your home's unique needs. Reach out to us directly for a personalized solution
+            Our water specialists are here to provide expert advice tailored to your home&apos;s unique needs. Reach out to us directly for a personalized solution
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Button
