@@ -5,21 +5,10 @@ import AboutUs from "@/components/shadcn-studio/blocks/about-us-section/about-us
 import { stats } from "@/constants";
 import { MotionWrapper } from "@/components/custom/motion-wrapper";
 import { HowItWorks } from "@/components/custom/how-it-works";
-import { testimonials as rawTestimonials } from "@/constants/testimonials";
 import txtLogoWhite from "@/assets/svg/txtlogo-white.svg";
 import txtLogoBlack from "@/assets/svg/txtlogo-black.svg";
 
 export default function AboutPage() {
-  // Map testimonials data for the component
-  const mappedTestimonials: TestimonialItem[] = rawTestimonials.map((t) => ({
-    name: t.name,
-    role: t.location || "Verified Customer",
-    company: "Hello Water",
-    avatar: `https://api.dicebear.com/7.x/initials/svg?seed=${t.name}&backgroundColor=00a3ff,0055ff,00d4ff&fontFamily=Inter,sans-serif`,
-    rating: 5,
-    content: t.quote,
-  }));
-
   return (
     <div className="relative overflow-hidden w-full min-h-screen">
       <section className="mx-auto w-full max-w-6xl px-6 py-8 md:py-16 sm:px-6 lg:px-8">
@@ -78,8 +67,6 @@ export default function AboutPage() {
       </section>
 
       <HowItWorks />
-
-      {/* <TestimonialsComponent testimonials={mappedTestimonials} /> */}
 
       <TrustindexTestimonialsSection />
     </div>
