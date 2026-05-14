@@ -15,23 +15,18 @@ import { SmartImage } from "@/components/ui/smart-image";
 const HIGHLIGHTS = [
   {
     icon: LayersIcon,
-    title: "5-Level Ecosystem",
-    description: "A multi-stage defense aggressively capturing dirt, chemicals, & impurities before they enter your home.",
-  },
-  {
-    icon: FilterIcon,
-    title: "3-Stage Filtration",
-    description: "Advanced media precisely targeting & stripping out chlorine, heavy metals, & complex contaminants.",
+    title: "Multi-Stage Ecosystem",
+    description: "A powerful 5‑level, 3‑stage  advanced media barriers, engineered to aggressively capture dirt, chemicals, and impurities before they ever enter your home's water.",
   },
   {
     icon: ShieldCheckIcon,
     title: "Targeting PFAS",
-    description: "Advanced catalytic media actively reducing hazardous forever chemicals at a molecular level.",
+    description: "High-performance coconut-shell catalytic carbon and EnnoPure ePureFlo ACF technology engineered to reduce hazardous PFAS and contaminants by up to 99.99%.",
   },
   {
     icon: CpuIcon,
     title: "Cutting-Edge Purification",
-    description: "Innovative radial flow design ensuring maximum contact time to neutralize microscopic threats.",
+    description: "Leveraging Pentair Diamond Flow, Gradient Density, and patented KDF technology to eliminate sediment, heavy metals, and odors while maintaining peak water pressure.",
   },
 ];
 
@@ -102,14 +97,19 @@ export const TechnologySummary = () => {
                 {" "} Forever Chemicals
               </h2>
               <p className="text-base leading-relaxed text-muted-foreground mx-auto">
-                Protecting your home means making sure your water is truly safe. Our powerful 5-level, 3-stage filtration system acts as the ultimate barrier for your home. It removes harmful &apos;forever chemicals&apos; like PFAS, heavy metals, & everyday pollutants, so you can drink with complete peace of mind.
+                Protecting your home begins with ensuring your water is truly safe. Our advanced 5-level, 3-stage
+                whole-home filtration system acts as a powerful barrier against unwanted contaminants throughout
+                your entire property. Engineered to reduce municipally added chemicals like chlorine and
+                chloramines, harmful PFAS “forever chemicals”, heavy metals including lead, and everyday
+                pollutants such as micro plastics from environmental pollution it delivers cleaner, healthier water you
+                can trust — giving your family complete peace of mind at every tap.
               </p>
             </motion.div>
           </motion.div>
 
           {/* Feature Cards */}
           <motion.div
-            className="grid w-full grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4"
+            className="grid w-full grid-cols-1 gap-6 sm:grid-cols-3"
             variants={staggerContainer}
             initial="hidden"
             whileInView="visible"

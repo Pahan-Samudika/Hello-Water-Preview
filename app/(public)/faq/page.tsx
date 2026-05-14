@@ -18,16 +18,20 @@ const faqCategories = [
         answer: "A whole-home filtration system treats water at the point it enters your property, meaning every tap, shower, & appliance receives filtered water, not just your kitchen sink."
       },
       {
-        question: "How is Hello Water Filtration different from standard hardware store filters?",
-        answer: "Unlike basic cartridge systems, Hello Water Filtration uses a multi-stage filtration process including sediment removal, advanced carbon filtration, heavy metal reduction media, & ion-exchange softening. This ensures comprehensive protection, not just chlorine & chloramine removal."
+        question: "How is Hello Water Filtration different from other filtration systems in the market?",
+        answer: "Our systems are carefully designed and engineered using premium components from leading global industry partners, including Pentair® — a world-renowned USA based water treatment company with more than 75 years of expertise in water filtration technology. We also incorporate advanced filtration innovations from EnnoPure, a Stanford University originated technology company now recognised as a leader in the Greater China water purification industry. Together, these technologies bring cutting-edge material science and proven filtration performance into every system we deliver.\n\nWe use highly certified filtration media engineered for performance, durability, & longer service life compared to standard systems in the market.\n\nAll systems undergo rigorous independent testing, making them among the most comprehensively third-party certified water filtration systems available across Australia and New Zealand. These certifications reinforce their reliability, safety, performance, and compliance with recognised international water quality standards.\n\nOverall, Hello Water stands apart through its combination of proven engineering from Pentair, advanced innovation from EnnoPure, & independently verified performance standards."
       },
       {
         question: "Will I still need to buy bottled water?",
         answer: "No. Most customers find the whole-home system provides excellent water quality throughout the house & so there’s no need to purchase bottled water."
       },
       {
-        question: "Does your system remove fluoride, chlorine & chloramine?",
-        answer: "Yes. Our carbon filtration stage significantly reduces fluoride, chlorine & chloramine, which improves taste, smell, & reduces skin & hair dryness & hair fall. Overall improving your health."
+        question: "Does your system remove chlorine & chloramine?",
+        answer: "Yes. Our Catalytic Grannular carbon filtration, KDF media and ACF Cartridges removes 99.99% of chlorine & chloramine."
+      },
+      {
+        question: "What about fluoride?",
+        answer: "Yes. Our 5-level, 3-stage system removes fluoride using KDF -F media"
       },
       {
         question: "Does the system reduce hard water?",
@@ -38,12 +42,12 @@ const faqCategories = [
         answer: "Yes. Our system includes advanced filtration media designed to completely remove heavy metals that are commonly found in municipal water supplies."
       },
       {
-        question: "Does this remove bacteria & viruses?",
-        answer: "Our 3-stage filtration system can reduce certain microorganisms to a degree through fine filtration & redox reactions. However, for complete protection against bacteria & viruses, we recommend adding our UV purification system."
+        question: "Does this remove bacteria and viruses?",
+        answer: "No — in general, municipally treated water supplies are already disinfected through chlorination and are typically free from harmful bacteria and viruses. Our systems are primarily designed to reduce chemicals, heavy metals, PFAS, sediment, and other common water contaminants.\n\nHowever, the patented KDF media technology used in our systems provides bacteriostatic properties, helping to inhibit the growth of bacteria within the filtration media itself.\n\nFor rainwater, bore water, or other untreated water sources where microbiological contamination may be present, we recommend adding our UV purification system for comprehensive protection against bacteria, viruses, and other microorganisms."
       },
       {
         question: "Will I notice a difference immediately?",
-        answer: "Yes. Most customers report softer skin, healthier hair, better-tasting water, & reduced chlorine smell immediately after installation."
+        answer: "Yes. Most customers notice an immediate improvement in water quality after installation, including cleaner, better-tasting water, softer skin, healthier-looking hair, and a significant reduction in chlorine taste and odour throughout the home."
       },
       {
         question: "Does it help protect appliances?",
@@ -73,11 +77,11 @@ const faqCategories = [
     items: [
       {
         question: "How long does installation take?",
-        answer: "Most installations are completed within a few hours by licensed professionals."
+        answer: "2-3 hours."
       },
       {
         question: "Where is the system installed?",
-        answer: "The system is installed externally at the main water line entry point, ensuring whole house coverage."
+        answer: "The system is installed externally at the main water line entry point, side-wall water connection or in proximity to the water meter, ensuring whole house coverage."
       },
       {
         question: "Will this system work with any home?",
@@ -287,7 +291,7 @@ export default function FAQPage() {
                               transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
                               className="overflow-hidden"
                             >
-                              <div className="px-6 pb-6 leading-relaxed text-sm md:text-base">
+                              <div className="px-6 pb-6 leading-relaxed text-sm md:text-base whitespace-pre-line">
                                 <div className="h-px w-full bg-linear-to-r from-primary/30 via-transparent to-transparent mb-4" />
                                 {item.answer}
                               </div>

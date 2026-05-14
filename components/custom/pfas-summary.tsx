@@ -28,7 +28,7 @@ export const PFASSummary = () => {
     <section className="relative w-full overflow-hidden px-6 pt-8 pb-20 sm:px-6 sm:pt-12 sm:pb-24">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col items-center gap-8 px-2 text-center sm:px-4 lg:text-left">
-          
+
           <motion.div
             className="grid w-full grid-cols-1 gap-12 lg:grid-cols-2 lg:items-center"
             variants={staggerContainer}
@@ -44,30 +44,39 @@ export const PFASSummary = () => {
                 <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-5xl leading-[1.1]">
                   The  {" "}
                   <span className="bg-linear-to-r from-red-500 via-orange-500 to-amber-500 bg-clip-text text-transparent">
-                    Hidden Threat 
+                    Hidden Threat
                   </span>
                   {" "} in Your Water
                 </h2>
               </motion.div>
 
-              <motion.div 
-                variants={fadeUp} 
+              <motion.div
+                variants={fadeUp}
                 className="space-y-6 text-base leading-relaxed text-muted-foreground sm:text-lg text-center lg:text-left"
               >
                 <p className="text-justify">
-                  PFAS (per- & polyfluoroalkyl substances) are known “forever chemicals” hiding in everyday products; 
-                  from non-stick cookware to food packaging, fire retardant forms & waterproof fabrics. 
-                  They seep into the environment through residential & industrial waste, landfills & as leachate, 
-                  eventually making their way into your drinking water. You can’t see them, taste them, or smell them; 
-                  but they can stay in your water & your body for years.
+                  PFAS (per- & polyfluoroalkyl substances) are known “forever chemicals” hiding in
+                  everyday products; from non-stick cookware to food packaging, fire retardant forms &
+                  waterproof fabrics. They seep into the environment through residential & industrial
+                  waste, landfills & as leachate, eventually making their way into your drinking water. You
+                  can’t see them, taste them, or smell them; but they can stay in your water & your body
+                  for years.
                 </p>
-                
+
                 <p className="text-justify">
-                  Linked to immune system effects, hormonal disruption, high cholesterol & certain cancers, 
-                  PFAS are drawing growing global concern. The risk isn’t always immediate -but it builds over time, 
-                  making what you don’t see increasingly hard to ignore. Our 3-stage filtration system with 
-                  modified coconut granular activated carbon & redox technology can reduce PFAS significantly. 
-                  Providing clean drinking water, devoid of any harmful chemicals.
+                  Linked to immune system effects, hormonal disruption, high cholesterol & certain
+                  cancers, PFAS are drawing growing global concern. The risk isn’t always immediate -but
+                  it builds over time, making what you don’t see increasingly hard to ignore. Our 3-stage
+                  filtration system with modified coconut granular activated carbon & redox technology
+                  can reduce PFAS significantly.
+                </p>
+
+                <p className="text-justify">
+                  The Gen 3 Hello Water Filtration System features the advanced EnnoPure EpureFlo ACF
+                  (Activated Carbon Fibre) cartridge, engineered specifically for superior chemical
+                  filtration performance. Using proprietary activated carbon fibre technology, the E
+                  pureFlo cartridge can reduce up to 99.99% of PFAS contaminants while also targeting
+                  other harmful chemicals commonly found in drinking water
                 </p>
               </motion.div>
             </div>
@@ -83,10 +92,10 @@ export const PFASSummary = () => {
               <div className="relative aspect-video sm:aspect-video lg:aspect-square w-full">
                 <PFASModel />
                 <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 flex flex-wrap justify-center gap-x-6 gap-y-2 text-[10px] font-medium tracking-wider uppercase text-muted-foreground/80 px-4 w-full">
-                    <div className="flex items-center gap-1.5"><div className="size-2 rounded-full bg-[#404040]" /> Carbon</div>
-                    <div className="flex items-center gap-1.5"><div className="size-2 rounded-full bg-[#a3e635]" /> Fluorine</div>
-                    <div className="flex items-center gap-1.5"><div className="size-2 rounded-full bg-[#fbbf24]" /> Sulfur</div>
-                    <div className="flex items-center gap-1.5"><div className="size-2 rounded-full bg-[#ef4444]" /> Oxygen</div>
+                  <div className="flex items-center gap-1.5"><div className="size-2 rounded-full bg-[#404040]" /> Carbon</div>
+                  <div className="flex items-center gap-1.5"><div className="size-2 rounded-full bg-[#a3e635]" /> Fluorine</div>
+                  <div className="flex items-center gap-1.5"><div className="size-2 rounded-full bg-[#fbbf24]" /> Sulfur</div>
+                  <div className="flex items-center gap-1.5"><div className="size-2 rounded-full bg-[#ef4444]" /> Oxygen</div>
                 </div>
               </div>
             </motion.div>
