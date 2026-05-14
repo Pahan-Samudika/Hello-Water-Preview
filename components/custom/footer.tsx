@@ -19,44 +19,42 @@ type FooterSection = {
 
 const footerLinks: FooterSection[] = [
 	{
-		label: "Product",
+		label: "Filtration Solutions",
 		links: [
-			{ title: "Features", href: "#" },
-			{ title: "Pricing", href: "#" },
-			{ title: "Testimonials", href: "#" },
-			{ title: "Integration", href: "#" },
+			{ title: "Filtration Systems", href: "/products" },
+			{ title: "Cartridges", href: "/products" },
+			{ title: "Technology", href: "/technology" },
+			{ title: "Certifications", href: "/certifications" },
 		],
 	},
 	{
 		label: "Company",
 		links: [
-			{ title: "FAQs", href: "/faq" },
 			{ title: "About Us", href: "/about-us" },
-			{ title: "Privacy Policy", href: "#" },
-			{ title: "T&S", href: "#" },
+			{ title: "Benefits", href: "/benefits" },
+			{ title: "FAQs", href: "/faq" },
+			{ title: "Contact Us", href: "/contact" },
 		],
 	},
-	{
-		label: "Resources",
-		links: [
-			{ title: "Blog", href: "#" },
-			{ title: "Changelog", href: "#" },
-			{ title: "Brand", href: "#" },
-			{ title: "Help", href: "#" },
-		],
-	},
+	// {
+	// 	label: "Legal",
+	// 	links: [
+	// 		{ title: "Privacy Policy", href: "/privacy-policy" },
+	// 		{ title: "Terms of Service", href: "/terms-of-service" },
+	// 	],
+	// },
 	{
 		label: "Social Links",
 		links: [
 			{
 				title: "Facebook",
-				href: "#",
+				href: "https://web.facebook.com/people/Hello-Water/61551773243133/",
 				icon: (
 					<FacebookIcon
 					/>
 				),
 			},
-			{
+			/* {
 				title: "Instagram",
 				href: "#",
 				icon: (
@@ -79,7 +77,7 @@ const footerLinks: FooterSection[] = [
 					<LinkedinIcon
 					/>
 				),
-			},
+			}, */
 		],
 	},
 ];
@@ -125,6 +123,8 @@ export function Footer() {
 												className="inline-flex items-center duration-250 hover:text-foreground [&_svg]:me-1 [&_svg]:size-4"
 												href={link.href}
 												key={`${section.label}-${link.title}`}
+												target={section.label === "Social Links" ? "_blank" : undefined}
+												rel={section.label === "Social Links" ? "noopener noreferrer" : undefined}
 											>
 												{link.icon}
 												{link.title}
