@@ -1,5 +1,5 @@
-"use client";
-import TestimonialsComponent, { type TestimonialItem } from "@/components/shadcn-studio/blocks/testimonials-component-18/testimonials-component-18";
+import Image from "next/image";
+
 import { TrustindexTestimonialsSection } from "@/components/custom/trustindex-testimonials-section";
 import AboutUs from "@/components/shadcn-studio/blocks/about-us-section/about-us-section";
 import { stats } from "@/constants";
@@ -10,7 +10,7 @@ import txtLogoBlack from "@/assets/svg/txtlogo-black.svg";
 
 export default function AboutPage() {
   return (
-    <div className="relative overflow-hidden w-full min-h-screen">
+    <main className="relative overflow-hidden w-full min-h-screen">
       <section className="mx-auto w-full max-w-6xl px-6 py-8 md:py-16 sm:px-6 lg:px-8">
         <MotionWrapper
           className="mb-12 space-y-8 max-w-6xl mx-auto md:space-y-12"
@@ -42,8 +42,8 @@ export default function AboutPage() {
             }}
           >
             <div className="my-8 md:my-14 mx-auto w-full max-w-[250px] sm:max-w-md lg:max-w-lg">
-              <img src={txtLogoBlack.src} alt="Hello Water" className="w-full h-auto mx-auto dark:hidden" />
-              <img src={txtLogoWhite.src} alt="Hello Water" className="hidden w-full h-auto mx-auto dark:block" />
+              <Image src={txtLogoBlack} alt="Hello Water" className="w-full h-auto mx-auto dark:hidden" />
+              <Image src={txtLogoWhite} alt="Hello Water" className="hidden w-full h-auto mx-auto dark:block" />
             </div>
           </MotionWrapper>
 
@@ -69,6 +69,6 @@ export default function AboutPage() {
       <HowItWorks />
 
       <TrustindexTestimonialsSection />
-    </div>
+    </main>
   );
 }

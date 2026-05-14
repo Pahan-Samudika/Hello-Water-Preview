@@ -1,12 +1,6 @@
 "use client";
 
 import { motion } from "motion/react";
-import { 
-  ClipboardCheckIcon, 
-  ZapIcon, 
-  CalendarCheckIcon, 
-  DropletsIcon 
-} from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const STEPS = [

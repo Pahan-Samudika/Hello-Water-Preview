@@ -1,15 +1,14 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useScroll, useSpring, useTransform } from "framer-motion";
-import { LucideIcon } from "lucide-react";
+import { useRef, type ComponentType } from "react";
+import { motion, useScroll, useSpring } from "motion/react";
 import { cn } from "@/lib/utils";
 
 interface TimelineItemProps {
   timeframe: string;
   title: string;
   description: string;
-  icon: LucideIcon;
+  icon: ComponentType<{ className?: string }>;
   index: number;
 }
 
@@ -72,7 +71,7 @@ export interface TimelineData {
   timeframe: string;
   title: string;
   description: string;
-  icon: LucideIcon;
+  icon: ComponentType<{ className?: string }>;
 }
 
 export function Timeline({ items }: { items: TimelineData[] }) {

@@ -4,7 +4,7 @@ export const menudata = [
   {
     id: 1,
     img: "https://res.cloudinary.com/dnlb02zp9/image/upload/v1778779911/IMG_0234.JPG_psg5xw.webp",
-    imgAlt: "plate-1",
+    imgAlt: "Installed whole-home water filtration system by Hello Water",
     userComment:
       "These people are in the business of making peoples life healthier.",
     userAvatar: "https://cdn.shadcnstudio.com/ss-assets/avatar/avatar-56.png",
@@ -20,7 +20,7 @@ export const menudata = [
   {
     id: 2,
     img: "https://res.cloudinary.com/dnlb02zp9/image/upload/v1778779910/IMG_0229.JPG_rgi3qz.webp",
-    imgAlt: "plate-2",
+    imgAlt: "Hello Water filtration equipment installed at a home",
     userComment:
       "Just had a complete home water filtration system installed & it’s been working perfectly.",
     userAvatar: "https://cdn.shadcnstudio.com/ss-assets/avatar/avatar-46.png",
@@ -28,21 +28,21 @@ export const menudata = [
   {
     id: 3,
     img: "https://res.cloudinary.com/dnlb02zp9/image/upload/v1778779911/IMG_0228.JPG_mkmxun.webp",
-    imgAlt: "plate-3",
+    imgAlt: "Whole-home filtration cabinet and plumbing installation",
     userComment: "Amazing service from start to finish!",
     userAvatar: "https://cdn.shadcnstudio.com/ss-assets/avatar/avatar-57.png",
   },
   {
     id: 4,
     img: "https://res.cloudinary.com/dnlb02zp9/image/upload/v1778779911/IMG_0232.JPG_meck9k.webp",
-    imgAlt: "plate-4",
+    imgAlt: "Hello Water filtration system service installation",
     userComment: "Installed in 2024 December. Happy with product & service…",
     userAvatar: "https://cdn.shadcnstudio.com/ss-assets/avatar/avatar-58.png",
   },
   {
     id: 5,
     img: "https://res.cloudinary.com/dnlb02zp9/image/upload/v1778779908/IMG_0230.JPG_ydxpyc.webp",
-    imgAlt: "plate-3",
+    imgAlt: "Residential water filtration system installation",
     userComment:
       "Great customer service. Thank you Indi for your professionalism",
     userAvatar: "https://cdn.shadcnstudio.com/ss-assets/avatar/avatar-57.png",
@@ -50,7 +50,7 @@ export const menudata = [
   {
     id: 6,
     img: "https://res.cloudinary.com/dnlb02zp9/image/upload/v1778779911/IMG_0233.JPG_nheu8f.webp",
-    imgAlt: "plate-3",
+    imgAlt: "Installed water filtration system components",
     userComment:
       "Great customer service. Thank you Indi for your professionalism",
     userAvatar: "https://cdn.shadcnstudio.com/ss-assets/avatar/avatar-57.png",

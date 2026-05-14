@@ -1,27 +1,50 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono, Inter } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/custom/theme-provider";
 import TawkMessenger from "@/components/custom/tawk-messenger";
 import { Toaster } from "sonner";
 import { GoogleAnalytics } from "@next/third-parties/google";
+import { JsonLd } from "@/components/seo/json-ld";
+import { createMetadata, siteConfig } from "@/lib/seo";
+import { organizationJsonLd, websiteJsonLd } from "@/lib/structured-data";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
   subsets: ["latin"],
+  variable: "--font-sans",
+  display: "swap",
+  fallback: ["Arial", "sans-serif"],
 });
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "Hello Water Filtration",
-  description:
-    "Hello Water is a water filtration company dedicated to providing clean & healthy water solutions for homes & businesses. With a commitment to quality & customer satisfaction, Hello Water offers a range of innovative filtration systems designed to improve water quality & promote a healthier lifestyle.",
+  metadataBase: new URL(siteConfig.url),
+  ...createMetadata(),
+  applicationName: siteConfig.name,
+  category: "Water filtration",
+  generator: "Next.js",
+  manifest: "/manifest.webmanifest",
+  icons: {
+    icon: "/icon.svg",
+  },
+  formatDetection: {
+    telephone: false,
+  },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  colorScheme: "dark light",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#17171c" },
+  ],
 };
 
 export default function RootLayout({
@@ -31,9 +54,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={inter.variable} suppressHydrationWarning>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${geistMono.variable} font-sans antialiased`}>
+        <JsonLd data={[organizationJsonLd(), websiteJsonLd()]} />
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"

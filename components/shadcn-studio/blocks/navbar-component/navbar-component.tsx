@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ChevronDown, MenuIcon, SearchIcon, PhoneCall } from "lucide-react";
-import { ModeToggle } from "@/components/custom/theme-button";
+import { ChevronDown, MenuIcon, PhoneCall } from "lucide-react";
 
 import LogoSVG from "@/assets/svg/logo.svg";
 import { Button } from "@/components/ui/button";
@@ -89,7 +88,7 @@ const Navbar = ({ navigationData }: { navigationData: NavItem[] }) => {
             <span className="sr-only">Search</span>
           </Button> */}
           {/* <ModeToggle /> */}
-          <a href="tel:0498588725"
+          <a href="tel:1300515469"
             className="bg-primary/30 hover:bg-primary/10 inline-flex items-center px-4 py-2 text-sm font-medium rounded-full gap-2 transition-colors"
           >
             <PhoneCall className="w-4 h-4" />

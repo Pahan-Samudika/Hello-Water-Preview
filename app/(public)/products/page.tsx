@@ -1,13 +1,27 @@
 import { ProductCard } from "@/components/custom/product-card";
 import { products, type Product } from "@/constants/products";
 import { MotionWrapper } from "@/components/custom/motion-wrapper";
+import { JsonLd } from "@/components/seo/json-ld";
+import {
+  breadcrumbsJsonLd,
+  productCollectionJsonLd,
+} from "@/lib/structured-data";
 
-export default async function ProductsPage() {
+export default function ProductsPage() {
   const filtrationSystems = products.filter((p) => p.category === "Filtration Systems");
   const cartridges = products.filter((p) => p.category === "Cartridges");
 
   return (
-    <div className="relative overflow-hidden w-full min-h-screen">
+    <main className="relative overflow-hidden w-full min-h-screen">
+      <JsonLd
+        data={[
+          breadcrumbsJsonLd([
+            { name: "Home", path: "/" },
+            { name: "Products", path: "/products" },
+          ]),
+          productCollectionJsonLd(),
+        ]}
+      />
       <section className="mx-auto w-full max-w-6xl px-6 py-8 md:py-16 sm:px-6 lg:px-8">
         <MotionWrapper 
           className="mb-12 space-y-4"
@@ -124,7 +138,7 @@ export default async function ProductsPage() {
           <p className="mt-6 text-sm text-muted-foreground">No products found.</p>
         )}
       </section>
-    </div>
+    </main>
   );
 }
 

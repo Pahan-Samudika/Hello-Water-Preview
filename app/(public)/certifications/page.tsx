@@ -1,19 +1,23 @@
 "use client";
 
-import { motion } from "framer-motion";
 import Image from "next/image";
 import {
   ShieldCheck,
   Sparkles,
   Zap
 } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { MotionWrapper } from "@/components/custom/motion-wrapper";
 import { certifications } from "@/constants/certifications";
+import { MotionWrapper } from "@/components/custom/motion-wrapper";
+
+const trustItems = [
+  { title: "Independently Verified", desc: "Rigorous testing by third-party laboratories ensures our claims are backed by data.", icon: ShieldCheck },
+  { title: "Safe for Families", desc: "All materials are food-grade and certified non-toxic for your peace of mind.", icon: Sparkles },
+  { title: "Performance Driven", desc: "Engineered to deliver high-flow filtration without compromising on safety.", icon: Zap },
+];
 
 export default function CertificationsPage() {
   return (
-    <div className="relative overflow-hidden w-full min-h-screen">
+    <main className="relative overflow-hidden w-full min-h-screen">
       <section className="mx-auto w-full max-w-6xl px-6 py-8 md:py-16 sm:px-6 lg:px-8">
         <MotionWrapper
           className="mb-8 space-y-4"
@@ -81,7 +85,7 @@ export default function CertificationsPage() {
               }}
               whileHover={{
                 y: -5,
-                transition: { duration: 0.3, ease: "easeOut" }
+                transition: { duration: 0.3, ease: "easeOut" },
               }}
               className="w-full"
             >
@@ -135,31 +139,27 @@ export default function CertificationsPage() {
         </MotionWrapper>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-          {[
-            { title: "Independently Verified", desc: "Rigorous testing by third-party laboratories ensures our claims are backed by data.", icon: ShieldCheck },
-            { title: "Safe for Families", desc: "All materials are food-grade and certified non-toxic for your peace of mind.", icon: Sparkles },
-            { title: "Performance Driven", desc: "Engineered to deliver high-flow filtration without compromising on safety.", icon: Zap },
-          ].map((item, i) => (
+          {trustItems.map((item, i) => (
             <MotionWrapper
-              key={i}
+              key={item.title}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1, duration: 0.5 }}
             >
-              <div className="h-full p-8 rounded-[2rem] border border-border/50 bg-card/60 backdrop-blur-sm transition-all duration-300 hover:shadow-xl hover:shadow-primary/5 hover:bg-card dark:border-white/10 dark:bg-white/5 dark:hover:bg-white/10 space-y-4">
-                <div className="mx-auto size-14 rounded-2xl bg-primary/10 flex items-center justify-center text-primary transition-transform duration-500 group-hover:scale-110">
+              <article className="h-full p-8 rounded-[2rem] border border-border/50 bg-card/60 backdrop-blur-sm transition-all duration-300 hover:shadow-xl hover:shadow-primary/5 hover:bg-card dark:border-white/10 dark:bg-white/5 dark:hover:bg-white/10 space-y-4">
+                <div className="mx-auto size-14 rounded-2xl bg-primary/10 flex items-center justify-center text-primary transition-transform duration-500">
                   <item.icon className="size-7" />
                 </div>
                 <h3 className="text-xl font-bold tracking-tight">{item.title}</h3>
                 <p className="text-muted-foreground leading-relaxed text-sm md:text-base">
                   {item.desc}
                 </p>
-              </div>
+              </article>
             </MotionWrapper>
           ))}
         </div>
       </section>
-    </div>
+    </main>
   );
 }

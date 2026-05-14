@@ -1,8 +1,8 @@
-"use client";
 import { cn } from "@/lib/utils";
-import { motion, useReducedMotion } from "motion/react";
+import Image from "next/image";
+import Link from "next/link";
 import type { ReactNode } from "react";
-import { FacebookIcon, InstagramIcon, YoutubeIcon, LinkedinIcon } from "lucide-react";
+import { FacebookIcon } from "lucide-react";
 import txtLogoWhite from "@/assets/svg/txtlogo-white.svg";
 import txtLogoBlack from "@/assets/svg/txtlogo-black.svg";
 
@@ -83,6 +83,8 @@ const footerLinks: FooterSection[] = [
 ];
 
 export function Footer() {
+	const currentYear = new Date().getFullYear();
+
 	return (
 		<footer
 			className={cn(
@@ -94,8 +96,8 @@ export function Footer() {
 
 			<div className="grid w-full gap-8 py-6 md:py-8 lg:grid-cols-3 lg:gap-8">
 				<AnimatedContainer className="space-y-4">
-					<img src={txtLogoBlack.src} alt="Hello Water" className="w-36 dark:hidden" />
-					<img src={txtLogoWhite.src} alt="Hello Water" className="hidden w-36 dark:block" />
+					<Image src={txtLogoBlack} alt="Hello Water" className="w-36 dark:hidden" />
+					<Image src={txtLogoWhite} alt="Hello Water" className="hidden w-36 dark:block" />
 					<div className="text-muted-foreground space-y-1 text-sm">
 						<p className="text-foreground font-semibold">VICTORIA</p>
 						<p className="inline-flex items-start gap-2">
@@ -119,16 +121,7 @@ export function Footer() {
 								<ul className="mt-4 space-y-2 text-muted-foreground text-sm">
 									{section.links.map((link) => (
 										<li key={link.title}>
-											<a
-												className="inline-flex items-center duration-250 hover:text-foreground [&_svg]:me-1 [&_svg]:size-4"
-												href={link.href}
-												key={`${section.label}-${link.title}`}
-												target={section.label === "Social Links" ? "_blank" : undefined}
-												rel={section.label === "Social Links" ? "noopener noreferrer" : undefined}
-											>
-												{link.icon}
-												{link.title}
-											</a>
+											<FooterAnchor link={link} isExternal={section.label === "Social Links"} />
 										</li>
 									))}
 								</ul>
@@ -140,10 +133,42 @@ export function Footer() {
 			<div className="h-px w-full bg-linear-to-r via-border" />
 			<div className="flex w-full items-center justify-center py-4">
 				<p className="text-muted-foreground text-sm">
-					&copy; {new Date().getFullYear()} Hello Water Filtration, All rights reserved
+					&copy; {currentYear} Hello Water Filtration, All rights reserved
 				</p>
 			</div>
 		</footer>
+	);
+}
+
+function FooterAnchor({
+	link,
+	isExternal,
+}: {
+	link: FooterLink;
+	isExternal: boolean;
+}) {
+	const className =
+		"inline-flex items-center duration-250 hover:text-foreground [&_svg]:me-1 [&_svg]:size-4";
+
+	if (isExternal) {
+		return (
+			<a
+				className={className}
+				href={link.href}
+				target="_blank"
+				rel="noopener noreferrer"
+			>
+				{link.icon}
+				{link.title}
+			</a>
+		);
+	}
+
+	return (
+		<Link className={className} href={link.href}>
+			{link.icon}
+			{link.title}
+		</Link>
 	);
 }
 
@@ -156,21 +181,7 @@ function AnimatedContainer({
 	className?: string;
 	children: ReactNode;
 }) {
-	const shouldReduceMotion = useReducedMotion();
+	void delay;
 
-	if (shouldReduceMotion) {
-		return children;
-	}
-
-	return (
-		<motion.div
-			className={className}
-			initial={{ filter: "blur(4px)", translateY: -8, opacity: 0 }}
-			transition={{ delay, duration: 0.8 }}
-			viewport={{ once: true }}
-			whileInView={{ filter: "blur(0px)", translateY: 0, opacity: 1 }}
-		>
-			{children}
-		</motion.div>
-	);
+	return <div className={className}>{children}</div>;
 }

@@ -15,7 +15,7 @@ export async function submitContactForm(formData: FormData) {
   }
 
   try {
-    const [result] = await pool.execute(
+    await pool.execute(
       "INSERT INTO contact_submissions (name, email, suburb, phone, message) VALUES (?, ?, ?, ?, ?)",
       [name, email, suburb, phone, message]
     );
@@ -48,11 +48,16 @@ export async function submitContactForm(formData: FormData) {
     await transporter.sendMail(mailOptions);
 
     return { success: true };
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error submitting contact form:", error);
+    const message =
+      error instanceof Error
+        ? error.message
+        : "Something went wrong. Please try again later.";
+
     return { 
       success: false, 
-      error: error.message || "Something went wrong. Please try again later." 
+      error: message,
     };
   }
 }

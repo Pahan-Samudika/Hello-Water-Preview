@@ -1,11 +1,9 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
 import { ChevronDown, HelpCircle, MessageCircle, PhoneCall, Wrench, Settings, CreditCard, ShieldCheck, Waves, ArrowRightIcon } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { JsonLd } from "@/components/seo/json-ld";
+import { faqPageJsonLd } from "@/lib/structured-data";
 import { MotionWrapper } from "@/components/custom/motion-wrapper";
 
 const faqCategories = [
@@ -158,14 +156,11 @@ const faqCategories = [
 ];
 
 export default function FAQPage() {
-  const [activeId, setActiveId] = useState<string | null>(null);
-
-  const toggleAccordion = (id: string) => {
-    setActiveId(activeId === id ? null : id);
-  };
+  const faqJsonLd = faqPageJsonLd(faqCategories);
 
   return (
-    <div className="relative overflow-hidden w-full min-h-screen">
+    <main className="relative overflow-hidden w-full min-h-screen">
+      <JsonLd data={faqJsonLd} />
       <section className="mx-auto w-full max-w-6xl px-6 py-8 md:py-16 sm:px-6 lg:px-8">
         <MotionWrapper
           className="mb-12 space-y-4"
@@ -198,7 +193,7 @@ export default function FAQPage() {
             }}
           >
             <p className="text-muted-foreground sm:text-lg">
-              Everything you need to know about Hello Water Filtration. If you can't find your answer here, reach out to our team.
+              Everything you need to know about Hello Water Filtration. If you cannot find your answer here, reach out to our team.
             </p>
           </MotionWrapper>
         </MotionWrapper>
@@ -237,7 +232,6 @@ export default function FAQPage() {
               <div className="grid gap-4">
                 {category.items.map((item, itemIndex) => {
                   const id = `${catIndex}-${itemIndex}`;
-                  const isOpen = activeId === id;
 
                   return (
                     <MotionWrapper
@@ -252,53 +246,26 @@ export default function FAQPage() {
                         },
                       }}
                     >
-                      <div
-                        className={cn(
-                          "group rounded-3xl border transition-all duration-300",
-                          isOpen
-                            ? "border-primary/40 bg-white/40 shadow-xl shadow-primary/5 backdrop-blur-xl dark:border-primary/20 dark:bg-white/10"
-                            : "border-white/35 bg-white/35 hover:border-primary/30 hover:bg-white/50 backdrop-blur-md shadow-sm dark:border-white/10 dark:bg-white/5"
-                        )}
+                      <details
+                        className="group rounded-3xl border border-white/35 bg-white/35 shadow-sm backdrop-blur-md transition-all duration-300 open:border-primary/40 open:bg-white/40 open:shadow-xl open:shadow-primary/5 dark:border-white/10 dark:bg-white/5 dark:open:border-primary/20 dark:open:bg-white/10"
                       >
-                        <button
-                          onClick={() => toggleAccordion(id)}
-                          className="w-full px-6 py-5 flex items-center justify-between text-left focus:outline-none"
-                        >
-                          <span className={cn(
-                            "text-base md:text-lg font-semibold transition-colors pr-8",
-                            isOpen ? "text-primary" : "text-foreground group-hover:text-primary/70"
-                          )}>
+                        <summary className="flex w-full cursor-pointer list-none items-center justify-between px-6 py-5 text-left focus:outline-none focus-visible:ring-3 focus-visible:ring-ring/50 [&::-webkit-details-marker]:hidden">
+                          <span className="pr-8 text-base font-semibold text-foreground transition-colors group-hover:text-primary/70 group-open:text-primary md:text-lg">
                             {item.question}
                           </span>
-                          <motion.div
-                            animate={{ rotate: isOpen ? 180 : 0 }}
-                            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                            className={cn(
-                              "flex-shrink-0 p-1.5 rounded-full",
-                              isOpen ? "bg-primary/20 text-primary" : "text-muted-foreground group-hover:text-primary/50"
-                            )}
-                          >
-                            <ChevronDown className="w-5 h-5" />
-                          </motion.div>
-                        </button>
+                          <span className="flex-shrink-0 rounded-full p-1.5 text-muted-foreground transition-colors group-hover:text-primary/50 group-open:bg-primary/20 group-open:text-primary">
+                            <ChevronDown className="size-5 transition-transform duration-300 group-open:rotate-180" />
+                          </span>
+                        </summary>
 
-                        <AnimatePresence initial={false}>
-                          {isOpen && (
-                            <motion.div
-                              initial={{ height: 0, opacity: 0 }}
-                              animate={{ height: "auto", opacity: 1 }}
-                              exit={{ height: 0, opacity: 0 }}
-                              transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                              className="overflow-hidden"
-                            >
-                              <div className="px-6 pb-6 leading-relaxed text-sm md:text-base whitespace-pre-line">
-                                <div className="h-px w-full bg-linear-to-r from-primary/30 via-transparent to-transparent mb-4" />
-                                {item.answer}
-                              </div>
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
-                      </div>
+                        <div
+                          id={`faq-answer-${id}`}
+                          className="px-6 pb-6 leading-relaxed text-sm md:text-base"
+                        >
+                          <div className="h-px w-full bg-linear-to-r from-primary/30 via-transparent to-transparent mb-4" />
+                          <p className="whitespace-pre-line">{item.answer}</p>
+                        </div>
+                      </details>
                     </MotionWrapper>
                   );
                 })}
@@ -315,40 +282,32 @@ export default function FAQPage() {
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           className="mt-24 p-8 md:p-12 rounded-[2.5rem] border border-white/40 bg-white/20 backdrop-blur-2xl text-center relative overflow-hidden dark:border-white/10 dark:bg-white/5"
         >
-          <div className="absolute top-[-20%] right-[-10%] w-64 h-64 bg-primary/10 blur-[100px] -z-10" />
-          <div className="absolute bottom-[-20%] left-[-10%] w-64 h-64 bg-sky-400/10 blur-[100px] -z-10" />
-
           <div className="flex size-16 items-center justify-center rounded-2xl bg-primary/10 text-primary mx-auto mb-6 shadow-inner ring-1 ring-white/50">
             <HelpCircle className="w-8 h-8" />
           </div>
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 tracking-tight">Can't find the answer you're looking for?</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 tracking-tight">Cannot find the answer you are looking for?</h2>
           <p className="text-muted-foreground text-lg mb-10 max-w-2xl mx-auto">
-            Our water specialists are here to provide expert advice tailored to your home's unique needs. Reach out to us directly for a personalized solution
+            Our water specialists are here to provide expert advice tailored to your home&apos;s unique needs. Reach out to us directly for a personalized solution
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Button
-              size="lg"
-              className="w-full sm:w-auto h-14 rounded-full bg-primary px-10 text-lg font-bold shadow-lg shadow-primary/25 hover:scale-105 active:scale-95 transition-all"
-              render={<a href="tel:0498588725" />}
-              nativeButton={false}
+            <a
+              href="tel:1300515469"
+              className="inline-flex w-full sm:w-auto h-14 items-center justify-center rounded-full bg-primary px-10 text-lg font-bold text-primary-foreground shadow-lg shadow-primary/25 hover:scale-105 active:scale-95 transition-all"
             >
               <PhoneCall className="w-5 h-5 mr-2" />
               1300 515 469
-            </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              className="group relative w-full sm:w-auto h-14 overflow-hidden rounded-full px-10 text-lg font-bold border-white/40 bg-white/10 backdrop-blur-sm hover:bg-white/20 dark:border-white/20 dark:bg-white/5 dark:hover:bg-white/10"
-              render={<Link href="/contact" />}
-              nativeButton={false}
+            </a>
+            <Link
+              href="/contact"
+              className="group relative inline-flex w-full sm:w-auto h-14 items-center justify-center overflow-hidden rounded-full px-10 text-lg font-bold border border-white/40 bg-white/10 backdrop-blur-sm hover:bg-white/20 dark:border-white/20 dark:bg-white/5 dark:hover:bg-white/10"
             >
               <MessageCircle className="w-5 h-5 mr-2" />
               Contact Us
               <ArrowRightIcon className="w-4 h-4 ml-1 transition-transform group-hover:translate-x-1" />
-            </Button>
+            </Link>
           </div>
         </MotionWrapper>
       </section>
-    </div>
+    </main>
   );
 }

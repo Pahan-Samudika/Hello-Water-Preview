@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo, useRef } from "react";
+import React, { useMemo } from "react";
 import { Canvas } from "@react-three/fiber";
 import { Float, PerspectiveCamera, Environment, ContactShadows, OrbitControls, Center } from "@react-three/drei";
 import * as THREE from "three";
@@ -91,8 +91,6 @@ const PFOSMolecule = () => {
     const cBondLen = 1.15;
     const fBondLen = 0.95;
     const sBondLen = 1.4;
-    const oBondLen = 1.0;
-
     const cPos: THREE.Vector3[] = [];
 
     // 1. Generate Carbon Chain with proper tetrahedral angles
