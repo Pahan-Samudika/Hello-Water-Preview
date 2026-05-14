@@ -32,6 +32,10 @@ export const navigationData: NavItem[] = [
     href: "/",
   },
   {
+    title: "Products",
+    href: "/products",
+  },
+  {
     title: "About Us",
     href: "/about-us",
     children: [
@@ -41,10 +45,6 @@ export const navigationData: NavItem[] = [
       { title: "Technology", href: "/technology" },
       { title: "Certifications", href: "/certifications" },
     ],
-  },
-  {
-    title: "Products",
-    href: "/products",
   },
   {
     title: "Contact Us",
