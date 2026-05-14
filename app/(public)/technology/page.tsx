@@ -15,6 +15,11 @@ const technologyFeatures = [
     image: "https://res.cloudinary.com/dnlb02zp9/image/upload/v1776256575/rhscv0npefktv2aofpok_jzett2.webp",
   },
   {
+    title: "Activated Carbon Fiber (ACF) PFAS Reduction Technology",
+    description: "Powered by proprietary EnnoPure ePureFlo Activated Carbon Fiber (ACF) technology, this advanced filtration stage combines high-capacity sediment filtration with powerful chemical adsorption to aggressively reduce chlorine, VOCs, lead, mercury, taste, odour, & emerging contaminants — including up to 99.99% PFAS. Its highly porous carbon fibre structure maximises contaminant capture while the fused post-filtration layer prevents carbon fines from entering the water stream, delivering cleaner, safer, better-quality water with exceptional flow performance.",
+    image: "https://res.cloudinary.com/dnlb02zp9/image/upload/v1778748113/02_10_14_PM_qcw8i4.webp",
+  },
+  {
     title: "KDF 55 Filtration Media & Redox Purification",
     description: "This patented, high-purity copper-zinc media purifies water through an advanced redox (oxidation–reduction) reaction, actively targeting & reducing a wide spectrum of contaminants -including bacteria, algae, fungi, iron, heavy metals like lead, mercury, nickel, chromium, & even gases such as hydrogen sulfide. Instead of simply trapping impurities, KDF-55 works at a molecular level, using electron transfer to neutralise & transform contaminants in real time.",
     image: "https://res.cloudinary.com/dnlb02zp9/image/upload/v1776257159/IMG_7583_ylrtzu_ikleg8.webp",
