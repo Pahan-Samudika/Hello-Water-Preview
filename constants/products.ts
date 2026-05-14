@@ -56,7 +56,7 @@ export const products: Product[] = [
   {
     id: 2,
     slug: "pentair-green-reverse-osmosis-system",
-    name: "PENTAIR GREEN REVERSE OSMOSIS SYSTEM",
+    name: "Pentair Green Reverse Osmosis System",
     category: "Filtration Systems",
     price: "Call for Price",
     recent: true,
