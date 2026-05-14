@@ -95,12 +95,14 @@ export const AboutSummary = () => {
                 </span>
               </h2>
               <p className="text-base leading-relaxed text-muted-foreground sm:text-lg">
-                At Hello Water Filtration, we provide honest advice & professional installation of whole
-                home systems designed to deliver clean, safe water to every tap. Backed by leading
-                third-party certifications — including NSF Standard 42, 53 & 401, AS/NZS 4020 Drinking
-                Water Testing, WaterMark & Asthma Council Sensitive Choice — it’s the most
-                comprehensively certified system available for quality, safety & everyday family
-                wellbeing.
+                With more than 20 years of industry experience and 15 years of specialised water engineering
+                knowledge, HelloWater Filtration provides honest advice and trusted expertise in whole-home water
+                filtration solutions.
+                Every system is professionally installed by our licensed plumbers and carefully designed to deliver
+                clean, healthy water to every tap throughout your home. Backed by leading independent certifications
+                — including NSF Standard 42, AS/NZS 4020, WaterMark, and the Asthma Council Sensitive Choice
+                program — our systems are among the most comprehensively certified solutions available for
+                protecting your family’s water quality, safety, and everyday wellbeing.
               </p>
             </motion.div>
           </motion.div>

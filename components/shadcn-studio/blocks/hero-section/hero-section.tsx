@@ -127,7 +127,7 @@ const HeroSection = ({ menudata }: { menudata: MenuData[] }) => {
             </motion.h1>
 
             <motion.p
-              className="text-muted-foreground sm:max-w-xl text-sm sm:text-xl max-lg:text-center"
+              className="text-muted-foreground sm:max-w-xl text-sm sm:text-lg max-lg:text-center"
               variants={itemVariants}
             >
               Upgrade your home with Hello Water. Enjoy peace of mind with
@@ -165,7 +165,7 @@ const HeroSection = ({ menudata }: { menudata: MenuData[] }) => {
             >
               <div className="shrink-0">
                 <p className="text-[10px] font-black tracking-widest text-primary uppercase leading-tight">
-                  System Certifications and Standards*
+                  Systems/Cartridges Certifications and Standards
                 </p>
               </div>
 
