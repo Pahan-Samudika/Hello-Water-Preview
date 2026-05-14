@@ -7,11 +7,11 @@ const technologyFeatures = [
   {
     title: "Dual Gradient Density pre-filter",
     description: "Built with precision 0.5-micron sediment filtration, this stage features thermally bonded spun fibres that create a precise gradient structure, capturing larger particles on the outer layers while trapping finer sediment deep within the core. this stage aggressively captures dirt, rust, sand, & microscopic debris before they ever reach your water supply. It takes the hit early, protecting the system, preserving performance, & setting the standard for everything that follows.",
-    image: "https://res.cloudinary.com/dnlb02zp9/image/upload/v1776256571/fhjrugybaxuadqaqan1c_jsz9rb.webp",
+    image: "https://res.cloudinary.com/dnlb02zp9/image/upload/v1778732414/IMG_0201_icvjug.webp",
   },
   {
     title: "Granular Activated Carbon Filtration Process",
-    description: "It uses Patented RFC Radial Flow Catalytic Granular Activated Carbon (GAC), designed with a highly porous, catalytic surface that enhances adsorption & actively breaks down chemical contaminants at a molecular level. The innovative radial flow design maximises contact time while maintaining a low pressure drop, ensuring efficient performance without restricting flow. This stage effectively reduces chlorine, chloramine, PFAS, VOCs, pesticides, & other organic impurities, dramatically improving taste & odour while delivering consistently cleaner water throughout your home.",
+    description: "It uses Patented RFC Radial Flow Catalytic Coconut Granular Activated Carbon (CGAC), designed with a highly porous catalytic surface that enhances adsorption & actively breaks down chemical contaminants at a molecular level.The innovative radial flow design maximises contact time while maintaining a low pressure drop, ensuring efficient performance without restricting flow.This stage effectively reduces chlorine, chloramine, PFAS, VOCs, pesticides, & other organic impurities, dramatically improving taste & odour while delivering consistently cleaner water throughout your home.",
     image: "https://res.cloudinary.com/dnlb02zp9/image/upload/v1776256575/rhscv0npefktv2aofpok_jzett2.webp",
   },
   {
@@ -137,14 +137,14 @@ export default function BenefitsPage() {
                   )}>
                     <div className="bg-background/80 dark:bg-background/80 backdrop-blur-2xl rounded-[2.5rem] p-8 md:p-12 lg:p-14 shadow-[0_8px_32px_rgba(0,0,0,0.12)] border border-white/40 dark:border-white/10 ring-1 ring-black/5 dark:ring-white/5 transition-transform duration-700 ease-out group-hover:-translate-y-2 overflow-hidden">
                       <div className="absolute inset-0 bg-gradient-to-tr from-white/10 to-transparent pointer-events-none" />
-                      
+
                       <div className="relative z-10">
                         <div className="inline-flex h-1.5 w-12 bg-primary rounded-full mb-6 transition-all duration-500 group-hover:w-20" />
-                        
+
                         <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold text-foreground leading-[1.15] mb-6 drop-shadow-[0_2px_10px_rgba(255,255,255,0.4)] dark:drop-shadow-sm">
                           {feature.title}
                         </h3>
-                        
+
                         <p className="text-foreground/90 text-justify drop-shadow-[0_1px_5px_rgba(255,255,255,0.4)] dark:drop-shadow-sm">
                           {feature.description}
                         </p>

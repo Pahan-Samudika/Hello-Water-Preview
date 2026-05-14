@@ -15,13 +15,8 @@ import { SmartImage } from "@/components/ui/smart-image";
 const HIGHLIGHTS = [
   {
     icon: LayersIcon,
-    title: "Multi-stage Ecosystem",
-    description: "A multi-stage defense aggressively capturing dirt, chemicals, & impurities before they enter your home.",
-  },
-  {
-    icon: FilterIcon,
-    title: "3-Stage Filtration",
-    description: "Advanced media precisely targeting & stripping out chlorine, heavy metals, & complex contaminants.",
+    title: "Multi-Stage Ecosystem",
+    description: "A powerful 5‑level, 3‑stage  advanced media barriers, engineered to aggressively capture dirt, chemicals, and impurities before they ever enter your home's water.",
   },
   {
     icon: ShieldCheckIcon,
@@ -114,7 +109,7 @@ export const TechnologySummary = () => {
 
           {/* Feature Cards */}
           <motion.div
-            className="grid w-full grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4"
+            className="grid w-full grid-cols-1 gap-6 sm:grid-cols-3"
             variants={staggerContainer}
             initial="hidden"
             whileInView="visible"
