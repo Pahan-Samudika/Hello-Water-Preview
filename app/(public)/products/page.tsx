@@ -7,12 +7,12 @@ import {
   productCollectionJsonLd,
 } from "@/lib/structured-data";
 
-export default async function ProductsPage() {
+export default function ProductsPage() {
   const filtrationSystems = products.filter((p) => p.category === "Filtration Systems");
   const cartridges = products.filter((p) => p.category === "Cartridges");
 
   return (
-    <div className="relative overflow-hidden w-full min-h-screen">
+    <main className="relative overflow-hidden w-full min-h-screen">
       <JsonLd
         data={[
           breadcrumbsJsonLd([
@@ -138,7 +138,7 @@ export default async function ProductsPage() {
           <p className="mt-6 text-sm text-muted-foreground">No products found.</p>
         )}
       </section>
-    </div>
+    </main>
   );
 }
 

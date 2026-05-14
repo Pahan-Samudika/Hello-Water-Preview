@@ -17,6 +17,8 @@ export function generateStaticParams() {
   }));
 }
 
+export const dynamicParams = false;
+
 export async function generateMetadata({
   params,
 }: {
@@ -55,7 +57,7 @@ export default async function ProductViewPage({
   }
 
   return (
-    <div className="relative overflow-hidden w-full min-h-screen">
+    <main className="relative overflow-hidden w-full min-h-screen">
       <JsonLd
         data={[
           breadcrumbsJsonLd([
@@ -93,7 +95,12 @@ export default async function ProductViewPage({
               <SmartImage
                 src={product.image}
                 alt={product.imageAlt}
-                className="block aspect-square w-full object-cover"
+                useNextImage
+                fill
+                priority
+                sizes="(min-width: 1024px) 48vw, 100vw"
+                containerClassName="aspect-square w-full"
+                className="object-cover"
               />
             </MotionWrapper>
 
@@ -173,6 +180,6 @@ export default async function ProductViewPage({
           </MotionWrapper>
         </div>
       </section>
-    </div>
+    </main>
   );
 }

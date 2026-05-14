@@ -165,8 +165,11 @@ export const AboutSummary = () => {
           >
             <SmartImage
               src="https://res.cloudinary.com/dnlb02zp9/image/upload/v1776746641/IMG_8138_udij9b.webp"
-              alt="About us illustration"
-              className="w-full rounded-[1.75rem] border border-white/30 object-cover shadow-[0_20px_60px_rgba(15,23,42,0.14)]"
+              alt="Hello Water whole-home filtration installation"
+              fill
+              sizes="(min-width: 1024px) 1152px, 100vw"
+              containerClassName="aspect-video w-full"
+              className="rounded-[1.75rem] border border-white/30 object-cover shadow-[0_20px_60px_rgba(15,23,42,0.14)]"
             />
           </motion.div>
 

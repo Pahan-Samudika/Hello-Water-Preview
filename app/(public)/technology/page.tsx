@@ -1,4 +1,3 @@
-"use client";
 import { MotionWrapper } from "@/components/custom/motion-wrapper";
 import { SmartImage } from "@/components/ui/smart-image";
 import { cn } from "@/lib/utils";
@@ -36,9 +35,9 @@ const technologyFeatures = [
   },
 ];
 
-export default function BenefitsPage() {
+export default function TechnologyPage() {
   return (
-    <div className="relative overflow-hidden w-full min-h-screen">
+    <main className="relative overflow-hidden w-full min-h-screen">
       <section className="mx-auto w-full max-w-6xl px-6 py-8 md:py-16 sm:px-6 lg:px-8">
         <MotionWrapper
           className="mb-16 space-y-4"
@@ -128,6 +127,8 @@ export default function BenefitsPage() {
                       <SmartImage
                         src={feature.image}
                         alt={feature.title}
+                        fill
+                        sizes="(min-width: 1024px) 640px, 100vw"
                         className="object-cover transition-transform duration-[2s] ease-out group-hover/img:scale-105"
                         containerClassName="absolute inset-0 w-full h-full"
                       />
@@ -162,6 +163,6 @@ export default function BenefitsPage() {
           </div>
         </section>
       </section>
-    </div>
+    </main>
   );
 }

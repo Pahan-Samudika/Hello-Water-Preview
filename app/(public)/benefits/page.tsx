@@ -1,5 +1,3 @@
-"use client";
-
 import { 
   Droplets, 
   Sparkles, 
@@ -15,7 +13,6 @@ import {
   TrendingUp,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { MotionWrapper } from "@/components/custom/motion-wrapper";
 import { Timeline, TimelineData } from "@/components/custom/timeline";
 
 const benefits = [
@@ -124,117 +121,55 @@ const timelineData: TimelineData[] = [
 
 export default function BenefitsPage() {
   return (
-    <div className="relative overflow-hidden w-full min-h-screen">
+    <main className="relative overflow-hidden w-full min-h-screen">
       <section className="mx-auto w-full max-w-6xl px-6 py-8 md:py-16 sm:px-6 lg:px-8">
-        <MotionWrapper 
-          className="mb-8 space-y-4"
-          variants={{
-            hidden: {},
-            visible: {
-              transition: {
-                staggerChildren: 0.15,
-              },
-            },
-          }}
-          initial="hidden"
-          animate="visible"
-        >
-          <MotionWrapper
-            variants={{
-              hidden: { opacity: 0, y: 20 },
-              visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as const } },
-            }}
-          >
-            <h1 className="text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl text-balance">
-              Experience the Benefits
-            </h1>
-          </MotionWrapper>
-          <MotionWrapper
-            variants={{
-              hidden: { opacity: 0, y: 20 },
-              visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as const } },
-            }}
-          >
-            <p className="text-muted-foreground sm:text-lg text-justify">
-              Concerned about the quality of your tap water? Eliminate impurities, unpleasant odours, & harmful contaminants that impact both taste & safety.
-            </p>
-          </MotionWrapper>
-        </MotionWrapper>
+        <header className="mb-8 space-y-4">
+          <h1 className="text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl text-balance">
+            Experience the Benefits
+          </h1>
+          <p className="text-muted-foreground sm:text-lg text-justify">
+            Concerned about the quality of your tap water? Eliminate impurities, unpleasant odours, & harmful contaminants that impact both taste & safety.
+          </p>
+        </header>
 
         {/* Benefits Grid */}
-        <MotionWrapper
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"
-          variants={{
-            hidden: { opacity: 0 },
-            visible: {
-              opacity: 1,
-              transition: {
-                staggerChildren: 0.1,
-                delayChildren: 0.2,
-              },
-            },
-          }}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-50px" }}
-        >
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {benefits.map((benefit) => (
-            <MotionWrapper
+            <article
               key={benefit.title}
-              variants={{
-                hidden: { opacity: 0, y: 30, scale: 0.95 },
-                visible: {
-                  opacity: 1,
-                  y: 0,
-                  scale: 1,
-                  transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] as const },
-                },
-              }}
-              whileHover={{ 
-                y: -5,
-                transition: { duration: 0.3, ease: "easeOut" }
-              }}
-              className="h-full"
+              className="group h-full p-6 rounded-[2rem] border border-border/50 bg-card/60 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/5 hover:bg-card dark:border-white/10 dark:bg-white/5 dark:hover:bg-white/10"
             >
-              <div className="group h-full p-6 rounded-[2rem] border border-border/50 bg-card/60 backdrop-blur-sm transition-all duration-300 hover:shadow-xl hover:shadow-primary/5 hover:bg-card dark:border-white/10 dark:bg-white/5 dark:hover:bg-white/10">
-                <div className={cn(
-                  "size-12 rounded-xl flex items-center justify-center mb-6 transition-transform duration-500 group-hover:scale-110",
-                  benefit.bg,
-                  benefit.color
-                )}>
-                  <benefit.icon className="size-6" />
-                </div>
-                <h3 className="text-lg font-bold mb-3 tracking-tight group-hover:text-primary transition-colors duration-300">
-                  {benefit.title}
-                </h3>
-                <p className="text-muted-foreground leading-relaxed text-sm">
-                  {benefit.description}
-                </p>
+              <div className={cn(
+                "size-12 rounded-xl flex items-center justify-center mb-6 transition-transform duration-500 group-hover:scale-110",
+                benefit.bg,
+                benefit.color
+              )}>
+                <benefit.icon className="size-6" />
               </div>
-            </MotionWrapper>
+              <h3 className="text-lg font-bold mb-3 tracking-tight group-hover:text-primary transition-colors duration-300">
+                {benefit.title}
+              </h3>
+              <p className="text-muted-foreground leading-relaxed text-sm">
+                {benefit.description}
+              </p>
+            </article>
           ))}
-        </MotionWrapper>
+        </div>
       </section>
 
       {/* Timeline Section */}
       <section className="mx-auto w-full max-w-6xl px-6 py-16 md:py-24 sm:px-6 lg:px-8 border-t border-border/40">
-        <MotionWrapper 
-          className="text-center mb-16 space-y-4"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-        >
+        <header className="text-center mb-16 space-y-4">
           <h2 className="text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
             The Transformation Journey
           </h2>
           <p className="text-muted-foreground sm:text-lg max-w-3xl mx-auto">
             What you will notice after installation & how your water quality evolves over time.
           </p>
-        </MotionWrapper>
+        </header>
 
         <Timeline items={timelineData} />
       </section>
-    </div>
+    </main>
   );
 }

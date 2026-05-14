@@ -1,6 +1,15 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 
 import { Button } from "@/components/ui/button";
+import { createMetadata } from "@/lib/seo";
+
+export const metadata: Metadata = createMetadata({
+  title: "Page Not Found",
+  description: "The requested Hello Water Filtration page could not be found.",
+  path: "/404",
+  noIndex: true,
+});
 
 export default function NotFound() {
   return (

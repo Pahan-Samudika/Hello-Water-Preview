@@ -1,10 +1,6 @@
-"use client";
-
 import type { ComponentType } from "react";
 import { aboutHighlights } from "@/constants";
-import { Target, Users, ShieldCheck, ArrowRight } from "lucide-react";
-import { MotionWrapper } from "@/components/custom/motion-wrapper";
-import { SmartImage } from "@/components/ui/smart-image";
+import { Target, Users, ShieldCheck } from "lucide-react";
 
 type StatItem = {
   icon: ComponentType;
@@ -22,25 +18,12 @@ const getIcon = (title: string) => {
 const AboutUs = ({ stats }: { stats: StatItem }) => {
   return (
     <section className="bg-background">
-      <MotionWrapper
-        className="grid gap-6 md:grid-cols-2 lg:grid-cols-3"
-        variants={{
-          hidden: {},
-          visible: { transition: { staggerChildren: 0.1 } }
-        }}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-50px" }}
-      >
-        {aboutHighlights.map((item, index) => {
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {aboutHighlights.map((item) => {
           const Icon = getIcon(item.title);
           return (
-            <MotionWrapper
+            <div
               key={item.title}
-              variants={{
-                hidden: { opacity: 0, y: 20 },
-                visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } }
-              }}
             >
               <article className="group relative h-full overflow-hidden rounded-2xl border border-secondary bg-background/50 p-8 transition-all hover:bg-secondary/10 hover:shadow-lg">
                 <div className="mb-6 flex items-center justify-between">
@@ -50,19 +33,13 @@ const AboutUs = ({ stats }: { stats: StatItem }) => {
                 <h2 className="mb-4 text-2xl font-bold tracking-tight">{item.title}</h2>
                 <p className="text-muted-foreground leading-relaxed">{item.description}</p>
               </article>
-            </MotionWrapper>
+            </div>
           );
         })}
-      </MotionWrapper>
+      </div>
 
       {/* Video/Image & Stats Section */}
-      <MotionWrapper
-        className="relative mt-20"
-        initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-        viewport={{ once: true, margin: "-100px" }}
-      >
+      <div className="relative mt-20">
         {/* Main Visual Container */}
         <div className="relative overflow-hidden rounded-3xl shadow-2xl">
           <video
@@ -116,7 +93,7 @@ const AboutUs = ({ stats }: { stats: StatItem }) => {
             </div>
           </div>
         </div>
-      </MotionWrapper>
+      </div>
     </section>
   );
 };

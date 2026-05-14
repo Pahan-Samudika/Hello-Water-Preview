@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useState, useRef, useCallback } from "react";
+import { useRef } from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 import { ArrowRightIcon } from "lucide-react";
 
@@ -9,12 +10,10 @@ import Autoplay from "embla-carousel-autoplay";
 
 import { Button } from "@/components/ui/button";
 import {
-  type CarouselApi,
   Carousel,
   CarouselContent,
   CarouselItem,
 } from "@/components/ui/carousel";
-import { cn } from "@/lib/utils";
 import { motion } from "motion/react";
 import { SmartImage } from "@/components/ui/smart-image";
 import { certifications } from "@/constants/certifications";
@@ -28,48 +27,6 @@ export type MenuData = {
 };
 
 const HeroSection = ({ menudata }: { menudata: MenuData[] }) => {
-  const [mainApi, setMainApi] = useState<CarouselApi>();
-  const [thumbApi, setThumbApi] = useState<CarouselApi>();
-  const [current, setCurrent] = useState(0);
-
-  useEffect(() => {
-    if (!mainApi) {
-      return;
-    }
-
-    setCurrent(mainApi.selectedScrollSnap());
-    mainApi.on("select", () => {
-      const selectedIndex = mainApi.selectedScrollSnap();
-
-      setCurrent(selectedIndex);
-
-      // Sync with thumb carousel if exists
-      thumbApi?.scrollTo(selectedIndex);
-    });
-  }, [mainApi, thumbApi]);
-
-  useEffect(() => {
-    if (!thumbApi) {
-      return;
-    }
-
-    thumbApi.on("select", () => {
-      const selectedIndex = thumbApi.selectedScrollSnap();
-
-      setCurrent(selectedIndex);
-
-      // Sync main carousel with thumbnail carousel
-      mainApi?.scrollTo(selectedIndex);
-    });
-  }, [thumbApi, mainApi]);
-
-  const handleThumbClick = useCallback(
-    (index: number) => {
-      mainApi?.scrollTo(index);
-    },
-    [mainApi],
-  );
-
   const plugin = useRef(Autoplay({ delay: 3000, stopOnInteraction: false }));
 
   const containerVariants = {
@@ -143,7 +100,7 @@ const HeroSection = ({ menudata }: { menudata: MenuData[] }) => {
                 variant="outline"
                 size="lg"
                 className="w-full rounded-full border-white/40 bg-white/10 text-base text-foreground backdrop-blur-sm hover:bg-white/20 sm:w-fit has-[>svg]:px-6 dark:border-white/20 dark:bg-white/5 dark:hover:bg-white/10"
-                render={<a href="products" />}
+                render={<Link href="/products" />}
                 nativeButton={false}
               >
                 Explore Our Products
@@ -170,7 +127,7 @@ const HeroSection = ({ menudata }: { menudata: MenuData[] }) => {
               </div>
 
               <div className="flex flex-nowrap items-start gap-x-3 md:gap-x-6 gap-y-4 max-lg:justify-center">
-                {certifications.map((cert, index) => (
+                {certifications.map((cert) => (
                   <div key={cert.title} className="flex items-center gap-6">
                     <div className="flex flex-col items-center gap-1.5 text-center transition-transform hover:scale-105">
                       <div className="relative h-8 md:h-12 w-auto flex items-center justify-center px-2">
@@ -200,7 +157,6 @@ const HeroSection = ({ menudata }: { menudata: MenuData[] }) => {
           >
             <Carousel
               className="w-full overflow-hidden rounded-[1.75rem] border border-white/30 bg-white/20 shadow-[0_20px_60px_rgba(15,23,42,0.14)] backdrop-blur-xl dark:border-white/10 dark:bg-white/5"
-              setApi={setMainApi}
               plugins={[plugin.current]}
               opts={{
                 loop: true,

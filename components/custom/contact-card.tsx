@@ -1,6 +1,5 @@
 import { cn } from "@/lib/utils";
 import type React from "react";
-import { MotionWrapper } from "@/components/custom/motion-wrapper";
 
 type ContactInfoProps = React.ComponentProps<"div"> & {
 	icon: React.ReactNode;
@@ -8,7 +7,7 @@ type ContactInfoProps = React.ComponentProps<"div"> & {
 	value: string;
 };
 
-type ContactCardProps = React.ComponentProps<typeof MotionWrapper> & {
+type ContactCardProps = React.ComponentProps<"div"> & {
 	// Content props
 	title?: string;
 	description?: string;
@@ -26,25 +25,15 @@ export function ContactCard({
 	...props
 }: ContactCardProps) {
 	return (
-		<MotionWrapper
+		<div
 			className={cn(
 				"relative grid h-full w-full md:grid-cols-2 gap-10 md:gap-14 lg:gap-20 items-center",
 				className
 			)}
-			variants={{
-				hidden: {},
-				visible: { transition: { staggerChildren: 0.2 } },
-			}}
-			initial="hidden"
-			animate="visible"
 			{...props}
 		>
-			<MotionWrapper
+			<div
 				className="col-span-1 flex flex-col justify-center px"
-				variants={{
-					hidden: { opacity: 0, x: -30 },
-					visible: { opacity: 1, x: 0, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] as const } },
-				}}
 			>
 				<div className="relative space-y-4">
 					<h1 className="text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl text-balance">
@@ -59,20 +48,16 @@ export function ContactCard({
 						))}
 					</div>
 				</div>
-			</MotionWrapper>
-			<MotionWrapper
+			</div>
+			<div
 				className={cn(
 					"col-span-1 flex w-full flex-col bg-card/90 backdrop-blur-xl rounded-[2.5rem] border shadow-2xl p-6 sm:p-10",
 					formSectionClassName
 				)}
-				variants={{
-					hidden: { opacity: 0, y: 40, scale: 0.98 },
-					visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] as const } },
-				}}
 			>
 				{children}
-			</MotionWrapper>
-		</MotionWrapper>
+			</div>
+		</div>
 	);
 }
 

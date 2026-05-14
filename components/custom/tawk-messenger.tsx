@@ -3,7 +3,6 @@
 import { useEffect } from "react";
 
 export default function TawkMessenger() {
-  // Replace these with your actual IDs from Tawk.to dashboard
   const PROPERTY_ID = process.env.NEXT_PUBLIC_TAWK_PROPERTY_ID;
   const WIDGET_ID = process.env.NEXT_PUBLIC_TAWK_WIDGET_ID;
 

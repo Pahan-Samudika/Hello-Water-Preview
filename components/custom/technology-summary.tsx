@@ -4,13 +4,11 @@ import Link from "next/link";
 import {
   ArrowRightIcon,
   CpuIcon,
-  FilterIcon,
   LayersIcon,
   ShieldCheckIcon,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "motion/react";
-import { SmartImage } from "@/components/ui/smart-image";
 
 const HIGHLIGHTS = [
   {
@@ -56,16 +54,6 @@ const cardVariant = {
     y: 0,
     scale: 1,
     transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] as const },
-  },
-};
-
-const imageVariant = {
-  hidden: { opacity: 0, scale: 0.96, y: 20 },
-  visible: {
-    opacity: 1,
-    scale: 1,
-    y: 0,
-    transition: { duration: 0.85, ease: [0.22, 1, 0.36, 1] as const },
   },
 };
 

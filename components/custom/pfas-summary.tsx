@@ -1,8 +1,19 @@
 "use client";
 
-import React from "react";
+import dynamic from "next/dynamic";
 import { motion } from "motion/react";
-import { PFASModel } from "./pfas-model";
+
+const PFASModel = dynamic(
+  () => import("./pfas-model").then((mod) => mod.PFASModel),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="flex h-full min-h-[300px] w-full items-center justify-center rounded-3xl bg-muted/30">
+        <span className="sr-only">Loading PFAS model</span>
+      </div>
+    ),
+  }
+);
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },

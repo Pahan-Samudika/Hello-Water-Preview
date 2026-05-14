@@ -77,6 +77,7 @@ export function Header() {
           )}
         >
           <nav
+            aria-label="Primary navigation"
             className={cn(
               "relative flex h-18 w-full items-center justify-between px-4 md:h-16 md:px-8 md:transition-all md:ease-out",
               {
@@ -88,6 +89,7 @@ export function Header() {
             <div className="z-10 flex flex-1 justify-start">
               <Link
                 href="/"
+                aria-label="Hello Water Filtration home"
                 className="flex items-center rounded-md p-2"
               >
                 <Image src={TxtLogoSVG} alt="Hello Water Filtration" className="h-4.5 w-auto md:h-5" priority />
@@ -96,8 +98,8 @@ export function Header() {
 
             {/* Center: Droplet Logo (Mobile & Desktop) */}
             <div className="absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2">
-              <Link href="/">
-                <Image src={LogoSVG} alt="HelloWater Logo" className="h-9 w-auto" priority />
+              <Link href="/" aria-label="Hello Water home">
+                <Image src={LogoSVG} alt="" className="h-9 w-auto" priority />
               </Link>
             </div>
 

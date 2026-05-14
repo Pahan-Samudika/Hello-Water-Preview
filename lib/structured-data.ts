@@ -1,13 +1,18 @@
 import { products, type Product } from "@/constants/products";
 import { absoluteUrl, siteConfig } from "@/lib/seo";
 
+const organizationId = `${siteConfig.url}/#organization`;
+const websiteId = `${siteConfig.url}/#website`;
+
 export function organizationJsonLd() {
   return {
     "@context": "https://schema.org",
-    "@type": "LocalBusiness",
-    "@id": `${siteConfig.url}/#organization`,
+    "@type": ["LocalBusiness", "HomeAndConstructionBusiness"],
+    "@id": organizationId,
     name: siteConfig.name,
     url: siteConfig.url,
+    logo: absoluteUrl(siteConfig.logo),
+    image: absoluteUrl("/opengraph-image"),
     telephone: siteConfig.phone,
     email: siteConfig.email,
     address: {
@@ -20,6 +25,16 @@ export function organizationJsonLd() {
     },
     sameAs: siteConfig.socialLinks,
     priceRange: "$$",
+    contactPoint: [
+      {
+        "@type": "ContactPoint",
+        telephone: siteConfig.phone,
+        email: siteConfig.email,
+        contactType: "customer support",
+        areaServed: "AU",
+        availableLanguage: ["en"],
+      },
+    ],
   };
 }
 
@@ -27,12 +42,54 @@ export function websiteJsonLd() {
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "@id": `${siteConfig.url}/#website`,
+    "@id": websiteId,
     name: siteConfig.name,
     url: siteConfig.url,
     publisher: {
-      "@id": `${siteConfig.url}/#organization`,
+      "@id": organizationId,
     },
+  };
+}
+
+export function webPageJsonLd({
+  name,
+  description,
+  path,
+}: {
+  name: string;
+  description: string;
+  path: string;
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name,
+    description,
+    url: absoluteUrl(path),
+    isPartOf: {
+      "@id": websiteId,
+    },
+    publisher: {
+      "@id": organizationId,
+    },
+  };
+}
+
+export function serviceJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: "Whole-home water filtration installation and servicing",
+    description: siteConfig.description,
+    serviceType: "Water filtration installation",
+    provider: {
+      "@id": organizationId,
+    },
+    areaServed: {
+      "@type": "Country",
+      name: "Australia",
+    },
+    url: siteConfig.url,
   };
 }
 
@@ -50,12 +107,17 @@ export function breadcrumbsJsonLd(items: { name: string; path: string }[]) {
 }
 
 export function productJsonLd(product: Product) {
+  const numericPrice = product.price.match(/\$([\d,.]+)/)?.[1]?.replace(/,/g, "");
+
   return {
     "@context": "https://schema.org",
     "@type": "Product",
+    "@id": `${absoluteUrl(`/products/${product.slug}`)}#product`,
     name: product.name,
     description: product.shortDescription,
-    image: product.image ? [product.image] : undefined,
+    image: product.image ? [absoluteUrl(product.image)] : undefined,
+    url: absoluteUrl(`/products/${product.slug}`),
+    sku: product.slug,
     category: product.category,
     brand: {
       "@type": "Brand",
@@ -66,6 +128,7 @@ export function productJsonLd(product: Product) {
       url: absoluteUrl(`/products/${product.slug}`),
       availability: "https://schema.org/InStock",
       priceCurrency: "AUD",
+      ...(numericPrice ? { price: numericPrice } : {}),
       priceSpecification: {
         "@type": "PriceSpecification",
         priceCurrency: "AUD",
@@ -80,6 +143,8 @@ export function productCollectionJsonLd() {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
     name: "Hello Water Filtration products",
+    description:
+      "Whole-home water filtration systems, reverse osmosis, UV purification, and replacement cartridges.",
     url: absoluteUrl("/products"),
     mainEntity: {
       "@type": "ItemList",
@@ -90,5 +155,24 @@ export function productCollectionJsonLd() {
         name: product.name,
       })),
     },
+  };
+}
+
+export function faqPageJsonLd(
+  categories: { items: { question: string; answer: string }[] }[]
+) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: categories.flatMap((category) =>
+      category.items.map((item) => ({
+        "@type": "Question",
+        name: item.question,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: item.answer,
+        },
+      }))
+    ),
   };
 }

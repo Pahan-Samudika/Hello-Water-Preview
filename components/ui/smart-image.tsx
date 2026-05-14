@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type ImgHTMLAttributes } from "react";
+import { useState } from "react";
 import Image, { ImageProps, type StaticImageData } from "next/image";
 import { motion, AnimatePresence } from "motion/react";
 import { cn } from "@/lib/utils";
@@ -25,12 +25,13 @@ export function SmartImage({
   alt,
   className,
   containerClassName,
-  useNextImage = false, // Default to false to ease migration from <img>
+  useNextImage,
   onLoad,
   ...props
 }: SmartImageProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
+  void useNextImage;
 
   const handleLoad = () => {
     setIsLoading(false);
@@ -44,8 +45,6 @@ export function SmartImage({
 
   // Determine the final source to use, ensuring we have a valid fallback
   const finalSrc = src || placeholderImage;
-  const imageSrc = typeof finalSrc === "string" ? finalSrc : finalSrc.src;
-  const fallbackSrc = placeholderImage.src;
   const handleImageRef = (node: HTMLImageElement | null) => {
     if (node?.complete && node.naturalWidth > 0 && isLoading) {
       queueMicrotask(handleLoad);
@@ -76,40 +75,18 @@ export function SmartImage({
         transition={{ duration: 0.2, ease: "easeOut" }}
         className="h-full w-full"
       >
-        {useNextImage ? (
-          <Image
-            src={finalSrc}
-            alt={alt}
-            className={className}
-            onLoad={handleLoad}
-            onError={() => {
-              // Handle next/image errors by setting hasError
-              setHasError(true);
-              handleError();
-            }}
-            {...props}
-          />
-        ) : (
-          <img
-            ref={handleImageRef}
-            src={imageSrc}
-            alt={alt}
-            className={cn("h-full w-full", className, hasError && "opacity-0")}
-            onLoad={handleLoad}
-            onError={(e) => {
-              // Show placeholder on error
-              const target = e.currentTarget;
-              if (target.src !== fallbackSrc) {
-                target.src = fallbackSrc;
-                setHasError(false);
-                setIsLoading(true);
-              } else {
-                handleError();
-              }
-            }}
-            {...(props as ImgHTMLAttributes<HTMLImageElement>)}
-          />
-        )}
+        <Image
+          ref={handleImageRef}
+          src={finalSrc}
+          alt={alt}
+          className={cn("h-full w-full", className, hasError && "opacity-0")}
+          onLoad={handleLoad}
+          onError={() => {
+            setHasError(true);
+            handleError();
+          }}
+          {...props}
+        />
       </motion.div>
     </div>
   );

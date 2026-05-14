@@ -1,11 +1,17 @@
 import type { Metadata } from "next";
 
+const configuredSiteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL?.trim() ||
+  "https://hellowaterfiltration.com.au";
+
 export const siteConfig = {
   name: "Hello Water Filtration",
   shortName: "Hello Water",
-  url: "https://hellowaterfiltration.com.au",
+  url: configuredSiteUrl.replace(/\/+$/, ""),
   description:
     "Australian whole-home water filtration systems, reverse osmosis, UV purification, replacement cartridges, installation, and servicing.",
+  locale: "en_AU",
+  logo: "/icon.svg",
   phone: "1300 515 469",
   email: "support@hellowaterfiltration.com.au",
   address: {
@@ -20,6 +26,8 @@ export const siteConfig = {
   ],
 };
 
+const defaultOgImage = "/opengraph-image";
+
 export const defaultKeywords = [
   "whole home water filtration",
   "water filtration Australia",
@@ -32,14 +40,20 @@ export const defaultKeywords = [
 ];
 
 export function absoluteUrl(path = "/") {
-  return new URL(path, siteConfig.url).toString();
+  if (/^https?:\/\//i.test(path)) {
+    return path;
+  }
+
+  const normalizedPath = path.startsWith("/") ? path : `/${path}`;
+
+  return new URL(normalizedPath, `${siteConfig.url}/`).toString();
 }
 
 export function createMetadata({
   title,
   description,
   path = "/",
-  image = "/opengraph-image",
+  image = defaultOgImage,
   type = "website",
   keywords = [],
   noIndex = false,
@@ -54,14 +68,19 @@ export function createMetadata({
 } = {}): Metadata {
   const pageTitle = title
     ? `${title} | ${siteConfig.name}`
-    : siteConfig.name;
+    : `${siteConfig.name} | Whole-Home Water Filtration Australia`;
   const pageDescription = description ?? siteConfig.description;
   const url = absoluteUrl(path);
+  const imageUrl = absoluteUrl(image);
+  const mergedKeywords = Array.from(new Set([...defaultKeywords, ...keywords]));
 
   return {
     title: pageTitle,
     description: pageDescription,
-    keywords: [...defaultKeywords, ...keywords],
+    keywords: mergedKeywords,
+    authors: [{ name: siteConfig.name, url: siteConfig.url }],
+    creator: siteConfig.name,
+    publisher: siteConfig.name,
     alternates: {
       canonical: url,
     },
@@ -83,11 +102,11 @@ export function createMetadata({
       description: pageDescription,
       url,
       siteName: siteConfig.name,
-      locale: "en_AU",
+      locale: siteConfig.locale,
       type,
       images: [
         {
-          url: absoluteUrl(image),
+          url: imageUrl,
           width: 1200,
           height: 630,
           alt: pageTitle,
@@ -98,7 +117,12 @@ export function createMetadata({
       card: "summary_large_image",
       title: pageTitle,
       description: pageDescription,
-      images: [absoluteUrl(image)],
+      images: [imageUrl],
+    },
+    other: {
+      "geo.region": siteConfig.address.addressRegion,
+      "geo.placename": siteConfig.address.addressLocality,
+      "business:contact_data:country_name": "Australia",
     },
   };
 }
