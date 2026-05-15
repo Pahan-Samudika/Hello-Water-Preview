@@ -27,7 +27,7 @@ export default function EnquiryPage() {
                 className: "col-span-1 md:col-span-2 lg:col-span-1",
               },
             ]}
-            description="Found us via a QR code? Submit your details below and our filtration experts will contact you shortly to discuss your installation needs."
+            description="Found us via a QR code or need a free water assessment? Submit your details below and our filtration experts will contact you shortly."
             title="Request Installation"
           >
             <EnquiryForm />
