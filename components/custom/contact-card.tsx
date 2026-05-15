@@ -30,7 +30,7 @@ export function ContactCard({
 	return (
 		<MotionWrapper
 			className={cn(
-				"relative grid h-full w-full md:grid-cols-2 gap-10 md:gap-14 lg:gap-20 items-center",
+				"relative grid h-full w-full md:grid-cols-2 gap-10 md:gap-14 lg:gap-20 items-start",
 				className
 			)}
 			variants={{

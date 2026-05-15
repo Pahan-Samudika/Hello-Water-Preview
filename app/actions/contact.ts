@@ -1,6 +1,6 @@
 "use server";
 
-import pool from "@/lib/db";
+import { db } from "@/lib/firebase";
 import nodemailer from "nodemailer";
 
 export async function submitContactForm(formData: FormData) {
@@ -15,10 +15,14 @@ export async function submitContactForm(formData: FormData) {
   }
 
   try {
-    await pool.execute(
-      "INSERT INTO contact_submissions (name, email, suburb, phone, message) VALUES (?, ?, ?, ?, ?)",
-      [name, email, suburb, phone, message]
-    );
+    await db.collection("contact_submissions").add({
+      name,
+      email,
+      suburb,
+      phone,
+      message,
+      createdAt: new Date().toISOString(),
+    });
 
     const transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST,
@@ -32,7 +36,7 @@ export async function submitContactForm(formData: FormData) {
 
     const mailOptions = {
       from: `"Hello Water Website" <${process.env.SMTP_USER}>`,
-      to: "support@hellowaterfiltration.com.au",
+      to: process.env.CONTACT_RECIPIENTS || "support@hellowaterfiltration.com.au",
       subject: `New Contact Form Submission from ${name}`,
       html: `
         <h3>New Contact Form Submission</h3>
