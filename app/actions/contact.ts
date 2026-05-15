@@ -36,7 +36,7 @@ export async function submitContactForm(formData: FormData) {
 
     const mailOptions = {
       from: `"Hello Water Website" <${process.env.SMTP_USER}>`,
-      to: "support@hellowaterfiltration.com.au",
+      to: process.env.CONTACT_RECIPIENTS || "support@hellowaterfiltration.com.au",
       subject: `New Contact Form Submission from ${name}`,
       html: `
         <h3>New Contact Form Submission</h3>

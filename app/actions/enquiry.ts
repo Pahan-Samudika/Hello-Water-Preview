@@ -36,7 +36,7 @@ export async function submitEnquiryForm(formData: FormData) {
 
     const mailOptions = {
       from: `"Hello Water Enquiry" <${process.env.SMTP_USER}>`,
-      to: "content@hellowaterfiltration.com.au",
+      to: process.env.ENQUIRY_RECIPIENTS || "content@hellowaterfiltration.com.au",
       subject: `New QR Enquiry from ${name}`,
       html: `
         <div style="font-family: sans-serif; line-height: 1.6; color: #333;">
