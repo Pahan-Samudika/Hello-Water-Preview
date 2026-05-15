@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { type FormEvent, useRef, useState } from "react";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -12,9 +12,19 @@ import { Textarea } from "@/components/ui/textarea";
 
 export function ContactForm() {
   const formRef = useRef<HTMLFormElement>(null);
+  const isSubmittingRef = useRef(false);
   const [isPending, setIsPending] = useState(false);
 
-  async function handleSubmit(formData: FormData) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    if (isSubmittingRef.current) {
+      return;
+    }
+
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+    isSubmittingRef.current = true;
     setIsPending(true);
 
     try {
@@ -29,12 +39,13 @@ export function ContactForm() {
     } catch {
       toast.error("An unexpected error occurred. Please try again.");
     } finally {
+      isSubmittingRef.current = false;
       setIsPending(false);
     }
   }
 
   return (
-    <form ref={formRef} action={handleSubmit} className="w-full space-y-5 lg:space-y-6">
+    <form ref={formRef} onSubmit={handleSubmit} className="w-full space-y-5 lg:space-y-6">
       <div className="flex flex-col gap-2">
         <Label className="pl-1 text-sm font-medium text-foreground/80">Name</Label>
         <Input
