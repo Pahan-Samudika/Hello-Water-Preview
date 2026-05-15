@@ -1,6 +1,6 @@
 "use server";
 
-import pool from "@/lib/db";
+import { db } from "@/lib/firebase";
 import nodemailer from "nodemailer";
 
 export async function submitEnquiryForm(formData: FormData) {
@@ -15,13 +15,15 @@ export async function submitEnquiryForm(formData: FormData) {
   }
 
   try {
-    // 1. Store in Database
-    await pool.execute(
-      "INSERT INTO enquiries (name, email, mobile, postcode, installed_address) VALUES (?, ?, ?, ?, ?)",
-      [name, email, mobile, postcode, installedAddress || null]
-    );
+    await db.collection("enquiries").add({
+      name,
+      email,
+      mobile,
+      postcode,
+      installedAddress,
+      createdAt: new Date().toISOString(),
+    });
 
-    // 2. Send Email Notification
     const transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST,
       port: parseInt(process.env.SMTP_PORT || "465"),
