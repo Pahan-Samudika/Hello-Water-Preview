@@ -36,13 +36,13 @@ const footerLinks: FooterSection[] = [
 			{ title: "Contact Us", href: "/contact" },
 		],
 	},
-	// {
-	// 	label: "Legal",
-	// 	links: [
-	// 		{ title: "Privacy Policy", href: "/privacy-policy" },
-	// 		{ title: "Terms of Service", href: "/terms-of-service" },
-	// 	],
-	// },
+	{
+		label: "Legal",
+		links: [
+			{ title: "Privacy Policy", href: "/privacy-policy" },
+			// { title: "Terms of Service", href: "/terms-of-service" },
+		],
+	},
 	{
 		label: "Social Links",
 		links: [

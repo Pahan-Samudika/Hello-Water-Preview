@@ -33,7 +33,7 @@ const faqCategories = [
       },
       {
         question: "Does the system reduce hard water?",
-        answer: "Yes. Our ion-exchange technology helps reduce hardness minerals like calcium & magnesium, preventing limescale buildup."
+        answer: "No, the system is not a water softener, however the KDF 55 Media reduces Calcium & Magnesium, preventing limescale build up & acts as an anti scaling filter."
       },
       {
         question: "Does it remove heavy metals?",
