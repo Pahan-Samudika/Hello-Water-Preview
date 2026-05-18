@@ -30,7 +30,8 @@ export const metadata: Metadata = {
   generator: "Next.js",
   manifest: "/manifest.webmanifest",
   icons: {
-    icon: "/icon.svg",
+    icon: "/favicon.svg",
+    shortcut: "/favicon.svg",
   },
   formatDetection: {
     telephone: false,
