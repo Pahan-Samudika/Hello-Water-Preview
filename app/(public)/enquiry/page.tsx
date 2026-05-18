@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { MailIcon, PhoneIcon, MapPinIcon, QrCodeIcon } from "lucide-react";
+import { MailIcon, PhoneIcon } from "lucide-react";
 import { ContactCard } from "@/components/custom/contact-card";
 import { EnquiryForm } from "@/components/custom/enquiry-form";
 
