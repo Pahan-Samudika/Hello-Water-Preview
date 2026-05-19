@@ -18,7 +18,7 @@ export default function EnquiryPage() {
               {
                 icon: <MailIcon className="w-5 h-5" />,
                 label: "Support",
-                value: "support@hellowaterfiltration.com.au",
+                value: "sales@hellowater.com.au",
               },
               {
                 icon: <PhoneIcon className="w-5 h-5" />,

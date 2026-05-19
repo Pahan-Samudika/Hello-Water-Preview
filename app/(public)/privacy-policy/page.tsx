@@ -93,7 +93,7 @@ export default function PrivacyPolicyPage() {
             "103/55 Victor Crescent",
             "Narre Warren, VIC 3805",
             "Phone: 1300 515 469",
-            "Email: support@hellowaterfiltration.com.au",
+            "Email: sales@hellowater.com.au",
           ],
         },
       ],
