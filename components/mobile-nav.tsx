@@ -27,7 +27,7 @@ export function MobileNav() {
 				)}
 			</Button>
 			{open && (
-				<Portal className="top-[4.375rem]" id="mobile-menu">
+				<Portal className="top-[4.375rem] z-50" id="mobile-menu">
 					<PortalBackdrop />
 					<div
 						className={cn(
