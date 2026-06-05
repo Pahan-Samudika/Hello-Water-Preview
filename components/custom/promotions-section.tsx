@@ -103,7 +103,7 @@ export const PromotionsSection = () => {
               {/* Full-width responsive Auto-height Image */}
               <Link href="/enquiry" className="block w-full lg:pointer-events-none">
                 <Image
-                  src="/images/eofy-banner.webp"
+                  src="https://res.cloudinary.com/dnlb02zp9/image/upload/v1780570398/EOFY_ocpxnc.webp"
                   alt="End of Financial Year Sale Banner"
                   width={2128}
                   height={788}
