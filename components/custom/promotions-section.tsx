@@ -5,6 +5,7 @@ import Image from "next/image";
 import { ArrowRightIcon, GiftIcon, PercentIcon, SparklesIcon, PhoneCall as PhoneCallIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "motion/react";
+import Countdown from "react-countdown";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 32 },
@@ -55,6 +56,38 @@ export const PromotionsSection = () => {
                 Don't miss our exclusive deals. Get premium water filtration systems professionally installed in your home with special seasonal savings.
               </p>
             </motion.div>
+            <motion.div className="flex items-center justify-center gap-3" variants={fadeUp}>
+              <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                Ends in:
+              </span>
+              <Countdown
+                date={new Date("2026-06-30T23:59:59+10:00")}
+                renderer={({ days, hours, minutes, seconds }) => (
+                  <div className="flex items-center gap-1">
+                    {[
+                      { value: days, label: "d" },
+                      { value: hours, label: "h" },
+                      { value: minutes, label: "m" },
+                      { value: seconds, label: "s" },
+                    ].map((unit, i) => (
+                      <div key={unit.label} className="flex items-center gap-1">
+                        {i > 0 && (
+                          <span className="text-sm font-bold text-muted-foreground/40">:</span>
+                        )}
+                        <div className="flex items-baseline gap-0.5 rounded-md bg-muted px-2 py-1 font-mono">
+                          <span className="text-sm font-bold tabular-nums text-foreground sm:text-base">
+                            {String(unit.value).padStart(2, "0")}
+                          </span>
+                          <span className="text-[10px] font-medium text-muted-foreground">
+                            {unit.label}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              />
+            </motion.div>
           </motion.div>
 
           {/* EOFY Promo Poster Card */}
@@ -88,13 +121,14 @@ export const PromotionsSection = () => {
                     Active Offer
                   </div>
 
-                  <h3 className="text-2xl font-bold tracking-tight text-white sm:text-3xl lg:text-3xl xl:text-4xl uppercase">
-                    EOFY MEGA SAVINGS
+                  <h3 className="text-2xl font-bold tracking-tight text-white sm:text-3xl lg:text-3xl xl:text-4xl">
+                    EOFY Mega Savings
                   </h3>
 
                   <p className="mt-2 text-sm leading-relaxed text-zinc-300 sm:text-base lg:text-white/95">
                     Upgrade your home with a premium Pentair USA-designed Hellowater Whole Home Water Filtration System. Save over $700 off the installed price and receive an industry-leading Gradient Density Sediment Cartridge FREE every 12 months for life!
                   </p>
+
 
                   {/* CTAs */}
                   <div className="mt-4 xl:mt-6 flex flex-col gap-3 sm:flex-row pointer-events-auto z-40">
