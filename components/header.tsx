@@ -47,6 +47,10 @@ export const navigationData: NavItem[] = [
     ],
   },
   {
+    title: "Blogs",
+    href: "/blogs",
+  },
+  {
     title: "Contact Us",
     href: "/contact",
   },
