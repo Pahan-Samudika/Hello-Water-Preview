@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 
 import { products } from "@/constants/products";
+import { blogs } from "@/constants/blogs";
 import { absoluteUrl } from "@/lib/seo";
 
 export const revalidate = 86400;
@@ -15,6 +16,7 @@ const staticRoutes = [
   "/faq",
   "/contact",
   "/privacy-policy",
+  "/blogs",
 ] as const;
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -29,6 +31,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })),
     ...products.map((product) => ({
       url: absoluteUrl(`/products/${product.slug}`),
+      lastModified,
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
+    })),
+    ...blogs.map((blog) => ({
+      url: absoluteUrl(`/blogs/${blog.slug}`),
       lastModified,
       changeFrequency: "monthly" as const,
       priority: 0.8,
