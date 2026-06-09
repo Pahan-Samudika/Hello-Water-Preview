@@ -9,10 +9,35 @@ export async function submitContactForm(formData: FormData) {
   const suburb = formData.get("suburb") as string;
   const phone = formData.get("phone") as string;
   const message = formData.get("message") as string;
+  const recaptchaToken = formData.get("g-recaptcha-response") as string;
 
   if (!name || !email || !message) {
     return { success: false, error: "Name, email, & message are required." };
   }
+
+  if (!recaptchaToken) {
+    return { success: false, error: "reCAPTCHA verification is required." };
+  }
+
+  try {
+    const secretKey = process.env.RECAPTCHA_SECRET_KEY;
+    if (!secretKey) {
+      console.error("RECAPTCHA_SECRET_KEY is not defined in environment variables.");
+      return { success: false, error: "Server configuration error. reCAPTCHA key missing." };
+    }
+
+    const verificationUrl = `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${recaptchaToken}`;
+    const verifyResponse = await fetch(verificationUrl, { method: "POST" });
+    const verifyResult = await verifyResponse.json();
+
+    if (!verifyResult.success) {
+      return { success: false, error: "reCAPTCHA verification failed. Please try again." };
+    }
+  } catch (error) {
+    console.error("Error verifying reCAPTCHA:", error);
+    return { success: false, error: "An error occurred during verification. Please try again." };
+  }
+
 
   try {
     await db.collection("contact_submissions").add({
