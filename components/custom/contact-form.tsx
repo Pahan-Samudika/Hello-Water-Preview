@@ -9,15 +9,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { ReCAPTCHA, type ReCAPTCHARef } from "@/components/custom/recaptcha";
+import { ReCAPTCHA } from "@/components/custom/recaptcha";
 
 
 export function ContactForm() {
   const formRef = useRef<HTMLFormElement>(null);
-  const recaptchaRef = useRef<ReCAPTCHARef>(null);
   const isSubmittingRef = useRef(false);
   const [isPending, setIsPending] = useState(false);
-  const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
 
   const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || "";
 
@@ -28,32 +26,41 @@ export function ContactForm() {
       return;
     }
 
-    if (!recaptchaToken) {
-      toast.error("Please complete the reCAPTCHA verification.");
+    if (!window.grecaptcha) {
+      toast.error("reCAPTCHA is not loaded yet. Please refresh and try again.");
       return;
     }
-
-    const form = event.currentTarget;
-    const formData = new FormData(form);
-    formData.append("g-recaptcha-response", recaptchaToken);
 
     isSubmittingRef.current = true;
     setIsPending(true);
 
     try {
+      const token = await new Promise<string>((resolve, reject) => {
+        window.grecaptcha!.ready(async () => {
+          try {
+            const t = await window.grecaptcha!.execute(siteKey, { action: "contact_submit" });
+            resolve(t);
+          } catch (err) {
+            reject(err);
+          }
+        });
+      });
+
+      const form = event.currentTarget;
+      const formData = new FormData(form);
+      formData.append("g-recaptcha-response", token);
+
       const result = await submitContactForm(formData);
 
       if (result.success) {
         toast.success("Thank you! Your message has been sent successfully.");
         formRef.current?.reset();
-        recaptchaRef.current?.reset();
       } else {
         toast.error(result.error || "Failed to send message. Please try again.");
-        recaptchaRef.current?.reset();
       }
-    } catch {
+    } catch (error) {
+      console.error("reCAPTCHA token error:", error);
       toast.error("An unexpected error occurred. Please try again.");
-      recaptchaRef.current?.reset();
     } finally {
       isSubmittingRef.current = false;
       setIsPending(false);
@@ -109,14 +116,10 @@ export function ContactForm() {
           className="min-h-[120px] rounded-xl border-input/40 shadow-xs focus-visible:ring-primary/50 focus-visible:border-primary/50 resize-y pt-3"
         />
       </div>
-      <ReCAPTCHA
-        ref={recaptchaRef}
-        sitekey={siteKey}
-        onChange={setRecaptchaToken}
-      />
+      <ReCAPTCHA sitekey={siteKey} />
       <Button
         type="submit"
-        disabled={isPending || !recaptchaToken}
+        disabled={isPending}
         className="group relative mt-2 w-full overflow-hidden rounded-full py-6 text-base font-semibold shadow-lg hover:shadow-primary/25 hover:shadow-2xl hover:-translate-y-0.5 transition-all duration-300 before:absolute before:inset-0 before:rounded-[inherit] before:bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.5)_50%,transparent_75%,transparent_100%)] before:bg-[length:250%_250%,100%_100%] before:bg-[position:200%_0,0_0] before:bg-no-repeat before:transition-[background-position_0s_ease] before:duration-1000 hover:before:bg-[position:-100%_0,0_0] dark:before:bg-[linear-gradient(45deg,transparent_25%,rgba(0,0,0,0.2)_50%,transparent_75%,transparent_100%)]"
       >
         {isPending ? (
@@ -128,6 +131,17 @@ export function ContactForm() {
           "Send Message"
         )}
       </Button>
+      <p className="text-center text-xs text-muted-foreground mt-4">
+        This site is protected by reCAPTCHA and the Google{" "}
+        <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" className="underline hover:text-primary">
+          Privacy Policy
+        </a>{" "}
+        and{" "}
+        <a href="https://policies.google.com/terms" target="_blank" rel="noopener noreferrer" className="underline hover:text-primary">
+          Terms of Service
+        </a>{" "}
+        apply.
+      </p>
     </form>
   );
 }
