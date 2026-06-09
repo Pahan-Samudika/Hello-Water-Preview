@@ -28,7 +28,7 @@ export default function BlogsPage() {
             }}
           >
             <h1 className="text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl text-balance">
-              Water Quality & Health Blogs
+              Our Blogs
             </h1>
           </MotionWrapper>
           <MotionWrapper
@@ -46,64 +46,67 @@ export default function BlogsPage() {
         {/* Blogs Grid */}
         <div className="grid gap-8 md:grid-cols-2 lg:gap-10">
           {blogs.map((post, idx) => (
-            <MotionWrapper
+            <Link
               key={post.slug}
-              className="flex flex-col overflow-hidden rounded-2xl border border-border bg-card/50 backdrop-blur-xs transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-lg"
-              variants={{
-                hidden: { opacity: 0, y: 30 },
-                visible: {
-                  opacity: 1,
-                  y: 0,
-                  transition: {
-                    duration: 0.8,
-                    delay: idx * 0.15,
-                    ease: [0.22, 1, 0.36, 1],
-                  },
-                },
-              }}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-50px" }}
+              href={`/blogs/${post.slug}`}
+              className="flex flex-col group"
             >
-              {/* Cover Image Link */}
-              <Link href={`/blogs/${post.slug}`} className="relative block aspect-video overflow-hidden bg-muted">
-                <Image
-                  src={post.coverImage}
-                  alt={post.title}
-                  fill
-                  className="object-cover transition-transform duration-500 hover:scale-105"
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                  priority={idx < 2}
-                />
-              </Link>
-
-              {/* Card Body */}
-              <div className="flex flex-1 flex-col p-6 md:p-8">
-                {/* Meta */}
-                <div className="flex items-center gap-4 text-xs text-muted-foreground mb-4">
-                  <span className="flex items-center gap-1">
-                    <Calendar className="h-3.5 w-3.5" />
-                    {post.publishedAt}
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <Clock className="h-3.5 w-3.5" />
-                    {post.readTime}
-                  </span>
+              <MotionWrapper
+                className="flex flex-col h-full overflow-hidden rounded-2xl border border-border bg-card/50 backdrop-blur-xs transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-lg cursor-pointer"
+                variants={{
+                  hidden: { opacity: 0, y: 30 },
+                  visible: {
+                    opacity: 1,
+                    y: 0,
+                    transition: {
+                      duration: 0.8,
+                      delay: idx * 0.15,
+                      ease: [0.22, 1, 0.36, 1],
+                    },
+                  },
+                }}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-50px" }}
+              >
+                {/* Cover Image */}
+                <div className="relative block aspect-video overflow-hidden bg-muted">
+                  <Image
+                    src={post.coverImage}
+                    alt={post.title}
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    priority={idx < 2}
+                  />
                 </div>
 
-                {/* Title */}
-                <h2 className="text-xl font-bold tracking-tight text-foreground md:text-2xl line-clamp-2 mb-3 hover:text-primary transition-colors">
-                  <Link href={`/blogs/${post.slug}`}>
-                    {post.title}
-                  </Link>
-                </h2>
+                {/* Card Body */}
+                <div className="flex flex-1 flex-col p-6 md:p-8">
+                  {/* Meta */}
+                  <div className="flex items-center gap-4 text-xs text-muted-foreground mb-4">
+                    <span className="flex items-center gap-1">
+                      <Calendar className="h-3.5 w-3.5" />
+                      {post.publishedAt}
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <Clock className="h-3.5 w-3.5" />
+                      {post.readTime}
+                    </span>
+                  </div>
 
-                {/* Excerpt */}
-                <p className="text-muted-foreground text-sm leading-relaxed line-clamp-3">
-                  {post.excerpt}
-                </p>
-              </div>
-            </MotionWrapper>
+                  {/* Title */}
+                  <h2 className="text-xl font-bold tracking-tight text-foreground md:text-2xl line-clamp-2 mb-3 group-hover:text-primary transition-colors">
+                    {post.title}
+                  </h2>
+
+                  {/* Excerpt */}
+                  <p className="text-muted-foreground text-sm leading-relaxed line-clamp-3">
+                    {post.excerpt}
+                  </p>
+                </div>
+              </MotionWrapper>
+            </Link>
           ))}
         </div>
       </section>

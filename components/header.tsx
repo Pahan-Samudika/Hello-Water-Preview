@@ -40,15 +40,12 @@ export const navigationData: NavItem[] = [
     href: "/about-us",
     children: [
       { title: "Who We Are", href: "/about-us" },
-      { title: "FAQs", href: "/faq" },
       { title: "Benefits", href: "/benefits" },
       { title: "Technology", href: "/technology" },
       { title: "Certifications", href: "/certifications" },
+      { title: "Our Blogs", href: "/blogs" },
+      { title: "FAQs", href: "/faq" },
     ],
-  },
-  {
-    title: "Blogs",
-    href: "/blogs",
   },
   {
     title: "Contact Us",
