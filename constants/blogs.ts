@@ -36,7 +36,7 @@ export const blogs: BlogPost[] = [
     subtitle: "Toxic “forever chemicals” are making headlines again — & this time, it’s huge.",
     excerpt: "The Australian Government has launched a major legal case against global manufacturing giant 3M over PFAS contamination. Learn what PFAS is, why it matters, and what you can do.",
     coverImage: "https://res.cloudinary.com/dnlb02zp9/image/upload/v1780986794/pfas-blog_kmg4i8.webp",
-    publishedAt: "June 9, 2026",
+    publishedAt: "June 1, 2026",
     readTime: "4 min read",
     author: {
       name: "Hello Water Filtration",
@@ -184,7 +184,7 @@ export const blogs: BlogPost[] = [
     subtitle: "A major marine algal bloom affecting parts of South Australia has put water quality back in the spotlight.",
     excerpt: "Scientists warn environmental conditions are creating the perfect environment for more frequent outbreaks. Discover the impact on drinking water and local ecosystems.",
     coverImage: "https://res.cloudinary.com/dnlb02zp9/image/upload/v1780986792/algal-bloom-blog_yxznao.webp",
-    publishedAt: "June 9, 2026",
+    publishedAt: "June 8, 2026",
     readTime: "4 min read",
     author: {
       name: "Hello Water Filtration",
