@@ -27,7 +27,7 @@ export default function BlogsPage() {
               visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as const } },
             }}
           >
-            <h1 className="text-3xl font-bold tracking-tight sm:text-5xl lg:text-6xl text-balance">
+            <h1 className="text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl text-balance">
               Water Quality & Health Blogs
             </h1>
           </MotionWrapper>
