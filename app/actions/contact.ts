@@ -30,8 +30,6 @@ export async function submitContactForm(formData: FormData) {
     const verifyResponse = await fetch(verificationUrl, { method: "POST" });
     const verifyResult = await verifyResponse.json();
 
-    console.log(`reCAPTCHA v3 verification score for ${email}:`, verifyResult.score);
-
     if (!verifyResult.success || (verifyResult.score !== undefined && verifyResult.score < 0.5)) {
       return { success: false, error: "reCAPTCHA verification failed. Low trust score." };
     }

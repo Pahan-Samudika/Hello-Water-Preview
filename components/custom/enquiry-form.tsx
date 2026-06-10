@@ -20,6 +20,7 @@ export function EnquiryForm() {
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    const form = event.currentTarget;
 
     if (isSubmittingRef.current) {
       return;
@@ -45,7 +46,6 @@ export function EnquiryForm() {
         });
       });
 
-      const form = event.currentTarget;
       const formData = new FormData(form);
       formData.append("g-recaptcha-response", token);
 
@@ -59,7 +59,8 @@ export function EnquiryForm() {
       }
     } catch (error) {
       console.error("reCAPTCHA token error:", error);
-      toast.error("An unexpected error occurred. Please try again.");
+      const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred.";
+      toast.error(`${errorMessage} Please try again.`);
     } finally {
       isSubmittingRef.current = false;
       setIsPending(false);
