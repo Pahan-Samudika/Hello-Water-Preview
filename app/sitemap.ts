@@ -20,10 +20,19 @@ const staticRoutes = [
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const lastModified = new Date();
 
-  const [products, blogs] = await Promise.all([
-    getProducts(),
-    getBlogs(),
-  ]);
+  let products: any[] = [];
+  let blogs: any[] = [];
+
+  try {
+    const [p, b] = await Promise.all([
+      getProducts(),
+      getBlogs(),
+    ]);
+    products = p;
+    blogs = b;
+  } catch (error) {
+    console.error("Sitemap: Failed to query dynamic Firestore routes during build:", error);
+  }
 
   return [
     ...staticRoutes.map((route) => ({
