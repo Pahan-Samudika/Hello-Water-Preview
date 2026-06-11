@@ -138,7 +138,7 @@ export function productJsonLd(product: Product) {
   };
 }
 
-export function productCollectionJsonLd() {
+export function productCollectionJsonLd(productList: Product[]) {
   return {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
@@ -148,7 +148,7 @@ export function productCollectionJsonLd() {
     url: absoluteUrl("/products"),
     mainEntity: {
       "@type": "ItemList",
-      itemListElement: products.map((product, index) => ({
+      itemListElement: productList.map((product, index) => ({
         "@type": "ListItem",
         position: index + 1,
         url: absoluteUrl(`/products/${product.slug}`),
