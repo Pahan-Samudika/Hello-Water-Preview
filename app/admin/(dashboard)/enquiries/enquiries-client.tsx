@@ -14,6 +14,13 @@ import {
   Mail,
   MapPin,
 } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface EnquiriesClientProps {
   initialEnquiries: Enquiry[];
@@ -119,16 +126,17 @@ export function EnquiriesClient({ initialEnquiries, canManage }: EnquiriesClient
         </div>
 
         {/* Status filter selector */}
-        <select
-          value={statusFilter}
-          onChange={(e) => setStatusFilter(e.target.value)}
-          className="h-10 px-4 bg-slate-900 border border-slate-800 rounded-xl text-sm text-white focus:outline-none focus:border-slate-700 transition-all"
-        >
-          <option value="All">All Statuses</option>
-          <option value="New">New</option>
-          <option value="In Progress">In Progress</option>
-          <option value="Resolved">Resolved</option>
-        </select>
+        <Select value={statusFilter} onValueChange={(val) => setStatusFilter(val || "All")}>
+          <SelectTrigger className="h-10 w-44 bg-slate-900 border border-slate-800 rounded-xl text-sm text-white focus:outline-none focus:border-slate-700 transition-all">
+            <SelectValue placeholder="All Statuses" />
+          </SelectTrigger>
+          <SelectContent className="bg-slate-950 border border-slate-800 rounded-xl">
+            <SelectItem value="All">All Statuses</SelectItem>
+            <SelectItem value="New">New</SelectItem>
+            <SelectItem value="In Progress">In Progress</SelectItem>
+            <SelectItem value="Resolved">Resolved</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
 
       {/* Enquiries table view */}
@@ -194,24 +202,30 @@ export function EnquiriesClient({ initialEnquiries, canManage }: EnquiriesClient
                     </td>
                     <td className="py-4 px-6">
                       {canManage ? (
-                        <select
+                        <Select
                           value={currentStatus}
                           disabled={loading}
-                          onChange={(e) =>
-                            handleStatusChange(enq.id, e.target.value as Enquiry["status"])
+                          onValueChange={(val) =>
+                            handleStatusChange(enq.id, (val || "New") as Enquiry["status"])
                           }
-                          className={`h-8 px-2 rounded-lg border text-xs font-bold focus:outline-none transition-all ${
-                            currentStatus === "Resolved"
-                              ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20"
-                              : currentStatus === "In Progress"
-                              ? "bg-amber-500/10 text-amber-400 border-amber-500/20"
-                              : "bg-blue-500/10 text-blue-400 border-blue-500/20"
-                          }`}
                         >
-                          <option value="New">New</option>
-                          <option value="In Progress">In Progress</option>
-                          <option value="Resolved">Resolved</option>
-                        </select>
+                          <SelectTrigger
+                            className={`h-8 min-w-28 px-2.5 rounded-lg border-3 text-xs font-bold text-white focus:outline-none transition-all ${
+                              currentStatus === "Resolved"
+                                ? "bg-emerald-500/10 border-emerald-500/20 hover:bg-emerald-500/20"
+                                : currentStatus === "In Progress"
+                                ? "bg-amber-500/10 border-amber-500/20 hover:bg-amber-500/20"
+                                : "bg-blue-500/10 border-blue-500/20 hover:bg-blue-500/20"
+                            }`}
+                          >
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent className="border border-slate-800 rounded-lg">
+                            <SelectItem value="New">New</SelectItem>
+                            <SelectItem value="In Progress">In Progress</SelectItem>
+                            <SelectItem value="Resolved">Resolved</SelectItem>
+                          </SelectContent>
+                        </Select>
                       ) : (
                         <span
                           className={`inline-flex px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${

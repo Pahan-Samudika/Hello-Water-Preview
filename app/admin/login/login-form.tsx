@@ -83,11 +83,11 @@ export function LoginForm({ isFirstRun }: LoginFormProps) {
       <div className="space-y-4">
         {isFirstRun && (
           <div className="space-y-1.5">
-            <label className="text-xs font-semibold text-slate-300 tracking-wider uppercase pl-1" htmlFor="name">
+            <label className="text-xs font-semibold text-muted-foreground tracking-wider uppercase pl-1" htmlFor="name">
               Full Name
             </label>
             <div className="relative">
-              <span className="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-500">
+              <span className="absolute inset-y-0 left-0 flex items-center pl-3.5 text-muted-foreground/60">
                 <User className="size-4" />
               </span>
               <input
@@ -97,18 +97,18 @@ export function LoginForm({ isFirstRun }: LoginFormProps) {
                 required
                 disabled={loading}
                 placeholder="John Doe"
-                className="w-full h-11 pl-10 pr-4 bg-white/5 border border-white/10 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"
+                className="w-full h-11 pl-10 pr-4 bg-white/5 border border-white/10 rounded-xl text-sm text-white placeholder-muted-foreground/60 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"
               />
             </div>
           </div>
         )}
 
         <div className="space-y-1.5">
-          <label className="text-xs font-semibold text-slate-300 tracking-wider uppercase pl-1" htmlFor="email">
+          <label className="text-xs font-semibold text-muted-foreground tracking-wider uppercase pl-1" htmlFor="email">
             Email Address
           </label>
           <div className="relative">
-            <span className="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-500">
+            <span className="absolute inset-y-0 left-0 flex items-center pl-3.5 text-muted-foreground/60">
               <Mail className="size-4" />
             </span>
             <input
@@ -118,17 +118,17 @@ export function LoginForm({ isFirstRun }: LoginFormProps) {
               required
               disabled={loading}
               placeholder="admin@hellowater.com.au"
-              className="w-full h-11 pl-10 pr-4 bg-white/5 border border-white/10 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"
+              className="w-full h-11 pl-10 pr-4 bg-white/5 border border-white/10 rounded-xl text-sm text-white placeholder-muted-foreground/60 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"
             />
           </div>
         </div>
 
         <div className="space-y-1.5">
-          <label className="text-xs font-semibold text-slate-300 tracking-wider uppercase pl-1" htmlFor="password">
+          <label className="text-xs font-semibold text-muted-foreground tracking-wider uppercase pl-1" htmlFor="password">
             Password
           </label>
           <div className="relative">
-            <span className="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-500">
+            <span className="absolute inset-y-0 left-0 flex items-center pl-3.5 text-muted-foreground/60">
               <Lock className="size-4" />
             </span>
             <input
@@ -138,18 +138,18 @@ export function LoginForm({ isFirstRun }: LoginFormProps) {
               required
               disabled={loading}
               placeholder="••••••••"
-              className="w-full h-11 pl-10 pr-4 bg-white/5 border border-white/10 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"
+              className="w-full h-11 pl-10 pr-4 bg-white/5 border border-white/10 rounded-xl text-sm text-white placeholder-muted-foreground/60 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"
             />
           </div>
         </div>
 
         {isFirstRun && (
           <div className="space-y-1.5">
-            <label className="text-xs font-semibold text-slate-300 tracking-wider uppercase pl-1" htmlFor="confirmPassword">
+            <label className="text-xs font-semibold text-muted-foreground tracking-wider uppercase pl-1" htmlFor="confirmPassword">
               Confirm Password
             </label>
             <div className="relative">
-              <span className="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-500">
+              <span className="absolute inset-y-0 left-0 flex items-center pl-3.5 text-muted-foreground/60">
                 <Lock className="size-4" />
               </span>
               <input
@@ -159,7 +159,7 @@ export function LoginForm({ isFirstRun }: LoginFormProps) {
                 required
                 disabled={loading}
                 placeholder="••••••••"
-                className="w-full h-11 pl-10 pr-4 bg-white/5 border border-white/10 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"
+                className="w-full h-11 pl-10 pr-4 bg-white/5 border border-white/10 rounded-xl text-sm text-white placeholder-muted-foreground/60 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"
               />
             </div>
           </div>

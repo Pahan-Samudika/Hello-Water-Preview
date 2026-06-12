@@ -35,6 +35,13 @@ export default async function AdminDashboardPage({ searchParams }: PageProps) {
 
   const stats = [
     {
+      name: "Products Count",
+      value: products.length,
+      icon: Droplets,
+      href: session.permissions.includes("Product Management") ? "/admin/products" : null,
+      color: "text-sky-400 bg-sky-500/10 border-sky-500/20",
+    },
+    {
       name: "Total Enquiries",
       value: canViewEnquiries ? enquiries.length : "Locked",
       icon: Inbox,
@@ -47,13 +54,6 @@ export default async function AdminDashboardPage({ searchParams }: PageProps) {
       icon: PhoneCall,
       href: canViewContacts ? "/admin/contacts" : null,
       color: "text-emerald-400 bg-emerald-500/10 border-emerald-500/20",
-    },
-    {
-      name: "Products Count",
-      value: products.length,
-      icon: Droplets,
-      href: session.permissions.includes("Product Management") ? "/admin/products" : null,
-      color: "text-sky-400 bg-sky-500/10 border-sky-500/20",
     },
     {
       name: "Blog Articles",
@@ -74,28 +74,11 @@ export default async function AdminDashboardPage({ searchParams }: PageProps) {
         </div>
       )}
 
-      {/* Welcome Banner */}
-      <div className="relative rounded-[2rem] border border-white/10 bg-white/5 p-8 overflow-hidden">
-        <div className="absolute top-0 right-0 size-80 bg-primary/5 rounded-full blur-[80px] pointer-events-none" />
-        <div className="relative z-10 space-y-2">
-          <h2 className="text-2xl font-extrabold text-white sm:text-3xl">
-            Welcome back, {session.name}!
-          </h2>
-          <p className="text-slate-400 text-sm max-w-2xl">
-            Manage your store configuration, publish blog posts, respond to enquiries, and coordinate team permissions from this centralized administrative console.
-          </p>
-          <div className="pt-2 flex flex-wrap gap-2">
-            {session.permissions.map((perm) => (
-              <span
-                key={perm}
-                className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-white/5 border border-white/5 text-[10px] font-bold text-slate-300 tracking-wide uppercase"
-              >
-                <ShieldCheck className="size-3 text-emerald-400" />
-                {perm}
-              </span>
-            ))}
-          </div>
-        </div>
+      {/* Welcome Title */}
+      <div>
+        <h2 className="text-2xl font-extrabold text-white sm:text-3xl">
+          Welcome back, {session.name}!
+        </h2>
       </div>
 
       {/* Quick Metrics Grid */}

@@ -29,6 +29,12 @@ export function SidebarNav({ permissions }: SidebarNavProps) {
       show: true,
     },
     {
+      name: "Products",
+      href: "/admin/products",
+      icon: Droplets,
+      show: permissions.includes("Product Management"),
+    },
+    {
       name: "Enquiries",
       href: "/admin/enquiries",
       icon: Inbox,
@@ -39,12 +45,6 @@ export function SidebarNav({ permissions }: SidebarNavProps) {
       href: "/admin/contacts",
       icon: PhoneCall,
       show: permissions.includes("Contact View") || permissions.includes("Contact Management"),
-    },
-    {
-      name: "Products",
-      href: "/admin/products",
-      icon: Droplets,
-      show: permissions.includes("Product Management"),
     },
     {
       name: "Blogs",
@@ -68,9 +68,6 @@ export function SidebarNav({ permissions }: SidebarNavProps) {
 
   return (
     <nav className="space-y-1.5 px-3 py-4">
-      <div className="text-[10px] font-bold uppercase tracking-wider text-slate-500 px-3 mb-2">
-        Core Navigation
-      </div>
       {navigationItems
         .filter((item) => item.show)
         .map((item) => {
