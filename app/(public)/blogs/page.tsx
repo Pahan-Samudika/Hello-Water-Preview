@@ -1,10 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Calendar, Clock } from "lucide-react";
-import { blogs } from "@/constants/blogs";
+import { getBlogs } from "@/lib/db-queries";
 import { MotionWrapper } from "@/components/custom/motion-wrapper";
 
-export default function BlogsPage() {
+export const revalidate = 0;
+
+export default async function BlogsPage() {
+  const blogs = await getBlogs();
   return (
     <main className="relative overflow-hidden w-full min-h-screen">
       <section className="mx-auto w-full max-w-6xl px-6 py-8 md:py-16 sm:px-6 lg:px-8">

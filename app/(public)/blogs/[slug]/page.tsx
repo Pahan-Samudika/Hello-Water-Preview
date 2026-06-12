@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, Calendar, Clock, ExternalLink } from "lucide-react";
-import { blogs } from "@/constants/blogs";
+import { getBlogs, getBlogBySlug } from "@/lib/db-queries";
 import { createMetadata } from "@/lib/seo";
 import { MotionWrapper } from "@/components/custom/motion-wrapper";
 import { JsonLd } from "@/components/seo/json-ld";
@@ -12,7 +12,10 @@ interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
+export const revalidate = 0;
+
 export async function generateStaticParams() {
+  const blogs = await getBlogs();
   return blogs.map((post) => ({
     slug: post.slug,
   }));
@@ -20,7 +23,7 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: PageProps) {
   const { slug } = await params;
-  const post = blogs.find((p) => p.slug === slug);
+  const post = await getBlogBySlug(slug);
   if (!post) return {};
 
   return createMetadata({
@@ -34,14 +37,15 @@ export async function generateMetadata({ params }: PageProps) {
 
 export default async function BlogDetailPage({ params }: PageProps) {
   const { slug } = await params;
-  const post = blogs.find((p) => p.slug === slug);
+  const post = await getBlogBySlug(slug);
 
   if (!post) {
     notFound();
   }
 
   // Find other posts for the "Read More" section at the bottom
-  const otherPosts = blogs.filter((p) => p.slug !== slug).slice(0, 2);
+  const allBlogs = await getBlogs();
+  const otherPosts = allBlogs.filter((p) => p.slug !== slug).slice(0, 2);
 
   return (
     <main className="relative w-full min-h-screen">

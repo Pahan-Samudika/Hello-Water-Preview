@@ -1,7 +1,5 @@
 import type { MetadataRoute } from "next";
-
-import { products } from "@/constants/products";
-import { blogs } from "@/constants/blogs";
+import { getProducts, getBlogs } from "@/lib/db-queries";
 import { absoluteUrl } from "@/lib/seo";
 
 export const revalidate = 86400;
@@ -19,8 +17,22 @@ const staticRoutes = [
   "/blogs",
 ] as const;
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const lastModified = new Date();
+
+  let products: any[] = [];
+  let blogs: any[] = [];
+
+  try {
+    const [p, b] = await Promise.all([
+      getProducts(),
+      getBlogs(),
+    ]);
+    products = p;
+    blogs = b;
+  } catch (error) {
+    console.error("Sitemap: Failed to query dynamic Firestore routes during build:", error);
+  }
 
   return [
     ...staticRoutes.map((route) => ({
