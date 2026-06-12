@@ -288,7 +288,7 @@ export function BlogsClient({ initialBlogs }: BlogsClientProps) {
         <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto items-stretch sm:items-center">
           {/* Filter search */}
           <div className="relative w-full sm:w-72">
-            <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-500">
+            <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-muted-foreground/70">
               <Search className="size-4" />
             </span>
             <input
@@ -296,7 +296,7 @@ export function BlogsClient({ initialBlogs }: BlogsClientProps) {
               placeholder="Filter blogs by title or author..."
               value={searchTerm}
               onChange={(e) => handleSearchChange(e.target.value)}
-              className="w-full h-10 pl-9 pr-4 bg-slate-900 border border-slate-800 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-slate-700 transition-all"
+              className="w-full h-10 pl-9 pr-4 bg-card border border-border rounded-xl text-sm text-foreground placeholder-muted-foreground/50 focus:outline-none focus:border-primary transition-all"
             />
           </div>
 
@@ -496,21 +496,21 @@ export function BlogsClient({ initialBlogs }: BlogsClientProps) {
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex justify-end z-[70] animate-fadeIn">
           <div className="absolute inset-0 -z-10" onClick={() => setIsFormOpen(false)} />
 
-          <div className="w-full max-w-3xl bg-slate-900 border-l border-slate-800 h-full flex flex-col justify-between shadow-2xl p-4 sm:p-6 md:p-8 animate-slideLeft">
+          <div className="w-full max-w-3xl bg-sidebar border-l border-sidebar-border h-full flex flex-col justify-between shadow-2xl p-4 sm:p-6 md:p-8 animate-slideLeft">
             {/* Header */}
-            <div className="flex items-center justify-between pb-4 sm:pb-6 border-b border-slate-800">
+            <div className="flex items-center justify-between pb-4 sm:pb-6 border-b border-sidebar-border">
               <div>
-                <h3 className="text-lg font-bold text-white flex items-center gap-2">
+                <h3 className="text-lg font-bold text-foreground flex items-center gap-2">
                   <BookOpen className="size-5 text-primary" />
                   {editingBlog ? "Edit Blog Article" : "Compose New Article"}
                 </h3>
-                <p className="text-xs text-slate-500 mt-1">
+                <p className="text-xs text-muted-foreground/75 mt-1">
                   {editingBlog ? `Drafting: ${editingBlog.title}` : "Authoring dynamic contents and lists"}
                 </p>
               </div>
               <button
                 onClick={() => setIsFormOpen(false)}
-                className="size-8 rounded-lg border border-slate-800 flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-800 transition-all"
+                className="size-8 rounded-lg border border-sidebar-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-sidebar-accent/50 transition-all"
               >
                 <X className="size-4" />
               </button>
@@ -535,7 +535,7 @@ export function BlogsClient({ initialBlogs }: BlogsClientProps) {
               <div className="grid gap-4 sm:grid-cols-2">
                 {/* Title */}
                 <div className="space-y-1.5 sm:col-span-2">
-                  <label className="text-xs font-bold text-slate-400 uppercase tracking-wider" htmlFor="form-title">
+                  <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider" htmlFor="form-title">
                     Article Title
                   </label>
                   <input
@@ -546,13 +546,13 @@ export function BlogsClient({ initialBlogs }: BlogsClientProps) {
                     defaultValue={editingBlog?.title || ""}
                     onChange={handleTitleChange}
                     placeholder="Australia's $2 Billion PFAS Lawsuit: Why Aussies Are Suddenly Questioning Water"
-                    className="w-full h-11 px-4 bg-slate-950 border border-slate-800 rounded-xl text-sm text-white placeholder-slate-600 focus:outline-none focus:border-primary transition-all"
+                    className="w-full h-11 px-4 bg-background border border-sidebar-border rounded-xl text-sm text-foreground placeholder-muted-foreground/50 focus:outline-none focus:border-primary transition-all"
                   />
                 </div>
 
                 {/* Slug */}
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-slate-400 uppercase tracking-wider" htmlFor="form-slug">
+                  <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider" htmlFor="form-slug">
                     URL Slug
                   </label>
                   <input
@@ -563,13 +563,13 @@ export function BlogsClient({ initialBlogs }: BlogsClientProps) {
                     defaultValue={editingBlog?.slug || ""}
                     onChange={() => setManualSlug(true)}
                     placeholder="pfas-lawsuit-australia"
-                    className="w-full h-11 px-4 bg-slate-950 border border-slate-800 rounded-xl text-sm text-white placeholder-slate-600 focus:outline-none focus:border-primary transition-all"
+                    className="w-full h-11 px-4 bg-background border border-sidebar-border rounded-xl text-sm text-foreground placeholder-muted-foreground/50 focus:outline-none focus:border-primary transition-all"
                   />
                 </div>
 
                 {/* Subtitle */}
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-slate-400 uppercase tracking-wider" htmlFor="form-subtitle">
+                  <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider" htmlFor="form-subtitle">
                     Subtitle (Optional)
                   </label>
                   <input
@@ -578,13 +578,13 @@ export function BlogsClient({ initialBlogs }: BlogsClientProps) {
                     type="text"
                     defaultValue={editingBlog?.subtitle || ""}
                     placeholder="Toxic chemicals are making headlines again..."
-                    className="w-full h-11 px-4 bg-slate-950 border border-slate-800 rounded-xl text-sm text-white placeholder-slate-600 focus:outline-none focus:border-primary transition-all"
+                    className="w-full h-11 px-4 bg-background border border-sidebar-border rounded-xl text-sm text-foreground placeholder-muted-foreground/50 focus:outline-none focus:border-primary transition-all"
                   />
                 </div>
 
                 {/* Excerpt */}
                 <div className="space-y-1.5 sm:col-span-2">
-                  <label className="text-xs font-bold text-slate-400 uppercase tracking-wider" htmlFor="form-excerpt">
+                  <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider" htmlFor="form-excerpt">
                     Summary Excerpt (Card text & SEO)
                   </label>
                   <textarea
@@ -594,13 +594,13 @@ export function BlogsClient({ initialBlogs }: BlogsClientProps) {
                     defaultValue={editingBlog?.excerpt || ""}
                     placeholder="Summarize the core theme of this article..."
                     rows={2}
-                    className="w-full p-4 bg-slate-950 border border-slate-800 rounded-xl text-sm text-white placeholder-slate-600 focus:outline-none focus:border-primary transition-all resize-y"
+                    className="w-full p-4 bg-background border border-sidebar-border rounded-xl text-sm text-foreground placeholder-muted-foreground/50 focus:outline-none focus:border-primary transition-all resize-y"
                   />
                 </div>
 
                 {/* Cover Image */}
                 <div className="space-y-1.5 sm:col-span-2">
-                  <label className="text-xs font-bold text-slate-400 uppercase tracking-wider" htmlFor="form-cover">
+                  <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider" htmlFor="form-cover">
                     Cloudinary / Cover Image URL
                   </label>
                   <input
@@ -610,13 +610,13 @@ export function BlogsClient({ initialBlogs }: BlogsClientProps) {
                     required
                     defaultValue={editingBlog?.coverImage || ""}
                     placeholder="https://res.cloudinary.com/..."
-                    className="w-full h-11 px-4 bg-slate-950 border border-slate-800 rounded-xl text-sm text-white placeholder-slate-600 focus:outline-none focus:border-primary transition-all"
+                    className="w-full h-11 px-4 bg-background border border-sidebar-border rounded-xl text-sm text-foreground placeholder-muted-foreground/50 focus:outline-none focus:border-primary transition-all"
                   />
                 </div>
 
                 {/* Publish Date */}
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-slate-400 uppercase tracking-wider" htmlFor="form-date">
+                  <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider" htmlFor="form-date">
                     Publish Date text
                   </label>
                   <input
@@ -626,13 +626,13 @@ export function BlogsClient({ initialBlogs }: BlogsClientProps) {
                     required
                     defaultValue={editingBlog?.publishedAt || defaultDate}
                     placeholder="e.g. June 1, 2026"
-                    className="w-full h-11 px-4 bg-slate-950 border border-slate-800 rounded-xl text-sm text-white placeholder-slate-600 focus:outline-none focus:border-primary transition-all"
+                    className="w-full h-11 px-4 bg-background border border-sidebar-border rounded-xl text-sm text-foreground placeholder-muted-foreground/50 focus:outline-none focus:border-primary transition-all"
                   />
                 </div>
 
                 {/* Reading Time */}
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-slate-400 uppercase tracking-wider" htmlFor="form-readtime">
+                  <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider" htmlFor="form-readtime">
                     Reading Time
                   </label>
                   <input
@@ -642,55 +642,55 @@ export function BlogsClient({ initialBlogs }: BlogsClientProps) {
                     required
                     defaultValue={editingBlog?.readTime || "4 min read"}
                     placeholder="e.g. 4 min read"
-                    className="w-full h-11 px-4 bg-slate-950 border border-slate-800 rounded-xl text-sm text-white placeholder-slate-600 focus:outline-none focus:border-primary transition-all"
+                    className="w-full h-11 px-4 bg-background border border-sidebar-border rounded-xl text-sm text-foreground placeholder-muted-foreground/50 focus:outline-none focus:border-primary transition-all"
                   />
                 </div>
 
                 {/* Author Info */}
-                <div className="p-4 rounded-xl border border-slate-800 bg-slate-950/20 sm:col-span-2 grid gap-4 sm:grid-cols-3">
-                  <div className="sm:col-span-3 text-xs font-bold uppercase tracking-wider text-slate-400">
+                <div className="p-4 rounded-xl border border-sidebar-border bg-background/20 sm:col-span-2 grid gap-4 sm:grid-cols-3">
+                  <div className="sm:col-span-3 text-xs font-bold uppercase tracking-wider text-muted-foreground">
                     Author Information
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wide">Name</label>
+                    <label className="text-[10px] font-bold text-muted-foreground/75 uppercase tracking-wide">Name</label>
                     <input
                       name="authorName"
                       type="text"
                       required
                       defaultValue={editingBlog?.author.name || "Hello Water Filtration"}
-                      className="w-full h-9 px-3 bg-slate-950 border border-slate-800 rounded-lg text-xs text-white placeholder-slate-600 focus:outline-none focus:border-primary transition-all"
+                      className="w-full h-9 px-3 bg-background border border-sidebar-border rounded-lg text-xs text-foreground placeholder-muted-foreground/50 focus:outline-none focus:border-primary transition-all"
                     />
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wide">Role</label>
+                    <label className="text-[10px] font-bold text-muted-foreground/75 uppercase tracking-wide">Role</label>
                     <input
                       name="authorRole"
                       type="text"
                       required
                       defaultValue={editingBlog?.author.role || "Water Quality Experts"}
-                      className="w-full h-9 px-3 bg-slate-950 border border-slate-800 rounded-lg text-xs text-white placeholder-slate-600 focus:outline-none focus:border-primary transition-all"
+                      className="w-full h-9 px-3 bg-background border border-sidebar-border rounded-lg text-xs text-foreground placeholder-muted-foreground/50 focus:outline-none focus:border-primary transition-all"
                     />
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wide">Avatar path</label>
+                    <label className="text-[10px] font-bold text-muted-foreground/75 uppercase tracking-wide">Avatar path</label>
                     <input
                       name="authorAvatar"
                       type="text"
                       required
                       defaultValue={editingBlog?.author.avatar || "/images/logo-icon.png"}
-                      className="w-full h-9 px-3 bg-slate-950 border border-slate-800 rounded-lg text-xs text-white placeholder-slate-600 focus:outline-none focus:border-primary transition-all"
+                      className="w-full h-9 px-3 bg-background border border-sidebar-border rounded-lg text-xs text-foreground placeholder-muted-foreground/50 focus:outline-none focus:border-primary transition-all"
                     />
                   </div>
                 </div>
 
                 {/* Article Block Editor (CMS Core) */}
-                <div className="sm:col-span-2 border-t border-slate-800 pt-6 space-y-4">
+                <div className="sm:col-span-2 border-t border-sidebar-border pt-6 space-y-4">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div>
-                      <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider">
+                      <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
                         Article Content Blocks
                       </h4>
-                      <p className="text-[10px] text-slate-500 mt-0.5">
+                      <p className="text-[10px] text-muted-foreground/75 mt-0.5">
                         Build headings, quotes, lists, and paragraph texts
                       </p>
                     </div>
@@ -699,7 +699,7 @@ export function BlogsClient({ initialBlogs }: BlogsClientProps) {
                       <button
                         type="button"
                         onClick={() => addContentBlock("text")}
-                        className="h-8 inline-flex items-center gap-1 px-3 rounded-lg border border-slate-800 hover:bg-slate-800 hover:text-white text-[10px] font-bold text-slate-400 transition-all"
+                        className="h-8 inline-flex items-center gap-1 px-3 rounded-lg border border-sidebar-border hover:bg-sidebar-accent/50 hover:text-foreground text-[10px] font-bold text-muted-foreground transition-all"
                       >
                         <PlusCircle className="size-3 text-sky-400" />
                         <span>Paragraph</span>
@@ -707,7 +707,7 @@ export function BlogsClient({ initialBlogs }: BlogsClientProps) {
                       <button
                         type="button"
                         onClick={() => addContentBlock("heading")}
-                        className="h-8 inline-flex items-center gap-1 px-3 rounded-lg border border-slate-800 hover:bg-slate-800 hover:text-white text-[10px] font-bold text-slate-400 transition-all"
+                        className="h-8 inline-flex items-center gap-1 px-3 rounded-lg border border-sidebar-border hover:bg-sidebar-accent/50 hover:text-foreground text-[10px] font-bold text-muted-foreground transition-all"
                       >
                         <PlusCircle className="size-3 text-purple-400" />
                         <span>Heading</span>
@@ -715,7 +715,7 @@ export function BlogsClient({ initialBlogs }: BlogsClientProps) {
                       <button
                         type="button"
                         onClick={() => addContentBlock("list")}
-                        className="h-8 inline-flex items-center gap-1 px-3 rounded-lg border border-slate-800 hover:bg-slate-800 hover:text-white text-[10px] font-bold text-slate-400 transition-all"
+                        className="h-8 inline-flex items-center gap-1 px-3 rounded-lg border border-sidebar-border hover:bg-sidebar-accent/50 hover:text-foreground text-[10px] font-bold text-muted-foreground transition-all"
                       >
                         <PlusCircle className="size-3 text-blue-400" />
                         <span>Bullet List</span>
@@ -723,7 +723,7 @@ export function BlogsClient({ initialBlogs }: BlogsClientProps) {
                       <button
                         type="button"
                         onClick={() => addContentBlock("quote")}
-                        className="h-8 inline-flex items-center gap-1 px-3 rounded-lg border border-slate-800 hover:bg-slate-800 hover:text-white text-[10px] font-bold text-slate-400 transition-all"
+                        className="h-8 inline-flex items-center gap-1 px-3 rounded-lg border border-sidebar-border hover:bg-sidebar-accent/50 hover:text-foreground text-[10px] font-bold text-muted-foreground transition-all"
                       >
                         <PlusCircle className="size-3 text-emerald-400" />
                         <span>Quote Block</span>
@@ -745,7 +745,7 @@ export function BlogsClient({ initialBlogs }: BlogsClientProps) {
                               ? "border-emerald-500/20 bg-emerald-500/2 italic"
                               : block.type === "list"
                               ? "border-blue-500/20 bg-blue-500/2"
-                              : "border-slate-800 bg-slate-950/20"
+                              : "border-sidebar-border bg-background/20"
                           } flex gap-4`}
                         >
                           {/* Side re-ordering actions */}
@@ -754,7 +754,7 @@ export function BlogsClient({ initialBlogs }: BlogsClientProps) {
                               type="button"
                               onClick={() => moveContentBlock(index, "up")}
                               disabled={index === 0}
-                              className="p-1 rounded-md hover:bg-slate-800 text-slate-500 hover:text-white disabled:opacity-20 transition-all"
+                              className="p-1 rounded-md hover:bg-sidebar-accent/50 text-muted-foreground hover:text-foreground disabled:opacity-20 transition-all"
                             >
                               <ArrowUp className="size-3.5" />
                             </button>
@@ -762,7 +762,7 @@ export function BlogsClient({ initialBlogs }: BlogsClientProps) {
                               type="button"
                               onClick={() => moveContentBlock(index, "down")}
                               disabled={index === contentBlocks.length - 1}
-                              className="p-1 rounded-md hover:bg-slate-800 text-slate-500 hover:text-white disabled:opacity-20 transition-all"
+                              className="p-1 rounded-md hover:bg-sidebar-accent/50 text-muted-foreground hover:text-foreground disabled:opacity-20 transition-all"
                             >
                               <ArrowDown className="size-3.5" />
                             </button>
@@ -771,13 +771,13 @@ export function BlogsClient({ initialBlogs }: BlogsClientProps) {
                           {/* Block input field */}
                           <div className="flex-1 space-y-1">
                             <div className="flex items-center justify-between mb-1">
-                              <span className="text-[9px] font-black uppercase tracking-wider text-slate-500">
+                              <span className="text-[9px] font-black uppercase tracking-wider text-muted-foreground/75">
                                 Block #{index + 1} — {block.type}
                               </span>
                               <button
                                 type="button"
                                 onClick={() => removeContentBlock(index)}
-                                className="p-1 rounded-md text-slate-500 hover:text-rose-400 hover:bg-slate-800 transition-all"
+                                className="p-1 rounded-md text-muted-foreground hover:text-rose-400 hover:bg-sidebar-accent/50 transition-all"
                               >
                                 <Trash className="size-3.5" />
                               </button>
@@ -789,7 +789,7 @@ export function BlogsClient({ initialBlogs }: BlogsClientProps) {
                                 onChange={(e) => handleBlockListChange(index, e.target.value)}
                                 placeholder="Bullet point 1&#10;Bullet point 2&#10;Bullet point 3 (one per line)"
                                 rows={3}
-                                className="w-full p-3 bg-slate-950 border border-slate-800 rounded-lg text-xs text-white focus:outline-none focus:border-primary transition-all resize-y"
+                                className="w-full p-3 bg-background border border-sidebar-border rounded-lg text-xs text-foreground focus:outline-none focus:border-primary transition-all resize-y"
                               />
                             ) : (
                               <textarea
@@ -803,7 +803,7 @@ export function BlogsClient({ initialBlogs }: BlogsClientProps) {
                                     : "Write your paragraph text here..."
                                 }
                                 rows={block.type === "heading" ? 1 : 3}
-                                className="w-full p-3 bg-slate-950 border border-slate-800 rounded-lg text-xs text-white focus:outline-none focus:border-primary transition-all resize-y"
+                                className="w-full p-3 bg-background border border-sidebar-border rounded-lg text-xs text-foreground focus:outline-none focus:border-primary transition-all resize-y"
                               />
                             )}
                           </div>
@@ -814,13 +814,13 @@ export function BlogsClient({ initialBlogs }: BlogsClientProps) {
                 </div>
 
                 {/* Sources Citation Builder */}
-                <div className="sm:col-span-2 border-t border-slate-800 pt-6 space-y-4">
+                <div className="sm:col-span-2 border-t border-sidebar-border pt-6 space-y-4">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div>
-                      <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider">
+                      <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
                         Sources & References (Optional)
                       </h4>
-                      <p className="text-[10px] text-slate-500 mt-0.5">
+                      <p className="text-[10px] text-muted-foreground/75 mt-0.5">
                         Cite external media reports, guidelines, or research
                       </p>
                     </div>
@@ -828,7 +828,7 @@ export function BlogsClient({ initialBlogs }: BlogsClientProps) {
                     <button
                       type="button"
                       onClick={addSource}
-                      className="h-8 inline-flex items-center gap-1 px-3 rounded-lg border border-slate-800 hover:bg-slate-800 hover:text-white text-[10px] font-bold text-slate-400 transition-all"
+                      className="h-8 inline-flex items-center gap-1 px-3 rounded-lg border border-sidebar-border hover:bg-sidebar-accent/50 hover:text-foreground text-[10px] font-bold text-muted-foreground transition-all"
                     >
                       <PlusCircle className="size-3 text-sky-400" />
                       <span>Add Citation</span>
@@ -840,7 +840,7 @@ export function BlogsClient({ initialBlogs }: BlogsClientProps) {
                     {blogSources.map((source, index) => (
                       <div
                         key={index}
-                        className="flex flex-col sm:flex-row items-center gap-3 p-3 rounded-xl border border-slate-800 bg-slate-950/20"
+                        className="flex flex-col sm:flex-row items-center gap-3 p-3 rounded-xl border border-sidebar-border bg-background/20"
                       >
                         <div className="grid gap-2 grid-cols-1 sm:grid-cols-2 flex-1 w-full">
                           <input
@@ -848,20 +848,20 @@ export function BlogsClient({ initialBlogs }: BlogsClientProps) {
                             placeholder="Source Name (e.g. ABC News Australia)"
                             value={source.name}
                             onChange={(e) => handleSourceChange(index, "name", e.target.value)}
-                            className="h-9 px-3 bg-slate-950 border border-slate-800 rounded-lg text-xs text-white focus:outline-none focus:border-primary transition-all"
+                            className="h-9 px-3 bg-background border border-sidebar-border rounded-lg text-xs text-foreground focus:outline-none focus:border-primary transition-all"
                           />
                           <input
                             type="text"
                             placeholder="Source URL link"
                             value={source.url}
                             onChange={(e) => handleSourceChange(index, "url", e.target.value)}
-                            className="h-9 px-3 bg-slate-950 border border-slate-800 rounded-lg text-xs text-white focus:outline-none focus:border-primary transition-all"
+                            className="h-9 px-3 bg-background border border-sidebar-border rounded-lg text-xs text-foreground focus:outline-none focus:border-primary transition-all"
                           />
                         </div>
                         <button
                           type="button"
                           onClick={() => removeSource(index)}
-                          className="p-1 rounded-md text-slate-500 hover:text-rose-400 hover:bg-slate-800 transition-all shrink-0"
+                          className="p-1 rounded-md text-muted-foreground hover:text-rose-400 hover:bg-sidebar-accent/50 transition-all shrink-0"
                         >
                           <Trash className="size-3.5" />
                         </button>
@@ -872,11 +872,11 @@ export function BlogsClient({ initialBlogs }: BlogsClientProps) {
               </div>
 
               {/* Drawer footer actions */}
-              <div className="pt-4 sm:pt-6 border-t border-slate-800 flex items-center justify-end gap-3 mt-6">
+              <div className="pt-4 sm:pt-6 border-t border-sidebar-border flex items-center justify-end gap-3 mt-6">
                 <button
                   type="button"
                   onClick={() => setIsFormOpen(false)}
-                  className="h-11 px-6 rounded-xl border border-slate-800 text-xs font-bold text-slate-400 hover:text-white hover:bg-slate-800 transition-all"
+                  className="h-11 px-6 rounded-xl border border-sidebar-border text-xs font-bold text-muted-foreground hover:text-foreground hover:bg-sidebar-accent/50 transition-all"
                 >
                   Cancel
                 </button>
@@ -902,25 +902,25 @@ export function BlogsClient({ initialBlogs }: BlogsClientProps) {
       {/* Delete Confirmation Modal */}
       {deletingBlog && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[70] animate-fadeIn px-4">
-          <div className="w-full max-w-sm bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-2xl space-y-6 animate-scaleUp">
+          <div className="w-full max-w-sm bg-sidebar border border-sidebar-border rounded-3xl p-6 shadow-2xl space-y-6 animate-scaleUp">
             <div className="flex items-center gap-3 text-rose-400">
               <AlertTriangle className="size-8 shrink-0 text-rose-500" />
               <div>
-                <h3 className="text-base font-bold text-white">Delete Blog Post?</h3>
-                <p className="text-xs text-slate-500 mt-0.5">This action is irreversible.</p>
+                <h3 className="text-base font-bold text-foreground">Delete Blog Post?</h3>
+                <p className="text-xs text-muted-foreground/75 mt-0.5">This action is irreversible.</p>
               </div>
             </div>
 
-            <p className="text-xs text-slate-300 leading-relaxed">
+            <p className="text-xs text-foreground/90 leading-relaxed">
               Are you sure you want to permanently delete the blog post{" "}
-              <span className="font-bold text-white">{deletingBlog.title}</span>? It will no longer be visible on the public website.
+              <span className="font-bold text-foreground">{deletingBlog.title}</span>? It will no longer be visible on the public website.
             </p>
 
-            <div className="flex items-center justify-end gap-3 pt-2 border-t border-slate-800">
+            <div className="flex items-center justify-end gap-3 pt-2 border-t border-sidebar-border">
               <button
                 type="button"
                 onClick={() => setDeletingBlog(null)}
-                className="h-10 px-4 rounded-xl border border-slate-800 text-xs font-bold text-slate-400 hover:text-white hover:bg-slate-800 transition-all"
+                className="h-10 px-4 rounded-xl border border-sidebar-border text-xs font-bold text-muted-foreground hover:text-foreground hover:bg-sidebar-accent/50 transition-all"
               >
                 Cancel
               </button>

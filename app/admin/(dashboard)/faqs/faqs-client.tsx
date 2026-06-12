@@ -183,7 +183,7 @@ export function FAQsClient({ initialFAQs }: FAQsClientProps) {
         <div className="flex flex-col sm:flex-row gap-3 w-full xl:w-auto items-stretch sm:items-center">
           {/* Search */}
           <div className="relative flex-1 sm:w-64">
-            <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-500">
+            <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-muted-foreground/70">
               <Search className="size-4" />
             </span>
             <input
@@ -191,7 +191,7 @@ export function FAQsClient({ initialFAQs }: FAQsClientProps) {
               placeholder="Search FAQs by keywords..."
               value={searchTerm}
               onChange={(e) => handleSearchChange(e.target.value)}
-              className="w-full h-10 pl-9 pr-4 bg-slate-900 border border-slate-800 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-slate-700 transition-all"
+              className="w-full h-10 pl-9 pr-4 bg-card border border-border rounded-xl text-sm text-foreground placeholder-muted-foreground/50 focus:outline-none focus:border-primary transition-all"
             />
           </div>
 
@@ -200,10 +200,10 @@ export function FAQsClient({ initialFAQs }: FAQsClientProps) {
             value={selectedCategory}
             onValueChange={(val) => handleCategoryFilterChange(val || "All")}
           >
-            <SelectTrigger className="h-10 w-full sm:w-48 bg-slate-900 border border-slate-800 rounded-xl text-sm text-white focus:outline-none focus:border-slate-700 transition-all shrink-0">
+            <SelectTrigger className="h-10 w-full sm:w-48 bg-card border border-border rounded-xl text-sm text-foreground focus:outline-none focus:border-primary transition-all shrink-0">
               <SelectValue placeholder="All Categories" />
             </SelectTrigger>
-            <SelectContent className="bg-slate-950 border border-slate-800 rounded-xl">
+            <SelectContent className="bg-background border border-border rounded-xl">
               <SelectItem value="All">All Categories</SelectItem>
               {FAQ_CATEGORIES.map((cat) => (
                 <SelectItem key={cat} value={cat}>
@@ -286,21 +286,21 @@ export function FAQsClient({ initialFAQs }: FAQsClientProps) {
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex justify-end z-[70] animate-fadeIn">
           <div className="absolute inset-0 -z-10" onClick={() => setIsFormOpen(false)} />
 
-          <div className="w-full max-w-lg bg-slate-900 border-l border-slate-800 h-full flex flex-col justify-between shadow-2xl p-4 sm:p-6 md:p-8 animate-slideLeft">
+          <div className="w-full max-w-lg bg-sidebar border-l border-sidebar-border h-full flex flex-col justify-between shadow-2xl p-4 sm:p-6 md:p-8 animate-slideLeft">
             {/* Header */}
-            <div className="flex items-center justify-between pb-4 sm:pb-6 border-b border-slate-800">
+            <div className="flex items-center justify-between pb-4 sm:pb-6 border-b border-sidebar-border">
               <div>
-                <h3 className="text-lg font-bold text-white flex items-center gap-2">
+                <h3 className="text-lg font-bold text-foreground flex items-center gap-2">
                   <HelpCircle className="size-5 text-primary" />
                   {editingFAQ ? "Edit FAQ Details" : "Create New FAQ"}
                 </h3>
-                <p className="text-xs text-slate-500 mt-1">
+                <p className="text-xs text-muted-foreground/75 mt-1">
                   {editingFAQ ? "Update questionnaire items" : "Configure question and answer details"}
                 </p>
               </div>
               <button
                 onClick={() => setIsFormOpen(false)}
-                className="size-8 rounded-lg border border-slate-800 flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-800 transition-all"
+                className="size-8 rounded-lg border border-sidebar-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-sidebar-accent/50 transition-all"
               >
                 <X className="size-4" />
               </button>
@@ -325,17 +325,17 @@ export function FAQsClient({ initialFAQs }: FAQsClientProps) {
               <div className="space-y-4">
                 {/* Category */}
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-slate-400 uppercase tracking-wider" htmlFor="form-category">
+                  <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider" htmlFor="form-category">
                     Category Group
                   </label>
                   <Select
                     name="category"
                     defaultValue={editingFAQ?.category || FAQ_CATEGORIES[0]}
                   >
-                    <SelectTrigger className="w-full h-11 bg-slate-950 border border-slate-800 rounded-xl text-sm text-white focus:outline-none focus:border-primary transition-all">
+                    <SelectTrigger className="w-full h-11 bg-background border border-sidebar-border rounded-xl text-sm text-foreground focus:outline-none focus:border-primary transition-all">
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent className="bg-slate-950 border border-slate-800 rounded-xl">
+                    <SelectContent className="bg-background border border-sidebar-border rounded-xl">
                       {FAQ_CATEGORIES.map((cat) => (
                         <SelectItem key={cat} value={cat}>
                           {cat}
@@ -347,7 +347,7 @@ export function FAQsClient({ initialFAQs }: FAQsClientProps) {
 
                 {/* Question */}
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-slate-400 uppercase tracking-wider" htmlFor="form-question">
+                  <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider" htmlFor="form-question">
                     Question Text
                   </label>
                   <input
@@ -357,13 +357,13 @@ export function FAQsClient({ initialFAQs }: FAQsClientProps) {
                     required
                     defaultValue={editingFAQ?.question || ""}
                     placeholder="Enter question..."
-                    className="w-full h-11 px-4 bg-slate-950 border border-slate-800 rounded-xl text-sm text-white placeholder-slate-600 focus:outline-none focus:border-primary transition-all"
+                    className="w-full h-11 px-4 bg-background border border-sidebar-border rounded-xl text-sm text-foreground placeholder-muted-foreground/50 focus:outline-none focus:border-primary transition-all"
                   />
                 </div>
 
                 {/* Answer */}
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-slate-400 uppercase tracking-wider" htmlFor="form-answer">
+                  <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider" htmlFor="form-answer">
                     Detailed Answer
                   </label>
                   <textarea
@@ -373,17 +373,17 @@ export function FAQsClient({ initialFAQs }: FAQsClientProps) {
                     defaultValue={editingFAQ?.answer || ""}
                     placeholder="Provide a comprehensive answer description..."
                     rows={8}
-                    className="w-full p-4 bg-slate-950 border border-slate-800 rounded-xl text-sm text-white placeholder-slate-600 focus:outline-none focus:border-primary transition-all resize-y"
+                    className="w-full p-4 bg-background border border-sidebar-border rounded-xl text-sm text-foreground placeholder-muted-foreground/50 focus:outline-none focus:border-primary transition-all resize-y"
                   />
                 </div>
               </div>
 
               {/* Drawer footer actions */}
-              <div className="pt-4 sm:pt-6 border-t border-slate-800 flex items-center justify-end gap-3 mt-6">
+              <div className="pt-4 sm:pt-6 border-t border-sidebar-border flex items-center justify-end gap-3 mt-6">
                 <button
                   type="button"
                   onClick={() => setIsFormOpen(false)}
-                  className="h-11 px-6 rounded-xl border border-slate-800 text-xs font-bold text-slate-400 hover:text-white hover:bg-slate-800 transition-all"
+                  className="h-11 px-6 rounded-xl border border-sidebar-border text-xs font-bold text-muted-foreground hover:text-foreground hover:bg-sidebar-accent/50 transition-all"
                 >
                   Cancel
                 </button>
@@ -409,26 +409,26 @@ export function FAQsClient({ initialFAQs }: FAQsClientProps) {
       {/* Delete Confirmation Modal */}
       {deletingFAQ && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[70] animate-fadeIn px-4">
-          <div className="w-full max-w-sm bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-2xl space-y-6 animate-scaleUp">
+          <div className="w-full max-w-sm bg-sidebar border border-sidebar-border rounded-3xl p-6 shadow-2xl space-y-6 animate-scaleUp">
             <div className="flex items-center gap-3 text-rose-400">
               <AlertTriangle className="size-8 shrink-0 text-rose-500" />
               <div>
-                <h3 className="text-base font-bold text-white">Delete FAQ?</h3>
-                <p className="text-xs text-slate-500 mt-0.5">This action is irreversible.</p>
+                <h3 className="text-base font-bold text-foreground">Delete FAQ?</h3>
+                <p className="text-xs text-muted-foreground/75 mt-0.5">This action is irreversible.</p>
               </div>
             </div>
 
-            <p className="text-xs text-slate-300 leading-relaxed">
+            <p className="text-xs text-foreground/90 leading-relaxed">
               Are you sure you want to permanently delete the FAQ: &quot;
-              <span className="font-bold text-white">{deletingFAQ.question}</span>&quot;? This Q&amp;A
+              <span className="font-bold text-foreground">{deletingFAQ.question}</span>&quot;? This Q&amp;A
               will be immediately removed from the public website layout.
             </p>
 
-            <div className="flex items-center justify-end gap-3 pt-2 border-t border-slate-800">
+            <div className="flex items-center justify-end gap-3 pt-2 border-t border-sidebar-border">
               <button
                 type="button"
                 onClick={() => setDeletingFAQ(null)}
-                className="h-10 px-4 rounded-xl border border-slate-800 text-xs font-bold text-slate-400 hover:text-white hover:bg-slate-800 transition-all"
+                className="h-10 px-4 rounded-xl border border-sidebar-border text-xs font-bold text-muted-foreground hover:text-foreground hover:bg-sidebar-accent/50 transition-all"
               >
                 Cancel
               </button>

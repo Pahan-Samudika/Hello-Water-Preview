@@ -211,7 +211,7 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
         <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto items-stretch sm:items-center">
           {/* Filter and search bar */}
           <div className="relative w-full sm:w-72">
-            <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-500">
+            <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-muted-foreground/70">
               <Search className="size-4" />
             </span>
             <input
@@ -219,7 +219,7 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
               placeholder="Filter products by name or category..."
               value={searchTerm}
               onChange={(e) => handleSearchChange(e.target.value)}
-              className="w-full h-10 pl-9 pr-4 bg-slate-900 border border-slate-800 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-slate-700 transition-all"
+              className="w-full h-10 pl-9 pr-4 bg-card border border-border rounded-xl text-sm text-foreground placeholder-muted-foreground/50 focus:outline-none focus:border-primary transition-all"
             />
           </div>
 

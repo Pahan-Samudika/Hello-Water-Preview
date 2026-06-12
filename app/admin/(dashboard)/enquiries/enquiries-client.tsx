@@ -130,7 +130,7 @@ export function EnquiriesClient({ initialEnquiries, canManage }: EnquiriesClient
         <div className="flex flex-col sm:flex-row gap-3 w-full xl:w-auto items-stretch sm:items-center">
           {/* Search */}
           <div className="relative flex-1 sm:w-80">
-            <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-500">
+            <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-muted-foreground/70">
               <Search className="size-4" />
             </span>
             <input
@@ -138,16 +138,16 @@ export function EnquiriesClient({ initialEnquiries, canManage }: EnquiriesClient
               placeholder="Search leads by name, email, phone, postcode..."
               value={searchTerm}
               onChange={(e) => handleSearchChange(e.target.value)}
-              className="w-full h-10 pl-9 pr-4 bg-slate-900 border border-slate-800 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-slate-700 transition-all"
+              className="w-full h-10 pl-9 pr-4 bg-card border border-border rounded-xl text-sm text-foreground placeholder-muted-foreground/50 focus:outline-none focus:border-primary transition-all"
             />
           </div>
 
           {/* Status filter selector */}
           <Select value={statusFilter} onValueChange={handleStatusFilterChange}>
-            <SelectTrigger className="h-10 w-full sm:w-44 bg-slate-900 border border-slate-800 rounded-xl text-sm text-white focus:outline-none focus:border-slate-700 transition-all">
+            <SelectTrigger className="h-10 w-full sm:w-44 bg-card border border-border rounded-xl text-sm text-foreground focus:outline-none focus:border-primary transition-all">
               <SelectValue placeholder="All Statuses" />
             </SelectTrigger>
-            <SelectContent className="bg-slate-950 border border-slate-800 rounded-xl">
+            <SelectContent className="bg-background border border-border rounded-xl">
               <SelectItem value="All">All Statuses</SelectItem>
               <SelectItem value="New">New</SelectItem>
               <SelectItem value="In Progress">In Progress</SelectItem>
@@ -238,7 +238,7 @@ export function EnquiriesClient({ initialEnquiries, canManage }: EnquiriesClient
                           >
                             <SelectValue />
                           </SelectTrigger>
-                          <SelectContent className="border border-slate-800 rounded-lg">
+                          <SelectContent className="bg-background border border-border rounded-lg">
                             <SelectItem value="New">New</SelectItem>
                             <SelectItem value="In Progress">In Progress</SelectItem>
                             <SelectItem value="Resolved">Resolved</SelectItem>
@@ -350,7 +350,7 @@ export function EnquiriesClient({ initialEnquiries, canManage }: EnquiriesClient
                         }
                       >
                         <SelectTrigger
-                          className={`h-8 min-w-28 px-2.5 rounded-lg border border-slate-800 text-xs font-bold text-white focus:outline-none transition-all ${
+                          className={`h-8 min-w-28 px-2.5 rounded-lg border border-border text-xs font-bold text-white focus:outline-none transition-all ${
                             currentStatus === "Resolved"
                               ? "bg-emerald-500/10 border-emerald-500/20 hover:bg-emerald-500/20"
                               : currentStatus === "In Progress"
@@ -360,7 +360,7 @@ export function EnquiriesClient({ initialEnquiries, canManage }: EnquiriesClient
                         >
                           <SelectValue />
                         </SelectTrigger>
-                        <SelectContent className="bg-slate-950 border border-slate-800 rounded-lg">
+                        <SelectContent className="bg-background border border-border rounded-lg">
                           <SelectItem value="New">New</SelectItem>
                           <SelectItem value="In Progress">In Progress</SelectItem>
                           <SelectItem value="Resolved">Resolved</SelectItem>
@@ -409,25 +409,25 @@ export function EnquiriesClient({ initialEnquiries, canManage }: EnquiriesClient
       {/* Delete Confirmation Modal */}
       {deletingEnquiry && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[70] animate-fadeIn px-4">
-          <div className="w-full max-w-sm bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-2xl space-y-6 animate-scaleUp">
+          <div className="w-full max-w-sm bg-sidebar border border-sidebar-border rounded-3xl p-6 shadow-2xl space-y-6 animate-scaleUp">
             <div className="flex items-center gap-3 text-rose-400">
               <AlertTriangle className="size-8 shrink-0 text-rose-500" />
               <div>
-                <h3 className="text-base font-bold text-white">Delete Enquiry?</h3>
-                <p className="text-xs text-slate-500 mt-0.5">This action is irreversible.</p>
+                <h3 className="text-base font-bold text-foreground">Delete Enquiry?</h3>
+                <p className="text-xs text-muted-foreground/75 mt-0.5">This action is irreversible.</p>
               </div>
             </div>
 
-            <p className="text-xs text-slate-300 leading-relaxed">
+            <p className="text-xs text-foreground/90 leading-relaxed">
               Are you sure you want to permanently delete the lead record for{" "}
-              <span className="font-bold text-white">{deletingEnquiry.name}</span>? This record will be deleted from the database.
+              <span className="font-bold text-foreground">{deletingEnquiry.name}</span>? This record will be deleted from the database.
             </p>
 
-            <div className="flex items-center justify-end gap-3 pt-2 border-t border-slate-800">
+            <div className="flex items-center justify-end gap-3 pt-2 border-t border-sidebar-border">
               <button
                 type="button"
                 onClick={() => setDeletingEnquiry(null)}
-                className="h-10 px-4 rounded-xl border border-slate-800 text-xs font-bold text-slate-400 hover:text-white hover:bg-slate-800 transition-all"
+                className="h-10 px-4 rounded-xl border border-sidebar-border text-xs font-bold text-muted-foreground hover:text-foreground hover:bg-sidebar-accent/50 transition-all"
               >
                 Cancel
               </button>
