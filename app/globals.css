@@ -125,6 +125,15 @@
     @apply bg-background text-foreground;
     overflow-x: hidden;
   }
+
+  /* Prevent iOS Safari auto-zoom on focused input fields/selects (< 16px font size triggers zoom) */
+  @media (max-width: 767px) {
+    input:not([type="checkbox"]):not([type="radio"]),
+    textarea,
+    select {
+      font-size: 16px !important;
+    }
+  }
 }
 
 .grecaptcha-badge {
