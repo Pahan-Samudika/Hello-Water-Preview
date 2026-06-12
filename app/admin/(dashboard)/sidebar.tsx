@@ -4,10 +4,24 @@ import React, { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { SidebarNav } from "./sidebar-nav";
 import { logoutAction } from "./actions";
-import { Menu, X, LogOut, User } from "lucide-react";
+import {
+  Menu,
+  X,
+  LogOut,
+  User,
+  LayoutDashboard,
+  Droplets,
+  Inbox,
+  PhoneCall,
+  BookOpen,
+  HelpCircle,
+  Users
+} from "lucide-react";
 import Image from "next/image";
 import { Portal, PortalBackdrop } from "@/components/ui/portal";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { cn } from "@/lib/utils";
 
 interface SidebarProps {
   session: {
@@ -20,6 +34,55 @@ interface SidebarProps {
 export function Sidebar({ session }: SidebarProps) {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
+
+  const navigationItems = [
+    {
+      name: "Overview",
+      href: "/admin",
+      icon: LayoutDashboard,
+      show: true,
+    },
+    {
+      name: "Products",
+      href: "/admin/products",
+      icon: Droplets,
+      show: session.permissions.includes("Product Management"),
+    },
+    {
+      name: "Enquiries",
+      href: "/admin/enquiries",
+      icon: Inbox,
+      show: session.permissions.includes("Enquiry View") || session.permissions.includes("Enquiry Management"),
+    },
+    {
+      name: "Contacts",
+      href: "/admin/contacts",
+      icon: PhoneCall,
+      show: session.permissions.includes("Contact View") || session.permissions.includes("Contact Management"),
+    },
+    {
+      name: "Blogs",
+      href: "/admin/blogs",
+      icon: BookOpen,
+      show: session.permissions.includes("Blogs Management"),
+    },
+    {
+      name: "FAQs",
+      href: "/admin/faqs",
+      icon: HelpCircle,
+      show: session.permissions.includes("FAQs Management"),
+    },
+    {
+      name: "Users",
+      href: "/admin/users",
+      icon: Users,
+      show: session.permissions.includes("User Management"),
+    },
+  ];
+
+  const visibleItems = navigationItems.filter((item) => item.show);
+  const displayItems = visibleItems.length <= 5 ? visibleItems : visibleItems.slice(0, 4);
+  const showMoreButton = visibleItems.length > 5;
 
   // Close menu on navigation
   useEffect(() => {
@@ -109,7 +172,7 @@ export function Sidebar({ session }: SidebarProps) {
 
       {/* Mobile Portal Navigation Dropdown (opens below header) */}
       {open && (
-        <Portal className="top-16 z-50 md:hidden" id="mobile-admin-menu">
+        <Portal className="top-16 bottom-16 z-50 md:hidden" id="mobile-admin-menu">
           <PortalBackdrop className="bg-background/95 backdrop-blur-sm" />
           <div className="flex-1 overflow-y-auto p-4 bg-sidebar flex flex-col justify-between border-b border-sidebar-border z-10">
             <div className="flex flex-col">
@@ -140,6 +203,51 @@ export function Sidebar({ session }: SidebarProps) {
           </div>
         </Portal>
       )}
+
+      {/* Mobile Bottom Navigation Bar */}
+      <div className="fixed bottom-0 left-0 right-0 h-16 bg-sidebar border-t border-sidebar-border md:hidden flex items-center justify-around z-[55] px-2 shadow-2xl">
+        {displayItems.map((item) => {
+          const isActive = pathname === item.href || (item.href !== "/admin" && pathname.startsWith(item.href));
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={cn(
+                "flex flex-col items-center justify-center flex-1 py-1 transition-all relative h-full",
+                isActive ? "text-primary font-bold" : "text-slate-400 hover:text-slate-200"
+              )}
+            >
+              <item.icon className={cn("size-5 mb-0.5", isActive ? "text-primary" : "text-slate-500")} />
+              <span className="text-[9px] uppercase tracking-wider font-bold truncate max-w-full px-1">{item.name}</span>
+              {isActive && (
+                <span className="absolute bottom-0 w-8 h-0.5 rounded-full bg-primary shadow-lg shadow-primary/50" />
+              )}
+            </Link>
+          );
+        })}
+
+        {showMoreButton && (
+          <button
+            onClick={() => setOpen(!open)}
+            className={cn(
+              "flex flex-col items-center justify-center flex-1 py-1 transition-all relative h-full cursor-pointer",
+              open ? "text-primary font-bold" : "text-slate-400 hover:text-slate-200"
+            )}
+          >
+            {open ? (
+              <X className="size-5 mb-0.5 text-primary" />
+            ) : (
+              <Menu className="size-5 mb-0.5 text-slate-500" />
+            )}
+            <span className="text-[9px] uppercase tracking-wider font-bold truncate max-w-full px-1">
+              {open ? "Close" : "More"}
+            </span>
+            {open && (
+              <span className="absolute bottom-0 w-8 h-0.5 rounded-full bg-primary shadow-lg shadow-primary/50" />
+            )}
+          </button>
+        )}
+      </div>
     </>
   );
 }
