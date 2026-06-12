@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { products } from "@/constants/products";
+import { type Product } from "@/constants/products";
 import { ProductCard } from "./product-card";
 import {
   Carousel,
@@ -14,9 +14,10 @@ import Autoplay from "embla-carousel-autoplay";
 
 interface MoreProductsProps {
   currentProductSlug: string;
+  products: Product[];
 }
 
-export function MoreProducts({ currentProductSlug }: MoreProductsProps) {
+export function MoreProducts({ currentProductSlug, products }: MoreProductsProps) {
   // Filter out the current product to show others
   const relatedProducts = products.filter(
     (product) => product.slug !== currentProductSlug

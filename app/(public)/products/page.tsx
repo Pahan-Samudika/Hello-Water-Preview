@@ -1,5 +1,6 @@
 import { ProductCard } from "@/components/custom/product-card";
-import { products, type Product } from "@/constants/products";
+import { getProducts } from "@/lib/db-queries";
+import { type Product } from "@/constants/products";
 import { MotionWrapper } from "@/components/custom/motion-wrapper";
 import { JsonLd } from "@/components/seo/json-ld";
 import {
@@ -7,7 +8,10 @@ import {
   productCollectionJsonLd,
 } from "@/lib/structured-data";
 
-export default function ProductsPage() {
+export const revalidate = 0;
+
+export default async function ProductsPage() {
+  const products = await getProducts();
   const filtrationSystems = products.filter((p) => p.category === "Filtration Systems");
   const cartridges = products.filter((p) => p.category === "Cartridges");
 
@@ -19,7 +23,7 @@ export default function ProductsPage() {
             { name: "Home", path: "/" },
             { name: "Products", path: "/products" },
           ]),
-          productCollectionJsonLd(),
+          productCollectionJsonLd(products),
         ]}
       />
       <section className="mx-auto w-full max-w-6xl px-6 py-8 md:py-16 sm:px-6 lg:px-8">

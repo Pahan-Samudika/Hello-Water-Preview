@@ -3,7 +3,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 
-import { getProductBySlug, products } from "@/constants/products";
+import { getProductBySlug, getProducts } from "@/lib/db-queries";
+import { type Product } from "@/constants/products";
 import { MotionWrapper } from "@/components/custom/motion-wrapper";
 import { MoreProducts } from "@/components/custom/more-products";
 import { SmartImage } from "@/components/ui/smart-image";
@@ -11,13 +12,14 @@ import { JsonLd } from "@/components/seo/json-ld";
 import { createMetadata } from "@/lib/seo";
 import { breadcrumbsJsonLd, productJsonLd } from "@/lib/structured-data";
 
-export function generateStaticParams() {
+export const revalidate = 0;
+
+export async function generateStaticParams() {
+  const products = await getProducts();
   return products.map((product) => ({
     slug: product.slug,
   }));
 }
-
-export const dynamicParams = false;
 
 export async function generateMetadata({
   params,
@@ -25,7 +27,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const product = getProductBySlug(slug);
+  const product = await getProductBySlug(slug);
 
   if (!product) {
     return createMetadata({
@@ -50,11 +52,13 @@ export default async function ProductViewPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const product = getProductBySlug(slug);
+  const product = await getProductBySlug(slug);
 
   if (!product) {
     notFound();
   }
+
+  const allProducts = await getProducts();
 
   return (
     <main className="relative overflow-hidden w-full min-h-screen">
@@ -176,7 +180,7 @@ export default async function ProductViewPage({
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            <MoreProducts currentProductSlug={product.slug} />
+            <MoreProducts currentProductSlug={product.slug} products={allProducts} />
           </MotionWrapper>
         </div>
       </section>
