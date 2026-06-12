@@ -16,7 +16,7 @@ export default async function AdminLayout({
       <Sidebar session={session} />
 
       {/* Main Viewport */}
-      <div className="flex-1 flex flex-col min-w-0 md:h-full md:overflow-hidden">
+      <div className="flex-1 flex flex-col min-w-0 md:h-full md:overflow-hidden pt-16 md:pt-0">
         {/* Top Navbar (Desktop only) */}
         <header className="hidden md:flex h-16 border-b border-border bg-card/40 items-center justify-between px-6 md:px-8 backdrop-blur-md sticky top-0 z-30">
           <div className="flex items-center gap-2 text-sm text-muted-foreground font-medium">
@@ -32,7 +32,7 @@ export default async function AdminLayout({
         </header>
 
         {/* Content Body */}
-        <main className="flex-1 p-6 md:p-8 max-w-7xl w-full mx-auto md:overflow-y-auto">
+        <main className="flex-1 p-4 sm:p-6 md:p-8 max-w-7xl w-full mx-auto md:overflow-y-auto">
           {children}
         </main>
       </div>

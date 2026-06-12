@@ -29,7 +29,7 @@ export function Sidebar({ session }: SidebarProps) {
   return (
     <>
       {/* Mobile Header (visible on mobile only) */}
-      <header className="md:hidden h-16 w-full bg-sidebar border-b border-sidebar-border flex items-center justify-between px-6 shrink-0 z-[60] sticky top-0">
+      <header className="md:hidden h-16 w-full bg-sidebar border-b border-sidebar-border flex items-center justify-between px-6 shrink-0 z-[60] fixed top-0 left-0">
         <div className="flex items-center gap-3">
           <div className="flex size-9 items-center justify-center bg-black rounded-full p-1.5 overflow-hidden shadow-md shrink-0">
             <Image

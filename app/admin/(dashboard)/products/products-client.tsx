@@ -197,13 +197,13 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
   return (
     <div className="space-y-6">
       {/* Header toolbar */}
-      <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between pb-6 border-b border-slate-800">
-        <div className="space-y-1">
-          <h1 className="text-2xl font-black text-white flex items-center gap-2">
-            <Droplets className="size-6 text-primary" />
+      <div className="flex flex-col md:flex-row gap-3 md:gap-4 items-start md:items-center justify-between pb-4 md:pb-6 border-b border-slate-800">
+        <div className="space-y-0.5 sm:space-y-1">
+          <h1 className="text-xl sm:text-2xl font-black text-white flex items-center gap-2">
+            <Droplets className="size-5 sm:size-6 text-primary" />
             Product Management
           </h1>
-          <p className="text-xs text-slate-500">
+          <p className="text-[11px] sm:text-xs text-slate-500">
             Create and edit filtration systems and cartridge replacements
           </p>
         </div>
@@ -233,8 +233,8 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
         </div>
       </div>
 
-      {/* Products list table */}
-      <div className="overflow-x-auto rounded-[1.5rem] border border-slate-800 bg-slate-900/20 backdrop-blur-md">
+      {/* Products list layout (Desktop Table / Mobile Cards) */}
+      <div className="hidden md:block overflow-x-auto rounded-[1.5rem] border border-slate-800 bg-slate-900/20 backdrop-blur-md">
         <table className="w-full text-left border-collapse">
           <thead>
             <tr className="border-b border-slate-800 bg-slate-900/40 text-xs font-bold uppercase tracking-wider text-slate-500">
@@ -330,6 +330,109 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
             )}
           </tbody>
         </table>
+
+        <Pagination
+          totalItems={filteredProducts.length}
+          currentPage={currentPage}
+          pageSize={pageSize}
+          onPageChange={setCurrentPage}
+          onPageSizeChange={setPageSize}
+        />
+      </div>
+
+      {/* Mobile view stacked cards (visible only on mobile) */}
+      <div className="grid gap-4 md:hidden">
+        {paginatedProducts.length === 0 ? (
+          <div className="py-12 text-center text-slate-500 rounded-3xl border border-slate-800 bg-slate-900/10">
+            No products registered in the database.
+          </div>
+        ) : (
+          paginatedProducts.map((product) => (
+            <div
+              key={product.slug}
+              className="p-4 rounded-2xl border border-slate-800 bg-slate-900/20 hover:border-slate-700 transition-all flex flex-col gap-3.5"
+            >
+              {/* Product info header */}
+              <div className="flex items-start gap-4">
+                <div className="relative size-12 rounded-lg border border-slate-800 bg-slate-950 overflow-hidden shrink-0">
+                  {product.image ? (
+                    <Image
+                      src={product.image}
+                      alt={product.imageAlt}
+                      fill
+                      className="object-cover"
+                      sizes="48px"
+                    />
+                  ) : (
+                    <div className="absolute inset-0 flex items-center justify-center text-slate-700">
+                      <ImageIcon className="size-5" />
+                    </div>
+                  )}
+                </div>
+                <div className="min-w-0 flex-1">
+                  <span className="font-bold text-white block leading-snug break-words">{product.name}</span>
+                  <span className="text-[10px] text-slate-500 block break-all mt-0.5">
+                    ID: {product.id} • Slug: {product.slug}
+                  </span>
+                </div>
+              </div>
+
+              {/* Category & Price */}
+              <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-slate-800/60">
+                <div className="space-y-1 shrink-0">
+                  <span className="text-[9px] text-slate-500 uppercase font-semibold tracking-wider block">Category</span>
+                  <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-slate-800 border border-slate-700 text-xs font-medium text-slate-300">
+                    {product.category}
+                  </span>
+                </div>
+                <div className="space-y-1 text-right shrink-0">
+                  <span className="text-[9px] text-slate-500 uppercase font-semibold tracking-wider block">Price</span>
+                  <span className="font-bold text-sm text-slate-300 block">{product.price}</span>
+                </div>
+              </div>
+
+              {/* Status/Badges & Actions */}
+              <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-slate-800/60">
+                <div className="flex flex-wrap gap-1.5 shrink-0">
+                  {product.recent && (
+                    <span className="px-2 py-0.5 rounded bg-primary/10 border border-primary/20 text-[9px] font-black text-primary uppercase">
+                      Recent
+                    </span>
+                  )}
+                  <span className="px-2 py-0.5 rounded bg-slate-800/60 border border-slate-700/60 text-[9px] font-bold text-slate-400">
+                    {product.features.length} Features
+                  </span>
+                </div>
+
+                <div className="flex items-center gap-2 shrink-0">
+                  <a
+                    href={`/products/${product.slug}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="size-8 inline-flex items-center justify-center rounded-lg border border-slate-800 text-slate-500 hover:text-white hover:bg-slate-800 transition-all cursor-pointer"
+                    title="View public page"
+                  >
+                    <ExternalLink className="size-3.5" />
+                  </a>
+                  <button
+                    onClick={() => openEditForm(product)}
+                    className="size-8 inline-flex items-center justify-center rounded-lg border border-slate-800 text-slate-400 hover:text-white hover:bg-slate-800 transition-all cursor-pointer"
+                    title="Edit product"
+                  >
+                    <Edit2 className="size-3.5" />
+                  </button>
+                  <button
+                    onClick={() => setDeletingProduct(product)}
+                    className="size-8 inline-flex items-center justify-center rounded-lg border border-rose-500/20 bg-rose-500/5 text-rose-400 hover:text-white hover:bg-rose-500/25 transition-all cursor-pointer"
+                    title="Delete product"
+                  >
+                    <Trash2 className="size-3.5" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))
+        )}
 
         <Pagination
           totalItems={filteredProducts.length}

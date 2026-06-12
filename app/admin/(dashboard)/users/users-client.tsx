@@ -164,13 +164,13 @@ export function UsersClient({ initialUsers, currentUserEmail }: UsersClientProps
   return (
     <div className="space-y-6">
       {/* Header toolbar */}
-      <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between pb-6 border-b border-slate-800">
-        <div className="space-y-1">
-          <h1 className="text-2xl font-black text-white flex items-center gap-2">
-            <Users className="size-6 text-primary" />
+      <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between pb-4 md:pb-6 border-b border-slate-800">
+        <div className="space-y-0.5 sm:space-y-1">
+          <h1 className="text-xl sm:text-2xl font-black text-white flex items-center gap-2">
+            <Users className="size-5 sm:size-6 text-primary" />
             User Management
           </h1>
-          <p className="text-xs text-slate-500">
+          <p className="text-[11px] sm:text-xs text-slate-500">
             Create internal admin accounts and assign permissions for roles
           </p>
         </div>
@@ -200,8 +200,8 @@ export function UsersClient({ initialUsers, currentUserEmail }: UsersClientProps
         </div>
       </div>
 
-      {/* Users table */}
-      <div className="overflow-x-auto rounded-[1.5rem] border border-slate-800 bg-slate-900/20 backdrop-blur-md">
+      {/* Users list layout (Desktop Table / Mobile Cards) */}
+      <div className="hidden md:block overflow-x-auto rounded-[1.5rem] border border-slate-800 bg-slate-900/20 backdrop-blur-md">
         <table className="w-full text-left border-collapse">
           <thead>
             <tr className="border-b border-slate-800 bg-slate-900/40 text-xs font-bold uppercase tracking-wider text-slate-500">
@@ -280,6 +280,95 @@ export function UsersClient({ initialUsers, currentUserEmail }: UsersClientProps
             )}
           </tbody>
         </table>
+
+        <Pagination
+          totalItems={filteredUsers.length}
+          currentPage={currentPage}
+          pageSize={pageSize}
+          onPageChange={setCurrentPage}
+          onPageSizeChange={setPageSize}
+        />
+      </div>
+
+      {/* Mobile view stacked cards (visible only on mobile) */}
+      <div className="grid gap-4 md:hidden">
+        {paginatedUsers.length === 0 ? (
+          <div className="py-12 text-center text-slate-500 rounded-3xl border border-slate-800 bg-slate-900/10">
+            No admin users found matching the search criteria.
+          </div>
+        ) : (
+          paginatedUsers.map((user) => {
+            const isSelf = user.email.toLowerCase() === currentUserEmail.toLowerCase();
+            return (
+              <div
+                key={user.email}
+                className="p-4 rounded-2xl border border-slate-800 bg-slate-900/20 hover:border-slate-700 transition-all flex flex-col gap-3.5"
+              >
+                {/* User Info Header & Actions */}
+                <div className="flex items-start justify-between gap-4">
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center flex-wrap gap-2">
+                      <span className="font-bold text-white leading-snug break-words">
+                        {user.name}
+                      </span>
+                      {isSelf && (
+                        <span className="px-2 py-0.5 rounded-md bg-primary/10 border border-primary/20 text-[9px] font-black text-primary uppercase tracking-wide shrink-0">
+                          You
+                        </span>
+                      )}
+                    </div>
+                    <span className="text-xs text-slate-500 block break-all mt-0.5">
+                      {user.email}
+                    </span>
+                  </div>
+
+                  <div className="flex items-center gap-1.5 shrink-0">
+                    <button
+                      onClick={() => openEditForm(user)}
+                      disabled={isSelf}
+                      className="size-8 inline-flex items-center justify-center rounded-lg border border-slate-800 text-slate-400 hover:text-white hover:bg-slate-800 transition-all disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-slate-400 cursor-pointer"
+                      title={isSelf ? "Use configuration settings for self updates" : "Edit user"}
+                    >
+                      <Edit2 className="size-3.5" />
+                    </button>
+                    <button
+                      onClick={() => setDeletingUser(user.email)}
+                      disabled={isSelf}
+                      className="size-8 inline-flex items-center justify-center rounded-lg border border-rose-500/20 bg-rose-500/5 text-rose-400 hover:text-white hover:bg-rose-500/25 transition-all disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-rose-400 cursor-pointer"
+                      title={isSelf ? "Self-deletion is protected" : "Delete user"}
+                    >
+                      <Trash2 className="size-3.5" />
+                    </button>
+                  </div>
+                </div>
+
+                {/* Permissions checklist on mobile */}
+                <div className="pt-3 border-t border-slate-800/60 space-y-1.5">
+                  <span className="text-[9px] text-slate-500 uppercase font-semibold tracking-wider block">
+                    Granted Permissions
+                  </span>
+                  <div className="flex flex-wrap gap-1">
+                    {user.permissions.length === 0 ? (
+                      <span className="text-[10px] font-bold text-slate-600 italic">
+                        No Permissions
+                      </span>
+                    ) : (
+                      user.permissions.map((perm) => (
+                        <span
+                          key={perm}
+                          className="inline-flex items-center gap-0.5 px-2 py-0.5 rounded bg-slate-800 border border-slate-700 text-[10px] font-semibold text-slate-300"
+                        >
+                          <ShieldCheck className="size-3 text-sky-400" />
+                          {perm}
+                        </span>
+                      ))
+                    )}
+                  </div>
+                </div>
+              </div>
+            );
+          })
+        )}
 
         <Pagination
           totalItems={filteredUsers.length}

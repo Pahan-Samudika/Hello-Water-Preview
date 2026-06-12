@@ -65,7 +65,7 @@ export default async function AdminDashboardPage({ searchParams }: PageProps) {
   ];
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 sm:space-y-8">
       {/* Alert message if redirected due to unauthorized access */}
       {error === "Unauthorized" && (
         <div className="rounded-2xl bg-rose-500/10 border border-rose-500/20 p-4 text-sm text-rose-300 flex items-center gap-3 animate-shake">
@@ -76,26 +76,26 @@ export default async function AdminDashboardPage({ searchParams }: PageProps) {
 
       {/* Welcome Title */}
       <div>
-        <h2 className="text-2xl font-extrabold text-white sm:text-3xl">
+        <h2 className="text-xl font-extrabold text-white sm:text-3xl">
           Welcome back, {session.name}!
         </h2>
       </div>
 
       {/* Quick Metrics Grid */}
-      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-4 grid-cols-2 lg:grid-cols-4">
         {stats.map((stat) => {
           const CardContent = (
-            <div className="p-6 rounded-3xl border border-slate-800 bg-slate-900/60 hover:bg-slate-900 transition-all hover:border-slate-700 flex items-center justify-between group cursor-pointer">
-              <div className="space-y-1">
-                <p className="text-xs font-bold uppercase tracking-wider text-slate-500">
+            <div className="p-4 sm:p-6 rounded-3xl border border-slate-800 bg-slate-900/60 hover:bg-slate-900 transition-all hover:border-slate-700 flex items-center justify-between group cursor-pointer">
+              <div className="space-y-0.5 sm:space-y-1 min-w-0">
+                <p className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-500 truncate">
                   {stat.name}
                 </p>
-                <p className="text-2xl font-black text-white group-hover:scale-102 transition-transform origin-left">
+                <p className="text-xl sm:text-2xl font-black text-white group-hover:scale-102 transition-transform origin-left truncate">
                   {stat.value}
                 </p>
               </div>
-              <div className={`p-3 rounded-2xl border ${stat.color} transition-all`}>
-                <stat.icon className="size-5" />
+              <div className={`p-2 sm:p-3 rounded-xl sm:rounded-2xl border ${stat.color} transition-all shrink-0 ml-3`}>
+                <stat.icon className="size-4 sm:size-5" />
               </div>
             </div>
           );
@@ -114,20 +114,20 @@ export default async function AdminDashboardPage({ searchParams }: PageProps) {
 
       {/* Recent submissions grid */}
       {(canViewEnquiries || canViewContacts) && (
-        <div className="grid gap-8 lg:grid-cols-2">
+        <div className="grid gap-6 lg:grid-cols-2">
           {/* Enquiries panel */}
           {canViewEnquiries && (
-            <div className="rounded-[2.5rem] border border-slate-800 bg-slate-900/40 p-6 md:p-8 space-y-6">
+            <div className="rounded-3xl border border-slate-800 bg-slate-900/40 p-4 sm:p-6 md:p-8 space-y-6">
               <div className="flex items-center justify-between pb-4 border-b border-slate-800">
                 <div className="space-y-1">
-                  <h3 className="text-lg font-bold text-white">Recent Enquiries</h3>
+                  <h3 className="text-base sm:text-lg font-bold text-white">Recent Enquiries</h3>
                   <p className="text-xs text-slate-500">Latest submissions from lead generation</p>
                 </div>
                 <Link
                   href="/admin/enquiries"
                   className="inline-flex items-center gap-1 text-xs text-primary font-bold hover:underline"
                 >
-                  View All
+                  <span className="hidden md:block">View All</span>
                   <ArrowRight className="size-3.5" />
                 </Link>
               </div>
@@ -174,17 +174,17 @@ export default async function AdminDashboardPage({ searchParams }: PageProps) {
 
           {/* Contact Submissions panel */}
           {canViewContacts && (
-            <div className="rounded-[2.5rem] border border-slate-800 bg-slate-900/40 p-6 md:p-8 space-y-6">
+            <div className="rounded-3xl border border-slate-800 bg-slate-900/40 p-4 sm:p-6 md:p-8 space-y-6">
               <div className="flex items-center justify-between pb-4 border-b border-slate-800">
                 <div className="space-y-1">
-                  <h3 className="text-lg font-bold text-white">Recent Contacts</h3>
+                  <h3 className="text-base sm:text-lg font-bold text-white">Recent Contacts</h3>
                   <p className="text-xs text-slate-500">Latest submissions from standard contact forms</p>
                 </div>
                 <Link
                   href="/admin/contacts"
                   className="inline-flex items-center gap-1 text-xs text-emerald-400 font-bold hover:underline"
                 >
-                  View All
+                  <span className="hidden md:block">View All</span>
                   <ArrowRight className="size-3.5" />
                 </Link>
               </div>

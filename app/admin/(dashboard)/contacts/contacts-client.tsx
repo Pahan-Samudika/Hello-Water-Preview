@@ -117,13 +117,13 @@ export function ContactsClient({ initialContacts, canManage }: ContactsClientPro
   return (
     <div className="space-y-6">
       {/* Header toolbar */}
-      <div className="flex flex-col xl:flex-row gap-4 items-start xl:items-center justify-between pb-6 border-b border-slate-800">
-        <div className="space-y-1">
-          <h1 className="text-2xl font-black text-white flex items-center gap-2">
-            <PhoneCall className="size-6 text-primary" />
+      <div className="flex flex-col xl:flex-row gap-3 xl:gap-4 items-start xl:items-center justify-between pb-4 xl:pb-6 border-b border-slate-800">
+        <div className="space-y-0.5 sm:space-y-1">
+          <h1 className="text-xl sm:text-2xl font-black text-white flex items-center gap-2">
+            <PhoneCall className="size-5 sm:size-6 text-primary" />
             Contact Submissions
           </h1>
-          <p className="text-xs text-slate-500">
+          <p className="text-[11px] sm:text-xs text-slate-500">
             {canManage
               ? "View customer messages and update contact statuses"
               : "View submitted feedback and customer questions (Read Only)"}
@@ -160,8 +160,8 @@ export function ContactsClient({ initialContacts, canManage }: ContactsClientPro
         </div>
       </div>
 
-      {/* Contacts list table */}
-      <div className="overflow-x-auto rounded-[1.5rem] border border-slate-800 bg-slate-900/20 backdrop-blur-md">
+      {/* Contacts list table (Desktop) */}
+      <div className="hidden md:block overflow-x-auto rounded-[1.5rem] border border-slate-800 bg-slate-900/20 backdrop-blur-md">
         <table className="w-full text-left border-collapse">
           <thead>
             <tr className="border-b border-slate-800 bg-slate-900/40 text-xs font-bold uppercase tracking-wider text-slate-500">
@@ -240,7 +240,7 @@ export function ContactsClient({ initialContacts, canManage }: ContactsClientPro
                             className={`h-8 min-w-28 px-2.5 rounded-lg border-3 text-xs font-bold text-white focus:outline-none transition-all ${
                               currentStatus === "Resolved"
                                 ? "bg-emerald-500/10 border-emerald-500/20 hover:bg-emerald-500/20"
-                               : currentStatus === "In Progress"
+                                : currentStatus === "In Progress"
                                 ? "bg-amber-500/10 border-amber-500/20 hover:bg-amber-500/20"
                                 : "bg-blue-500/10 border-blue-500/20 hover:bg-blue-500/20"
                             }`}
@@ -293,6 +293,131 @@ export function ContactsClient({ initialContacts, canManage }: ContactsClientPro
             )}
           </tbody>
         </table>
+
+        <Pagination
+          totalItems={filteredContacts.length}
+          currentPage={currentPage}
+          pageSize={pageSize}
+          onPageChange={setCurrentPage}
+          onPageSizeChange={setPageSize}
+        />
+      </div>
+
+      {/* Mobile view list (visible only on mobile) */}
+      <div className="grid gap-4 md:hidden">
+        {paginatedContacts.length === 0 ? (
+          <div className="py-12 text-center text-slate-500 rounded-3xl border border-slate-800 bg-slate-900/10">
+            No contact form submissions recorded.
+          </div>
+        ) : (
+          paginatedContacts.map((c) => {
+            const currentStatus = c.status || "New";
+            return (
+              <div
+                key={c.id}
+                className="p-4 rounded-2xl border border-slate-800 bg-slate-900/20 hover:border-slate-700 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+              >
+                <div className="space-y-2 min-w-0">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="font-bold text-sm text-white break-words">{c.name}</span>
+                    {c.suburb && <span className="text-[10px] text-slate-500">• {c.suburb}</span>}
+                  </div>
+
+                  <div className="flex flex-col gap-1.5 text-xs text-slate-400">
+                    <a
+                      href={`mailto:${c.email}`}
+                      className="hover:text-primary flex items-center gap-1.5 transition-all truncate"
+                    >
+                      <Mail className="size-3.5 text-slate-500 shrink-0" />
+                      <span className="truncate">{c.email}</span>
+                    </a>
+                    {c.phone && (
+                      <a
+                        href={`tel:${c.phone}`}
+                        className="hover:text-primary flex items-center gap-1.5 transition-all"
+                      >
+                        <Phone className="size-3.5 text-slate-500 shrink-0" />
+                        {c.phone}
+                      </a>
+                    )}
+                    <div className="flex items-start gap-1.5 text-slate-300">
+                      <MessageSquare className="size-3.5 text-slate-600 shrink-0 mt-0.5" />
+                      <span className="line-clamp-2 leading-tight">{c.message}</span>
+                    </div>
+                    <div className="flex items-center gap-1.5 text-[10px] text-slate-500">
+                      <Calendar className="size-3.5 text-slate-600 shrink-0" />
+                      <span>{new Date(c.createdAt).toLocaleDateString()}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex sm:flex-col items-center sm:items-end justify-between sm:justify-center gap-3 shrink-0 pt-3 sm:pt-0 border-t border-slate-800/60 sm:border-t-0">
+                  {/* Status Selector/Badge */}
+                  <div>
+                    {canManage ? (
+                      <Select
+                        value={currentStatus}
+                        disabled={loading}
+                        onValueChange={(val) =>
+                          handleStatusChange(c.id, (val || "New") as ContactSubmission["status"])
+                        }
+                      >
+                        <SelectTrigger
+                          className={`h-8 min-w-28 px-2.5 rounded-lg border border-slate-800 text-xs font-bold text-white focus:outline-none transition-all ${
+                            currentStatus === "Resolved"
+                              ? "bg-emerald-500/10 border-emerald-500/20 hover:bg-emerald-500/20"
+                              : currentStatus === "In Progress"
+                              ? "bg-amber-500/10 border-amber-500/20 hover:bg-amber-500/20"
+                              : "bg-blue-500/10 border-blue-500/20 hover:bg-blue-500/20"
+                          }`}
+                        >
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent className="bg-slate-950 border border-slate-800 rounded-lg">
+                          <SelectItem value="New">New</SelectItem>
+                          <SelectItem value="In Progress">In Progress</SelectItem>
+                          <SelectItem value="Resolved">Resolved</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    ) : (
+                      <span
+                        className={`inline-flex px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${
+                          currentStatus === "Resolved"
+                            ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
+                            : currentStatus === "In Progress"
+                            ? "bg-amber-500/10 text-amber-400 border border-amber-500/20"
+                            : "bg-blue-500/10 text-blue-400 border border-blue-500/20"
+                        }`}
+                      >
+                        {currentStatus}
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Actions (View & Delete) */}
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => setViewingContact(c)}
+                      className="size-8 inline-flex items-center justify-center rounded-lg border border-slate-800 text-slate-400 hover:text-white hover:bg-slate-800 transition-all cursor-pointer"
+                      title="Read message content"
+                    >
+                      <Eye className="size-3.5" />
+                    </button>
+                    {canManage && (
+                      <button
+                        onClick={() => setDeletingContact(c)}
+                        className="size-8 inline-flex items-center justify-center rounded-lg border border-rose-500/20 bg-rose-500/5 text-rose-400 hover:text-white hover:bg-rose-500/25 transition-all cursor-pointer"
+                        title="Delete submission record"
+                      >
+                        <Trash2 className="size-3.5" />
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </div>
+            );
+          })
+        )}
 
         <Pagination
           totalItems={filteredContacts.length}

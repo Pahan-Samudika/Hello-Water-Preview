@@ -83,13 +83,13 @@ export function Pagination({
   return (
     <div
       className={cn(
-        "flex flex-col sm:flex-row gap-4 items-center justify-between px-6 py-4 border-t border-slate-800 bg-slate-900/10 backdrop-blur-md rounded-b-[1.5rem]",
+        "flex flex-col sm:flex-row gap-3 sm:gap-4 items-center justify-between px-4 sm:px-6 py-3.5 sm:py-4 border-t border-slate-800 bg-slate-900/10 backdrop-blur-md rounded-b-[1.5rem]",
         className
       )}
     >
       {/* Items count & size selector */}
-      <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-slate-400">
-        <div>
+      <div className="flex flex-wrap items-center justify-center sm:justify-start gap-x-4 gap-y-2 text-xs text-slate-400 w-full sm:w-auto">
+        <div className="text-center sm:text-left">
           Showing <span className="font-bold text-white">{startItem}</span> to{" "}
           <span className="font-bold text-white">{endItem}</span> of{" "}
           <span className="font-bold text-white">{totalItems}</span> entries
@@ -118,25 +118,25 @@ export function Pagination({
       </div>
 
       {/* Navigation buttons */}
-      <div className="flex items-center gap-1.5">
+      <div className="flex items-center justify-center gap-1 sm:gap-1.5 w-full sm:w-auto">
         {/* Go to First Page */}
         <button
           onClick={() => onPageChange(1)}
           disabled={currentPage === 1}
-          className="size-8 inline-flex items-center justify-center rounded-lg border border-slate-800 text-slate-400 hover:text-white hover:bg-slate-800 disabled:opacity-20 disabled:hover:bg-transparent disabled:hover:text-slate-400 transition-all"
+          className="size-7 sm:size-8 inline-flex items-center justify-center rounded-lg border border-slate-800 text-slate-400 hover:text-white hover:bg-slate-800 disabled:opacity-20 disabled:hover:bg-transparent disabled:hover:text-slate-400 transition-all"
           title="First Page"
         >
-          <ChevronsLeft className="size-4" />
+          <ChevronsLeft className="size-3.5 sm:size-4" />
         </button>
 
         {/* Previous Page */}
         <button
           onClick={() => onPageChange(Math.max(1, currentPage - 1))}
           disabled={currentPage === 1}
-          className="size-8 inline-flex items-center justify-center rounded-lg border border-slate-800 text-slate-400 hover:text-white hover:bg-slate-800 disabled:opacity-20 disabled:hover:bg-transparent disabled:hover:text-slate-400 transition-all"
+          className="size-7 sm:size-8 inline-flex items-center justify-center rounded-lg border border-slate-800 text-slate-400 hover:text-white hover:bg-slate-800 disabled:opacity-20 disabled:hover:bg-transparent disabled:hover:text-slate-400 transition-all"
           title="Previous Page"
         >
-          <ChevronLeft className="size-4" />
+          <ChevronLeft className="size-3.5 sm:size-4" />
         </button>
 
         {/* Page numbers */}
@@ -146,7 +146,7 @@ export function Pagination({
               return (
                 <span
                   key={`ellipsis-${idx}`}
-                  className="size-8 inline-flex items-center justify-center text-xs font-semibold text-slate-600 select-none"
+                  className="size-7 sm:size-8 inline-flex items-center justify-center text-[11px] sm:text-xs font-semibold text-slate-600 select-none"
                 >
                   ...
                 </span>
@@ -161,7 +161,7 @@ export function Pagination({
                 key={`page-${pageNum}`}
                 onClick={() => onPageChange(pageNum)}
                 className={cn(
-                  "size-8 text-xs font-bold rounded-lg transition-all",
+                  "size-7 sm:size-8 text-[11px] sm:text-xs font-bold rounded-lg transition-all",
                   isActive
                     ? "bg-primary text-primary-foreground shadow-md shadow-primary/15"
                     : "border border-slate-800 text-slate-400 hover:text-white hover:bg-slate-800"
@@ -177,20 +177,20 @@ export function Pagination({
         <button
           onClick={() => onPageChange(Math.min(totalPages, currentPage + 1))}
           disabled={currentPage === totalPages}
-          className="size-8 inline-flex items-center justify-center rounded-lg border border-slate-800 text-slate-400 hover:text-white hover:bg-slate-800 disabled:opacity-20 disabled:hover:bg-transparent disabled:hover:text-slate-400 transition-all"
+          className="size-7 sm:size-8 inline-flex items-center justify-center rounded-lg border border-slate-800 text-slate-400 hover:text-white hover:bg-slate-800 disabled:opacity-20 disabled:hover:bg-transparent disabled:hover:text-slate-400 transition-all"
           title="Next Page"
         >
-          <ChevronRight className="size-4" />
+          <ChevronRight className="size-3.5 sm:size-4" />
         </button>
 
         {/* Go to Last Page */}
         <button
           onClick={() => onPageChange(totalPages)}
           disabled={currentPage === totalPages}
-          className="size-8 inline-flex items-center justify-center rounded-lg border border-slate-800 text-slate-400 hover:text-white hover:bg-slate-800 disabled:opacity-20 disabled:hover:bg-transparent disabled:hover:text-slate-400 transition-all"
+          className="size-7 sm:size-8 inline-flex items-center justify-center rounded-lg border border-slate-800 text-slate-400 hover:text-white hover:bg-slate-800 disabled:opacity-20 disabled:hover:bg-transparent disabled:hover:text-slate-400 transition-all"
           title="Last Page"
         >
-          <ChevronsRight className="size-4" />
+          <ChevronsRight className="size-3.5 sm:size-4" />
         </button>
       </div>
     </div>

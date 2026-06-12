@@ -274,13 +274,13 @@ export function BlogsClient({ initialBlogs }: BlogsClientProps) {
   return (
     <div className="space-y-6">
       {/* Header toolbar */}
-      <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between pb-6 border-b border-slate-800">
-        <div className="space-y-1">
-          <h1 className="text-2xl font-black text-white flex items-center gap-2">
-            <BookOpen className="size-6 text-primary" />
+      <div className="flex flex-col md:flex-row gap-3 md:gap-4 items-start md:items-center justify-between pb-4 md:pb-6 border-b border-slate-800">
+        <div className="space-y-0.5 sm:space-y-1">
+          <h1 className="text-xl sm:text-2xl font-black text-white flex items-center gap-2">
+            <BookOpen className="size-5 sm:size-6 text-primary" />
             Blogs Management
           </h1>
-          <p className="text-xs text-slate-500">
+          <p className="text-[11px] sm:text-xs text-slate-500">
             Write articles, reference sources, and manage posts on your website
           </p>
         </div>
@@ -310,8 +310,8 @@ export function BlogsClient({ initialBlogs }: BlogsClientProps) {
         </div>
       </div>
 
-      {/* Blogs list table */}
-      <div className="overflow-x-auto rounded-[1.5rem] border border-slate-800 bg-slate-900/20 backdrop-blur-md">
+      {/* Blogs list table (Desktop) */}
+      <div className="hidden md:block overflow-x-auto rounded-[1.5rem] border border-slate-800 bg-slate-900/20 backdrop-blur-md">
         <table className="w-full text-left border-collapse">
           <thead>
             <tr className="border-b border-slate-800 bg-slate-900/40 text-xs font-bold uppercase tracking-wider text-slate-500">
@@ -399,6 +399,88 @@ export function BlogsClient({ initialBlogs }: BlogsClientProps) {
             )}
           </tbody>
         </table>
+
+        <Pagination
+          totalItems={filteredBlogs.length}
+          currentPage={currentPage}
+          pageSize={pageSize}
+          onPageChange={setCurrentPage}
+          onPageSizeChange={setPageSize}
+        />
+      </div>
+
+      {/* Mobile view list (visible only on mobile) */}
+      <div className="grid gap-4 md:hidden">
+        {paginatedBlogs.length === 0 ? (
+          <div className="py-12 text-center text-slate-500 rounded-3xl border border-slate-800 bg-slate-900/10">
+            No blog posts registered in the database.
+          </div>
+        ) : (
+          paginatedBlogs.map((post) => (
+            <div
+              key={post.slug}
+              className="p-4 rounded-2xl border border-slate-800 bg-slate-900/20 hover:border-slate-700 transition-all flex items-center justify-between gap-4"
+            >
+              {/* Blog Details (Left) */}
+              <div className="flex items-center gap-3.5 min-w-0">
+                <div className="relative w-16 aspect-video rounded-lg border border-slate-800 bg-slate-950 overflow-hidden shrink-0">
+                  {post.coverImage ? (
+                    <Image
+                      src={post.coverImage}
+                      alt={post.title}
+                      fill
+                      className="object-cover"
+                      sizes="64px"
+                    />
+                  ) : (
+                    <div className="absolute inset-0 flex items-center justify-center text-slate-700">
+                      <ImageIcon className="size-4" />
+                    </div>
+                  )}
+                </div>
+                <div className="min-w-0">
+                  <span className="font-bold text-sm text-white block leading-snug break-words">
+                    {post.title}
+                  </span>
+                  <div className="text-[10px] text-slate-500 mt-1 flex flex-wrap items-center gap-1.5 leading-none">
+                    <span className="font-medium text-slate-300">By {post.author.name}</span>
+                    <span className="text-slate-400">•</span>
+                    <span>{post.publishedAt}</span>
+                    <span className="text-slate-400">•</span>
+                    <span>{post.readTime}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Action Buttons (Right) */}
+              <div className="flex items-center gap-1.5 shrink-0">
+                <a
+                  href={`/blogs/${post.slug}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="size-8 inline-flex items-center justify-center rounded-lg border border-slate-800 text-slate-500 hover:text-white hover:bg-slate-800 transition-all cursor-pointer"
+                  title="View public page"
+                >
+                  <ExternalLink className="size-3.5" />
+                </a>
+                <button
+                  onClick={() => openEditForm(post)}
+                  className="size-8 inline-flex items-center justify-center rounded-lg border border-slate-800 text-slate-400 hover:text-white hover:bg-slate-800 transition-all cursor-pointer"
+                  title="Edit post"
+                >
+                  <Edit2 className="size-3.5" />
+                </button>
+                <button
+                  onClick={() => setDeletingBlog(post)}
+                  className="size-8 inline-flex items-center justify-center rounded-lg border border-rose-500/20 bg-rose-500/5 text-rose-400 hover:text-white hover:bg-rose-500/25 transition-all cursor-pointer"
+                  title="Delete post"
+                >
+                  <Trash2 className="size-3.5" />
+                </button>
+              </div>
+            </div>
+          ))
+        )}
 
         <Pagination
           totalItems={filteredBlogs.length}

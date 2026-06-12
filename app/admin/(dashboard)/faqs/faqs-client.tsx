@@ -169,13 +169,13 @@ export function FAQsClient({ initialFAQs }: FAQsClientProps) {
   return (
     <div className="space-y-6">
       {/* Header toolbar */}
-      <div className="flex flex-col xl:flex-row gap-4 items-start xl:items-center justify-between pb-6 border-b border-slate-800">
-        <div className="space-y-1">
-          <h1 className="text-2xl font-black text-white flex items-center gap-2">
-            <HelpCircle className="size-6 text-primary" />
+      <div className="flex flex-col xl:flex-row gap-3 xl:gap-4 items-start xl:items-center justify-between pb-4 xl:pb-6 border-b border-slate-800">
+        <div className="space-y-0.5 sm:space-y-1">
+          <h1 className="text-xl sm:text-2xl font-black text-white flex items-center gap-2">
+            <HelpCircle className="size-5 sm:size-6 text-primary" />
             FAQs Management
           </h1>
-          <p className="text-xs text-slate-500">
+          <p className="text-[11px] sm:text-xs text-slate-500">
             Create and edit questions & answers for the dynamic FAQ page
           </p>
         </div>
@@ -234,9 +234,9 @@ export function FAQsClient({ initialFAQs }: FAQsClientProps) {
             {paginatedFAQs.map((faq) => (
               <div
                 key={faq.id}
-                className="p-5 rounded-2xl border border-slate-800 bg-slate-900/20 flex flex-col justify-between hover:bg-slate-900 hover:border-slate-700 transition-all"
+                className="p-4 sm:p-5 rounded-2xl border border-slate-800 bg-slate-900/20 flex flex-col justify-between hover:bg-slate-900 hover:border-slate-700 transition-all"
               >
-                <div className="space-y-3">
+                <div className="space-y-2.5 sm:space-y-3">
                   <div className="flex items-center justify-between">
                     <span className="inline-flex items-center px-2 py-0.5 rounded bg-slate-800 border border-slate-700 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
                       {faq.category}
@@ -244,14 +244,14 @@ export function FAQsClient({ initialFAQs }: FAQsClientProps) {
                     <div className="flex items-center gap-1.5">
                       <button
                         onClick={() => openEditForm(faq)}
-                        className="size-7 inline-flex items-center justify-center rounded-lg border border-slate-800 text-slate-400 hover:text-white hover:bg-slate-800 transition-all"
+                        className="size-7 inline-flex items-center justify-center rounded-lg border border-slate-800 text-slate-400 hover:text-white hover:bg-slate-800 transition-all cursor-pointer"
                         title="Edit FAQ"
                       >
                         <Edit2 className="size-3" />
                       </button>
                       <button
                         onClick={() => setDeletingFAQ(faq)}
-                        className="size-7 inline-flex items-center justify-center rounded-lg border border-rose-500/20 bg-rose-500/5 text-rose-400 hover:text-white hover:bg-rose-500/25 transition-all"
+                        className="size-7 inline-flex items-center justify-center rounded-lg border border-rose-500/20 bg-rose-500/5 text-rose-400 hover:text-white hover:bg-rose-500/25 transition-all cursor-pointer"
                         title="Delete FAQ"
                       >
                         <Trash2 className="size-3" />
