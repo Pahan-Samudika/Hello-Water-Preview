@@ -219,7 +219,7 @@ export function Sidebar({ session }: SidebarProps) {
       )}
 
       {/* Mobile Bottom Navigation Bar */}
-      <div className="fixed bottom-0 left-0 right-0 h-16 bg-sidebar border-t border-sidebar-border md:hidden flex items-center justify-around z-[55] px-2 shadow-2xl">
+      <div className="fixed bottom-0 left-0 right-0 h-[calc(4.75rem+env(safe-area-inset-bottom))] pb-[calc(1.25rem+env(safe-area-inset-bottom))] bg-sidebar border-t border-sidebar-border md:hidden flex items-center justify-around z-[55] px-2 shadow-2xl">
         {displayItems.map((item) => {
           const isActive = pathname === item.href || (item.href !== "/admin" && pathname.startsWith(item.href));
           return (
