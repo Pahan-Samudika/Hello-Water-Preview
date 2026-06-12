@@ -498,13 +498,13 @@ export function BlogsClient({ initialBlogs }: BlogsClientProps) {
 
           <div className="w-full max-w-3xl bg-sidebar border-l border-sidebar-border h-full flex flex-col justify-between shadow-2xl p-4 sm:p-6 md:p-8 animate-slideLeft">
             {/* Header */}
-            <div className="flex items-center justify-between pb-4 sm:pb-6 border-b border-sidebar-border">
-              <div>
+            <div className="flex items-center justify-between pb-4 sm:pb-6 border-b border-sidebar-border gap-4">
+              <div className="min-w-0">
                 <h3 className="text-lg font-bold text-foreground flex items-center gap-2">
                   <BookOpen className="size-5 text-primary" />
                   {editingBlog ? "Edit Blog Article" : "Compose New Article"}
                 </h3>
-                <p className="text-xs text-muted-foreground/75 mt-1">
+                <p className="text-xs text-muted-foreground/75 mt-1 truncate" title={editingBlog ? `Drafting: ${editingBlog.title}` : undefined}>
                   {editingBlog ? `Drafting: ${editingBlog.title}` : "Authoring dynamic contents and lists"}
                 </p>
               </div>
