@@ -15,8 +15,10 @@ import {
   PhoneCall,
   BookOpen,
   HelpCircle,
-  Users
+  Users,
+  Smartphone
 } from "lucide-react";
+import { usePwa } from "@/hooks/use-pwa";
 import Image from "next/image";
 import { Portal, PortalBackdrop } from "@/components/ui/portal";
 import { Button } from "@/components/ui/button";
@@ -34,6 +36,7 @@ interface SidebarProps {
 export function Sidebar({ session }: SidebarProps) {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
+  const { isInstallable, installPwa } = usePwa();
 
   const navigationItems = [
     {
@@ -180,6 +183,17 @@ export function Sidebar({ session }: SidebarProps) {
             </div>
 
             <div className="p-4 border-t border-sidebar-border bg-background/20 mt-6">
+              {isInstallable && (
+                <button
+                  type="button"
+                  onClick={installPwa}
+                  className="w-full h-10 inline-flex items-center justify-center gap-2.5 rounded-xl border border-primary/20 bg-primary/5 text-xs font-bold text-primary hover:bg-primary/10 active:scale-98 transition-all cursor-pointer mb-3"
+                >
+                  <Smartphone className="size-3.5 text-primary animate-pulse" />
+                  <span>Install Web App</span>
+                </button>
+              )}
+
               <div className="flex items-center gap-3 px-2 py-3 rounded-xl hover:bg-sidebar-accent/50 transition-all mb-3">
                 <div className="flex size-9 items-center justify-center rounded-full bg-sidebar-accent border border-sidebar-border text-sidebar-foreground/75">
                   <User className="size-4.5" />
@@ -205,7 +219,7 @@ export function Sidebar({ session }: SidebarProps) {
       )}
 
       {/* Mobile Bottom Navigation Bar */}
-      <div className="fixed bottom-0 left-0 right-0 h-16 bg-sidebar border-t border-sidebar-border md:hidden flex items-center justify-around z-[55] px-2 shadow-2xl">
+      <div className="fixed bottom-0 left-0 right-0 h-[calc(4.75rem+env(safe-area-inset-bottom))] pb-[calc(1.25rem+env(safe-area-inset-bottom))] bg-sidebar border-t border-sidebar-border md:hidden flex items-center justify-around z-[55] px-2 shadow-2xl">
         {displayItems.map((item) => {
           const isActive = pathname === item.href || (item.href !== "/admin" && pathname.startsWith(item.href));
           return (

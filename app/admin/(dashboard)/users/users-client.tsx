@@ -178,7 +178,7 @@ export function UsersClient({ initialUsers, currentUserEmail }: UsersClientProps
         <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto items-stretch sm:items-center">
           {/* Filter and search bar */}
           <div className="relative w-full sm:w-72">
-            <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-500">
+            <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-muted-foreground/70">
               <Search className="size-4" />
             </span>
             <input
@@ -186,7 +186,7 @@ export function UsersClient({ initialUsers, currentUserEmail }: UsersClientProps
               placeholder="Filter users by name or email..."
               value={searchTerm}
               onChange={(e) => handleSearchChange(e.target.value)}
-              className="w-full h-10 pl-9 pr-4 bg-slate-900 border border-slate-800 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-slate-700 transition-all"
+              className="w-full h-10 pl-9 pr-4 bg-card border border-border rounded-xl text-sm text-foreground placeholder-muted-foreground/50 focus:outline-none focus:border-primary transition-all"
             />
           </div>
 
@@ -385,21 +385,21 @@ export function UsersClient({ initialUsers, currentUserEmail }: UsersClientProps
           {/* Backdrop closer */}
           <div className="absolute inset-0 -z-10" onClick={() => setIsFormOpen(false)} />
 
-          <div className="w-full max-w-lg bg-slate-900 border-l border-slate-800 h-full flex flex-col justify-between shadow-2xl p-4 sm:p-6 md:p-8 animate-slideLeft">
+          <div className="w-full max-w-lg bg-sidebar border-l border-sidebar-border h-full flex flex-col justify-between shadow-2xl p-4 sm:p-6 md:p-8 animate-slideLeft">
             {/* Header */}
-            <div className="flex items-center justify-between pb-4 sm:pb-6 border-b border-slate-800">
-              <div>
-                <h3 className="text-lg font-bold text-white flex items-center gap-2">
+            <div className="flex items-center justify-between pb-4 sm:pb-6 border-b border-sidebar-border gap-4">
+              <div className="min-w-0">
+                <h3 className="text-lg font-bold text-foreground flex items-center gap-2">
                   {editingUser ? <Edit2 className="size-5 text-primary" /> : <UserPlus className="size-5 text-primary" />}
                   {editingUser ? "Edit User Permissions" : "Create New User"}
                 </h3>
-                <p className="text-xs text-slate-500 mt-1">
+                <p className="text-xs text-muted-foreground/75 mt-1 truncate" title={editingUser ? `Updating account for ${editingUser.email}` : undefined}>
                   {editingUser ? `Updating account for ${editingUser.email}` : "Configure access details"}
                 </p>
               </div>
               <button
                 onClick={() => setIsFormOpen(false)}
-                className="size-8 rounded-lg border border-slate-800 flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-800 transition-all"
+                className="size-8 rounded-lg border border-sidebar-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-sidebar-accent/50 transition-all"
               >
                 <X className="size-4" />
               </button>
@@ -424,7 +424,7 @@ export function UsersClient({ initialUsers, currentUserEmail }: UsersClientProps
               <div className="space-y-4">
                 {/* Name */}
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-slate-400 uppercase tracking-wider" htmlFor="form-name">
+                  <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider" htmlFor="form-name">
                     Full Name
                   </label>
                   <input
@@ -434,13 +434,13 @@ export function UsersClient({ initialUsers, currentUserEmail }: UsersClientProps
                     required
                     defaultValue={editingUser?.name || ""}
                     placeholder="Enter name"
-                    className="w-full h-11 px-4 bg-slate-950 border border-slate-800 rounded-xl text-sm text-white placeholder-slate-600 focus:outline-none focus:border-primary transition-all"
+                    className="w-full h-11 px-4 bg-background border border-sidebar-border rounded-xl text-sm text-foreground placeholder-muted-foreground/50 focus:outline-none focus:border-primary transition-all"
                   />
                 </div>
 
                 {/* Email */}
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-slate-400 uppercase tracking-wider" htmlFor="form-email">
+                  <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider" htmlFor="form-email">
                     Email Address
                   </label>
                   <input
@@ -451,17 +451,17 @@ export function UsersClient({ initialUsers, currentUserEmail }: UsersClientProps
                     disabled={!!editingUser}
                     defaultValue={editingUser?.email || ""}
                     placeholder="user@example.com"
-                    className="w-full h-11 px-4 bg-slate-950 border border-slate-800 rounded-xl text-sm text-white placeholder-slate-600 focus:outline-none focus:border-primary transition-all disabled:opacity-50 disabled:bg-slate-950 disabled:text-slate-500"
+                    className="w-full h-11 px-4 bg-background border border-sidebar-border rounded-xl text-sm text-foreground placeholder-muted-foreground/50 focus:outline-none focus:border-primary transition-all disabled:opacity-50 disabled:bg-background disabled:text-muted-foreground/50"
                   />
                 </div>
 
                 {/* Password (Optional for edit) */}
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5" htmlFor="form-password">
-                    Password {editingUser && <span className="text-[10px] text-slate-500 font-normal italic">(Leave blank to keep current)</span>}
+                  <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider flex items-center gap-1.5" htmlFor="form-password">
+                    Password {editingUser && <span className="text-[10px] text-muted-foreground/50 font-normal italic">(Leave blank to keep current)</span>}
                   </label>
                   <div className="relative">
-                    <span className="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-600">
+                    <span className="absolute inset-y-0 left-0 flex items-center pl-3.5 text-muted-foreground/40">
                       <Key className="size-3.5" />
                     </span>
                     <input
@@ -470,14 +470,14 @@ export function UsersClient({ initialUsers, currentUserEmail }: UsersClientProps
                       type="password"
                       required={!editingUser}
                       placeholder={editingUser ? "••••••••" : "At least 6 characters"}
-                      className="w-full h-11 pl-10 pr-4 bg-slate-950 border border-slate-800 rounded-xl text-sm text-white placeholder-slate-600 focus:outline-none focus:border-primary transition-all"
+                      className="w-full h-11 pl-10 pr-4 bg-background border border-sidebar-border rounded-xl text-sm text-foreground placeholder-muted-foreground/50 focus:outline-none focus:border-primary transition-all"
                     />
                   </div>
                 </div>
 
                 {/* Permissions checklist */}
                 <div className="space-y-3 pt-2">
-                  <label className="text-xs font-bold text-slate-400 uppercase tracking-wider block">
+                  <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider block">
                     Permissions Checklist
                   </label>
                   <div className="grid gap-2 sm:grid-cols-2">
@@ -486,16 +486,16 @@ export function UsersClient({ initialUsers, currentUserEmail }: UsersClientProps
                       return (
                         <label
                           key={perm}
-                          className="flex items-center gap-3 p-3 rounded-xl border border-slate-800 bg-slate-950/40 hover:bg-slate-950 hover:border-slate-700 transition-all cursor-pointer select-none"
+                          className="flex items-center gap-3 p-3 rounded-xl border border-sidebar-border bg-background/40 hover:bg-background hover:border-sidebar-border/80 transition-all cursor-pointer select-none"
                         >
                           <input
                             type="checkbox"
                             name="permissions"
                             value={perm}
                             defaultChecked={isDefaultChecked}
-                            className="size-4 rounded border-slate-800 bg-slate-900 text-primary focus:ring-primary focus:ring-offset-slate-950"
+                            className="size-4 rounded border-sidebar-border bg-background text-primary focus:ring-primary focus:ring-offset-background"
                           />
-                          <span className="text-xs font-semibold text-slate-300 leading-tight">
+                          <span className="text-xs font-semibold text-foreground/90 leading-tight">
                             {perm}
                           </span>
                         </label>
@@ -506,11 +506,11 @@ export function UsersClient({ initialUsers, currentUserEmail }: UsersClientProps
               </div>
 
               {/* Drawer footer actions */}
-              <div className="pt-4 sm:pt-6 border-t border-slate-800 flex items-center justify-end gap-3">
+              <div className="pt-4 sm:pt-6 border-t border-sidebar-border flex items-center justify-end gap-3">
                 <button
                   type="button"
                   onClick={() => setIsFormOpen(false)}
-                  className="h-11 px-6 rounded-xl border border-slate-800 text-xs font-bold text-slate-400 hover:text-white hover:bg-slate-800 transition-all"
+                  className="h-11 px-6 rounded-xl border border-sidebar-border text-xs font-bold text-muted-foreground hover:text-foreground hover:bg-sidebar-accent/50 transition-all"
                 >
                   Cancel
                 </button>

@@ -211,7 +211,7 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
         <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto items-stretch sm:items-center">
           {/* Filter and search bar */}
           <div className="relative w-full sm:w-72">
-            <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-500">
+            <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-muted-foreground/70">
               <Search className="size-4" />
             </span>
             <input
@@ -219,7 +219,7 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
               placeholder="Filter products by name or category..."
               value={searchTerm}
               onChange={(e) => handleSearchChange(e.target.value)}
-              className="w-full h-10 pl-9 pr-4 bg-slate-900 border border-slate-800 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-slate-700 transition-all"
+              className="w-full h-10 pl-9 pr-4 bg-card border border-border rounded-xl text-sm text-foreground placeholder-muted-foreground/50 focus:outline-none focus:border-primary transition-all"
             />
           </div>
 
@@ -448,21 +448,21 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex justify-end z-[70] animate-fadeIn">
           <div className="absolute inset-0 -z-10" onClick={() => setIsFormOpen(false)} />
 
-          <div className="w-full max-w-2xl bg-slate-900 border-l border-slate-800 h-full flex flex-col justify-between shadow-2xl p-4 sm:p-6 md:p-8 animate-slideLeft">
+          <div className="w-full max-w-2xl bg-sidebar border-l border-sidebar-border h-full flex flex-col justify-between shadow-2xl p-4 sm:p-6 md:p-8 animate-slideLeft">
             {/* Header */}
-            <div className="flex items-center justify-between pb-4 sm:pb-6 border-b border-slate-800">
-              <div>
-                <h3 className="text-lg font-bold text-white flex items-center gap-2">
+            <div className="flex items-center justify-between pb-4 sm:pb-6 border-b border-sidebar-border gap-4">
+              <div className="min-w-0">
+                <h3 className="text-lg font-bold text-foreground flex items-center gap-2">
                   <Droplets className="size-5 text-primary" />
                   {editingProduct ? "Edit Product Details" : "Create New Product"}
                 </h3>
-                <p className="text-xs text-slate-500 mt-1">
+                <p className="text-xs text-muted-foreground/75 mt-1 truncate" title={editingProduct ? `Updating product: ${editingProduct.name}` : undefined}>
                   {editingProduct ? `Updating product: ${editingProduct.name}` : "Define product parameters and lists"}
                 </p>
               </div>
               <button
                 onClick={() => setIsFormOpen(false)}
-                className="size-8 rounded-lg border border-slate-800 flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-800 transition-all"
+                className="size-8 rounded-lg border border-sidebar-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-sidebar-accent/50 transition-all"
               >
                 <X className="size-4" />
               </button>
@@ -487,7 +487,7 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
               <div className="grid gap-4 sm:grid-cols-2">
                 {/* Name */}
                 <div className="space-y-1.5 sm:col-span-2">
-                  <label className="text-xs font-bold text-slate-400 uppercase tracking-wider" htmlFor="form-name">
+                  <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider" htmlFor="form-name">
                     Product Name
                   </label>
                   <input
@@ -498,13 +498,13 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
                     defaultValue={editingProduct?.name || ""}
                     onChange={handleNameChange}
                     placeholder="Whole Home Filtration System"
-                    className="w-full h-11 px-4 bg-slate-950 border border-slate-800 rounded-xl text-sm text-white placeholder-slate-600 focus:outline-none focus:border-primary transition-all"
+                    className="w-full h-11 px-4 bg-background border border-sidebar-border rounded-xl text-sm text-foreground placeholder-muted-foreground/50 focus:outline-none focus:border-primary transition-all"
                   />
                 </div>
 
                 {/* Slug */}
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-slate-400 uppercase tracking-wider" htmlFor="form-slug">
+                  <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider" htmlFor="form-slug">
                     URL Slug
                   </label>
                   <input
@@ -515,23 +515,23 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
                     defaultValue={editingProduct?.slug || ""}
                     onChange={() => setManualSlug(true)}
                     placeholder="whole-home-filtration-system"
-                    className="w-full h-11 px-4 bg-slate-950 border border-slate-800 rounded-xl text-sm text-white placeholder-slate-600 focus:outline-none focus:border-primary transition-all"
+                    className="w-full h-11 px-4 bg-background border border-sidebar-border rounded-xl text-sm text-foreground placeholder-muted-foreground/50 focus:outline-none focus:border-primary transition-all"
                   />
                 </div>
 
                 {/* Category */}
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-slate-400 uppercase tracking-wider" htmlFor="form-category">
+                  <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider" htmlFor="form-category">
                     Product Category
                   </label>
                   <Select
                     name="category"
                     defaultValue={editingProduct?.category || "Filtration Systems"}
                   >
-                    <SelectTrigger className="w-full h-11 bg-slate-950 border border-slate-800 rounded-xl text-sm text-white focus:outline-none focus:border-primary transition-all">
+                    <SelectTrigger className="w-full h-11 bg-background border border-sidebar-border rounded-xl text-sm text-foreground focus:outline-none focus:border-primary transition-all">
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent className="bg-slate-950 border border-slate-800 rounded-xl">
+                    <SelectContent className="bg-background border border-sidebar-border rounded-xl">
                       <SelectItem value="Filtration Systems">Filtration Systems</SelectItem>
                       <SelectItem value="Cartridges">Cartridges</SelectItem>
                     </SelectContent>
@@ -540,7 +540,7 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
 
                 {/* Price */}
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-slate-400 uppercase tracking-wider" htmlFor="form-price">
+                  <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider" htmlFor="form-price">
                     Pricing Text
                   </label>
                   <input
@@ -550,13 +550,13 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
                     required
                     defaultValue={editingProduct?.price || "Call for Price"}
                     placeholder="$156.00 + GST or Call for Price"
-                    className="w-full h-11 px-4 bg-slate-950 border border-slate-800 rounded-xl text-sm text-white placeholder-slate-600 focus:outline-none focus:border-primary transition-all"
+                    className="w-full h-11 px-4 bg-background border border-sidebar-border rounded-xl text-sm text-foreground placeholder-muted-foreground/50 focus:outline-none focus:border-primary transition-all"
                   />
                 </div>
 
                 {/* Sorting ID */}
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-slate-400 uppercase tracking-wider" htmlFor="form-id">
+                  <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider" htmlFor="form-id">
                     Sort Index / ID
                   </label>
                   <input
@@ -566,13 +566,13 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
                     required
                     defaultValue={editingProduct?.id ?? (products.length + 1)}
                     placeholder="e.g. 1"
-                    className="w-full h-11 px-4 bg-slate-950 border border-slate-800 rounded-xl text-sm text-white placeholder-slate-600 focus:outline-none focus:border-primary transition-all"
+                    className="w-full h-11 px-4 bg-background border border-sidebar-border rounded-xl text-sm text-foreground placeholder-muted-foreground/50 focus:outline-none focus:border-primary transition-all"
                   />
                 </div>
 
                 {/* Image URL */}
                 <div className="space-y-1.5 sm:col-span-2">
-                  <label className="text-xs font-bold text-slate-400 uppercase tracking-wider" htmlFor="form-image">
+                  <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider" htmlFor="form-image">
                     Cloudinary / Image URL
                   </label>
                   <input
@@ -582,13 +582,13 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
                     required
                     defaultValue={editingProduct?.image || ""}
                     placeholder="https://res.cloudinary.com/..."
-                    className="w-full h-11 px-4 bg-slate-950 border border-slate-800 rounded-xl text-sm text-white placeholder-slate-600 focus:outline-none focus:border-primary transition-all"
+                    className="w-full h-11 px-4 bg-background border border-sidebar-border rounded-xl text-sm text-foreground placeholder-muted-foreground/50 focus:outline-none focus:border-primary transition-all"
                   />
                 </div>
 
                 {/* Image Alt */}
                 <div className="space-y-1.5 sm:col-span-2">
-                  <label className="text-xs font-bold text-slate-400 uppercase tracking-wider" htmlFor="form-image-alt">
+                  <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider" htmlFor="form-image-alt">
                     Image Alt Description
                   </label>
                   <input
@@ -598,29 +598,29 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
                     required
                     defaultValue={editingProduct?.imageAlt || ""}
                     placeholder="Description of the product image for accessibility"
-                    className="w-full h-11 px-4 bg-slate-950 border border-slate-800 rounded-xl text-sm text-white placeholder-slate-600 focus:outline-none focus:border-primary transition-all"
+                    className="w-full h-11 px-4 bg-background border border-sidebar-border rounded-xl text-sm text-foreground placeholder-muted-foreground/50 focus:outline-none focus:border-primary transition-all"
                   />
                 </div>
 
                 {/* Badge settings */}
-                <div className="sm:col-span-2 p-4 rounded-xl border border-slate-800 bg-slate-950/40 select-none">
+                <div className="sm:col-span-2 p-4 rounded-xl border border-sidebar-border bg-background/40 select-none">
                   <label className="flex items-center gap-3 cursor-pointer">
                     <input
                       type="checkbox"
                       checked={recentChecked}
                       onChange={(e) => setRecentChecked(e.target.checked)}
-                      className="size-4.5 rounded border-slate-800 bg-slate-900 text-primary focus:ring-primary focus:ring-offset-slate-950"
+                      className="size-4.5 rounded border-sidebar-border bg-background text-primary focus:ring-primary focus:ring-offset-background"
                     />
                     <div className="flex flex-col">
-                      <span className="text-xs font-bold text-slate-200">Highlight as Recent Product</span>
-                      <span className="text-[10px] text-slate-500">Adds an absolute ribbon badge and pushes item to prominent blocks</span>
+                      <span className="text-xs font-bold text-foreground/90">Highlight as Recent Product</span>
+                      <span className="text-[10px] text-muted-foreground/75">Adds an absolute ribbon badge and pushes item to prominent blocks</span>
                     </div>
                   </label>
                 </div>
 
                 {/* Card Description */}
                 <div className="space-y-1.5 sm:col-span-2">
-                  <label className="text-xs font-bold text-slate-400 uppercase tracking-wider" htmlFor="form-card-desc">
+                  <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider" htmlFor="form-card-desc">
                     Short Card Subtitle
                   </label>
                   <input
@@ -630,13 +630,13 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
                     required
                     defaultValue={editingProduct?.cardDescription || ""}
                     placeholder="e.g. Whole Home Micron Water Filtration System"
-                    className="w-full h-11 px-4 bg-slate-950 border border-slate-800 rounded-xl text-sm text-white placeholder-slate-600 focus:outline-none focus:border-primary transition-all"
+                    className="w-full h-11 px-4 bg-background border border-sidebar-border rounded-xl text-sm text-foreground placeholder-muted-foreground/50 focus:outline-none focus:border-primary transition-all"
                   />
                 </div>
 
                 {/* Short Description */}
                 <div className="space-y-1.5 sm:col-span-2">
-                  <label className="text-xs font-bold text-slate-400 uppercase tracking-wider" htmlFor="form-short-desc">
+                  <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider" htmlFor="form-short-desc">
                     Summary/Excerpt (SEO)
                   </label>
                   <textarea
@@ -646,13 +646,13 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
                     defaultValue={editingProduct?.shortDescription || ""}
                     placeholder="Short paragraph summary..."
                     rows={2}
-                    className="w-full p-4 bg-slate-950 border border-slate-800 rounded-xl text-sm text-white placeholder-slate-600 focus:outline-none focus:border-primary transition-all resize-y"
+                    className="w-full p-4 bg-background border border-sidebar-border rounded-xl text-sm text-foreground placeholder-muted-foreground/50 focus:outline-none focus:border-primary transition-all resize-y"
                   />
                 </div>
 
                 {/* Detailed Description */}
                 <div className="space-y-1.5 sm:col-span-2">
-                  <label className="text-xs font-bold text-slate-400 uppercase tracking-wider" htmlFor="form-desc">
+                  <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider" htmlFor="form-desc">
                     Detailed Paragraphs (One paragraph per line)
                   </label>
                   <textarea
@@ -662,13 +662,13 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
                     defaultValue={editingProduct?.description.join("\n") || ""}
                     placeholder="First paragraph text&#10;Second paragraph text&#10;Third paragraph text"
                     rows={6}
-                    className="w-full p-4 bg-slate-950 border border-slate-800 rounded-xl text-sm text-white placeholder-slate-600 focus:outline-none focus:border-primary transition-all resize-y"
+                    className="w-full p-4 bg-background border border-sidebar-border rounded-xl text-sm text-foreground placeholder-muted-foreground/50 focus:outline-none focus:border-primary transition-all resize-y"
                   />
                 </div>
 
                 {/* Features */}
                 <div className="space-y-1.5 sm:col-span-2">
-                  <label className="text-xs font-bold text-slate-400 uppercase tracking-wider" htmlFor="form-features">
+                  <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider" htmlFor="form-features">
                     Key Features List (One feature per line)
                   </label>
                   <textarea
@@ -678,17 +678,17 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
                     defaultValue={editingProduct?.features.join("\n") || ""}
                     placeholder="Advanced multi-stage whole home filtration&#10;Dual-gradient sediment filtration (0.5 micron)&#10;Proprietary ACF technology"
                     rows={5}
-                    className="w-full p-4 bg-slate-950 border border-slate-800 rounded-xl text-sm text-white placeholder-slate-600 focus:outline-none focus:border-primary transition-all resize-y"
+                    className="w-full p-4 bg-background border border-sidebar-border rounded-xl text-sm text-foreground placeholder-muted-foreground/50 focus:outline-none focus:border-primary transition-all resize-y"
                   />
                 </div>
               </div>
 
               {/* Drawer footer actions */}
-              <div className="pt-4 sm:pt-6 border-t border-slate-800 flex items-center justify-end gap-3">
+              <div className="pt-4 sm:pt-6 border-t border-sidebar-border flex items-center justify-end gap-3">
                 <button
                   type="button"
                   onClick={() => setIsFormOpen(false)}
-                  className="h-11 px-6 rounded-xl border border-slate-800 text-xs font-bold text-slate-400 hover:text-white hover:bg-slate-800 transition-all"
+                  className="h-11 px-6 rounded-xl border border-sidebar-border text-xs font-bold text-muted-foreground hover:text-foreground hover:bg-sidebar-accent/50 transition-all"
                 >
                   Cancel
                 </button>
@@ -714,25 +714,25 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
       {/* Delete Confirmation Modal */}
       {deletingProduct && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[70] animate-fadeIn px-4">
-          <div className="w-full max-w-sm bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-2xl space-y-6 animate-scaleUp">
+          <div className="w-full max-w-sm bg-sidebar border border-sidebar-border rounded-3xl p-6 shadow-2xl space-y-6 animate-scaleUp">
             <div className="flex items-center gap-3 text-rose-400">
               <AlertTriangle className="size-8 shrink-0 text-rose-500" />
               <div>
-                <h3 className="text-base font-bold text-white">Delete Product?</h3>
-                <p className="text-xs text-slate-500 mt-0.5">This action is irreversible.</p>
+                <h3 className="text-base font-bold text-foreground">Delete Product?</h3>
+                <p className="text-xs text-muted-foreground/75 mt-0.5">This action is irreversible.</p>
               </div>
             </div>
 
-            <p className="text-xs text-slate-300 leading-relaxed">
+            <p className="text-xs text-foreground/90 leading-relaxed">
               Are you sure you want to permanently delete{" "}
-              <span className="font-bold text-white">{deletingProduct.name}</span>? The product page and related collections will no longer be public.
+              <span className="font-bold text-foreground">{deletingProduct.name}</span>? The product page and related collections will no longer be public.
             </p>
 
-            <div className="flex items-center justify-end gap-3 pt-2 border-t border-slate-800">
+            <div className="flex items-center justify-end gap-3 pt-2 border-t border-sidebar-border">
               <button
                 type="button"
                 onClick={() => setDeletingProduct(null)}
-                className="h-10 px-4 rounded-xl border border-slate-800 text-xs font-bold text-slate-400 hover:text-white hover:bg-slate-800 transition-all"
+                className="h-10 px-4 rounded-xl border border-sidebar-border text-xs font-bold text-muted-foreground hover:text-foreground hover:bg-sidebar-accent/50 transition-all"
               >
                 Cancel
               </button>

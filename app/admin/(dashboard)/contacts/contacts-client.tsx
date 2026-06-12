@@ -133,7 +133,7 @@ export function ContactsClient({ initialContacts, canManage }: ContactsClientPro
         <div className="flex flex-col sm:flex-row gap-3 w-full xl:w-auto items-stretch sm:items-center">
           {/* Search */}
           <div className="relative flex-1 sm:w-80">
-            <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-500">
+            <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-muted-foreground/70">
               <Search className="size-4" />
             </span>
             <input
@@ -141,16 +141,16 @@ export function ContactsClient({ initialContacts, canManage }: ContactsClientPro
               placeholder="Search contacts by name, email, suburb, message..."
               value={searchTerm}
               onChange={(e) => handleSearchChange(e.target.value)}
-              className="w-full h-10 pl-9 pr-4 bg-slate-900 border border-slate-800 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-slate-700 transition-all"
+              className="w-full h-10 pl-9 pr-4 bg-card border border-border rounded-xl text-sm text-foreground placeholder-muted-foreground/50 focus:outline-none focus:border-primary transition-all"
             />
           </div>
 
           {/* Status filter selector */}
           <Select value={statusFilter} onValueChange={handleStatusFilterChange}>
-            <SelectTrigger className="h-10 w-full sm:w-44 bg-slate-900 border border-slate-800 rounded-xl text-sm text-white focus:outline-none focus:border-slate-700 transition-all">
+            <SelectTrigger className="h-10 w-full sm:w-44 bg-card border border-border rounded-xl text-sm text-foreground focus:outline-none focus:border-primary transition-all">
               <SelectValue placeholder="All Statuses" />
             </SelectTrigger>
-            <SelectContent className="bg-slate-950 border border-slate-800 rounded-xl">
+            <SelectContent className="bg-background border border-border rounded-xl">
               <SelectItem value="All">All Statuses</SelectItem>
               <SelectItem value="New">New</SelectItem>
               <SelectItem value="In Progress">In Progress</SelectItem>
@@ -247,7 +247,7 @@ export function ContactsClient({ initialContacts, canManage }: ContactsClientPro
                           >
                             <SelectValue />
                           </SelectTrigger>
-                          <SelectContent className="border border-slate-800 rounded-lg">
+                          <SelectContent className="bg-background border border-border rounded-lg">
                             <SelectItem value="New">New</SelectItem>
                             <SelectItem value="In Progress">In Progress</SelectItem>
                             <SelectItem value="Resolved">Resolved</SelectItem>
@@ -363,7 +363,7 @@ export function ContactsClient({ initialContacts, canManage }: ContactsClientPro
                         }
                       >
                         <SelectTrigger
-                          className={`h-8 min-w-28 px-2.5 rounded-lg border border-slate-800 text-xs font-bold text-white focus:outline-none transition-all ${
+                          className={`h-8 min-w-28 px-2.5 rounded-lg border border-border text-xs font-bold text-white focus:outline-none transition-all ${
                             currentStatus === "Resolved"
                               ? "bg-emerald-500/10 border-emerald-500/20 hover:bg-emerald-500/20"
                               : currentStatus === "In Progress"
@@ -373,7 +373,7 @@ export function ContactsClient({ initialContacts, canManage }: ContactsClientPro
                         >
                           <SelectValue />
                         </SelectTrigger>
-                        <SelectContent className="bg-slate-950 border border-slate-800 rounded-lg">
+                        <SelectContent className="bg-background border border-border rounded-lg">
                           <SelectItem value="New">New</SelectItem>
                           <SelectItem value="In Progress">In Progress</SelectItem>
                           <SelectItem value="Resolved">Resolved</SelectItem>
@@ -431,59 +431,59 @@ export function ContactsClient({ initialContacts, canManage }: ContactsClientPro
       {/* Message Reader Modal */}
       {viewingContact && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[70] animate-fadeIn px-4">
-          <div className="w-full max-w-lg bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-2xl space-y-6 animate-scaleUp">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-800">
+          <div className="w-full max-w-lg bg-sidebar border border-sidebar-border rounded-3xl p-6 shadow-2xl space-y-6 animate-scaleUp">
+            <div className="flex items-center justify-between pb-3 border-b border-sidebar-border">
               <div className="flex items-center gap-2 text-primary">
                 <MessageSquare className="size-5" />
-                <h3 className="text-base font-bold text-white">Customer Message</h3>
+                <h3 className="text-base font-bold text-foreground">Customer Message</h3>
               </div>
               <button
                 onClick={() => setViewingContact(null)}
-                className="size-8 rounded-lg border border-slate-800 flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-800 transition-all"
+                className="size-8 rounded-lg border border-sidebar-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-sidebar-accent/50 transition-all"
               >
                 <X className="size-4" />
               </button>
             </div>
 
             <div className="space-y-4 text-xs">
-              <div className="grid grid-cols-2 gap-3 p-4 rounded-xl bg-slate-950/40 border border-slate-800">
+              <div className="grid grid-cols-2 gap-3 p-4 rounded-xl bg-background/40 border border-sidebar-border">
                 <div>
-                  <span className="text-[10px] text-slate-500 font-bold uppercase block">Sender</span>
-                  <span className="text-sm font-bold text-white block">{viewingContact.name}</span>
+                  <span className="text-[10px] text-muted-foreground/75 font-bold uppercase block">Sender</span>
+                  <span className="text-sm font-bold text-foreground block">{viewingContact.name}</span>
                 </div>
                 <div>
-                  <span className="text-[10px] text-slate-500 font-bold uppercase block">Date Submitted</span>
-                  <span className="text-sm font-semibold text-slate-300 block">
+                  <span className="text-[10px] text-muted-foreground/75 font-bold uppercase block">Date Submitted</span>
+                  <span className="text-sm font-semibold text-foreground/90 block">
                     {new Date(viewingContact.createdAt).toLocaleString()}
                   </span>
                 </div>
                 <div>
-                  <span className="text-[10px] text-slate-500 font-bold uppercase block">Email</span>
+                  <span className="text-[10px] text-muted-foreground/75 font-bold uppercase block">Email</span>
                   <a href={`mailto:${viewingContact.email}`} className="text-sm text-primary hover:underline block truncate">
                     {viewingContact.email}
                   </a>
                 </div>
                 <div>
-                  <span className="text-[10px] text-slate-500 font-bold uppercase block">Phone / Mobile</span>
+                  <span className="text-[10px] text-muted-foreground/75 font-bold uppercase block">Phone / Mobile</span>
                   {viewingContact.phone ? (
                     <a href={`tel:${viewingContact.phone}`} className="text-sm text-primary hover:underline block">
                       {viewingContact.phone}
                     </a>
                   ) : (
-                    <span className="text-sm text-slate-500 italic block">Not provided</span>
+                    <span className="text-sm text-muted-foreground/50 italic block">Not provided</span>
                   )}
                 </div>
               </div>
 
               <div className="space-y-2">
-                <span className="text-[10px] text-slate-500 font-bold uppercase block">Full Message Body</span>
-                <div className="p-4 rounded-xl bg-slate-950 border border-slate-800 text-sm text-slate-200 leading-relaxed whitespace-pre-wrap max-h-60 overflow-y-auto">
+                <span className="text-[10px] text-muted-foreground/75 font-bold uppercase block">Full Message Body</span>
+                <div className="p-4 rounded-xl bg-background border border-sidebar-border text-sm text-foreground/95 leading-relaxed whitespace-pre-wrap max-h-60 overflow-y-auto">
                   {viewingContact.message}
                 </div>
               </div>
             </div>
 
-            <div className="flex items-center justify-end pt-2 border-t border-slate-800">
+            <div className="flex items-center justify-end pt-2 border-t border-sidebar-border">
               <button
                 type="button"
                 onClick={() => setViewingContact(null)}
@@ -499,25 +499,25 @@ export function ContactsClient({ initialContacts, canManage }: ContactsClientPro
       {/* Delete Confirmation Modal */}
       {deletingContact && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[70] animate-fadeIn px-4">
-          <div className="w-full max-w-sm bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-2xl space-y-6 animate-scaleUp">
+          <div className="w-full max-w-sm bg-sidebar border border-sidebar-border rounded-3xl p-6 shadow-2xl space-y-6 animate-scaleUp">
             <div className="flex items-center gap-3 text-rose-400">
               <AlertTriangle className="size-8 shrink-0 text-rose-500" />
               <div>
-                <h3 className="text-base font-bold text-white">Delete Submission?</h3>
-                <p className="text-xs text-slate-500 mt-0.5">This action is irreversible.</p>
+                <h3 className="text-base font-bold text-foreground">Delete Submission?</h3>
+                <p className="text-xs text-muted-foreground/75 mt-0.5">This action is irreversible.</p>
               </div>
             </div>
 
-            <p className="text-xs text-slate-300 leading-relaxed">
+            <p className="text-xs text-foreground/90 leading-relaxed">
               Are you sure you want to permanently delete the message submission from{" "}
-              <span className="font-bold text-white">{deletingContact.name}</span>? This record will be deleted from the database.
+              <span className="font-bold text-foreground">{deletingContact.name}</span>? This record will be deleted from the database.
             </p>
 
-            <div className="flex items-center justify-end gap-3 pt-2 border-t border-slate-800">
+            <div className="flex items-center justify-end gap-3 pt-2 border-t border-sidebar-border">
               <button
                 type="button"
                 onClick={() => setDeletingContact(null)}
-                className="h-10 px-4 rounded-xl border border-slate-800 text-xs font-bold text-slate-400 hover:text-white hover:bg-slate-800 transition-all"
+                className="h-10 px-4 rounded-xl border border-sidebar-border text-xs font-bold text-muted-foreground hover:text-foreground hover:bg-sidebar-accent/50 transition-all"
               >
                 Cancel
               </button>
