@@ -22,7 +22,6 @@ export function usePwa() {
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker
         .register("/sw.js")
-        .then((reg) => console.log("PWA Service Worker registered:", reg.scope))
         .catch((err) => console.error("PWA Service Worker registration failed:", err));
     }
 
@@ -38,7 +37,6 @@ export function usePwa() {
       setDeferredPrompt(null);
       setIsInstallable(false);
       setIsInstalled(true);
-      console.log("App was installed successfully");
     };
 
     window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
@@ -65,8 +63,7 @@ export function usePwa() {
     deferredPrompt.prompt();
     
     // Wait for the user response
-    const { outcome } = await deferredPrompt.userChoice;
-    console.log(`User installation choice outcome: ${outcome}`);
+    await deferredPrompt.userChoice;
     
     // Clean up
     setDeferredPrompt(null);
