@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { type FAQ } from "@/lib/db-queries";
 import { createFAQAction, updateFAQAction, deleteFAQAction } from "./actions";
+import { Pagination } from "@/components/ui/pagination";
 import {
   HelpCircle,
   Plus,
@@ -31,6 +32,8 @@ export function FAQsClient({ initialFAQs }: FAQsClientProps) {
   const [faqs, setFaqs] = useState<FAQ[]>(initialFAQs);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(8);
   
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingFAQ, setEditingFAQ] = useState<FAQ | null>(null);
@@ -50,6 +53,20 @@ export function FAQsClient({ initialFAQs }: FAQsClientProps) {
       selectedCategory === "All" || faq.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
+
+  const handleSearchChange = (val: string) => {
+    setSearchTerm(val);
+    setCurrentPage(1);
+  };
+
+  const handleCategoryFilterChange = (val: string) => {
+    setSelectedCategory(val);
+    setCurrentPage(1);
+  };
+
+  const startIndex = (currentPage - 1) * pageSize;
+  const endIndex = startIndex + pageSize;
+  const paginatedFAQs = filteredFAQs.slice(startIndex, endIndex);
 
   function openCreateForm() {
     setEditingFAQ(null);
@@ -176,7 +193,7 @@ export function FAQsClient({ initialFAQs }: FAQsClientProps) {
             type="text"
             placeholder="Search FAQs by keywords..."
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={(e) => handleSearchChange(e.target.value)}
             className="w-full h-10 pl-9 pr-4 bg-slate-900 border border-slate-800 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-slate-700 transition-all"
           />
         </div>
@@ -184,7 +201,7 @@ export function FAQsClient({ initialFAQs }: FAQsClientProps) {
         {/* Category selector */}
         <select
           value={selectedCategory}
-          onChange={(e) => setSelectedCategory(e.target.value)}
+          onChange={(e) => handleCategoryFilterChange(e.target.value)}
           className="h-10 px-4 bg-slate-900 border border-slate-800 rounded-xl text-sm text-white focus:outline-none focus:border-slate-700 transition-all"
         >
           <option value="All">All Categories</option>
@@ -202,43 +219,55 @@ export function FAQsClient({ initialFAQs }: FAQsClientProps) {
           No FAQs match the search filters. Click &quot;Add FAQ&quot; to write one.
         </div>
       ) : (
-        <div className="grid gap-4 md:grid-cols-2">
-          {filteredFAQs.map((faq) => (
-            <div
-              key={faq.id}
-              className="p-5 rounded-2xl border border-slate-800 bg-slate-900/20 flex flex-col justify-between hover:bg-slate-900 hover:border-slate-700 transition-all"
-            >
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="inline-flex items-center px-2 py-0.5 rounded bg-slate-800 border border-slate-700 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-                    {faq.category}
-                  </span>
-                  <div className="flex items-center gap-1.5">
-                    <button
-                      onClick={() => openEditForm(faq)}
-                      className="size-7 inline-flex items-center justify-center rounded-lg border border-slate-800 text-slate-400 hover:text-white hover:bg-slate-800 transition-all"
-                      title="Edit FAQ"
-                    >
-                      <Edit2 className="size-3" />
-                    </button>
-                    <button
-                      onClick={() => setDeletingFAQ(faq)}
-                      className="size-7 inline-flex items-center justify-center rounded-lg border border-rose-500/20 bg-rose-500/5 text-rose-400 hover:text-white hover:bg-rose-500/25 transition-all"
-                      title="Delete FAQ"
-                    >
-                      <Trash2 className="size-3" />
-                    </button>
+        <div className="space-y-6">
+          <div className="grid gap-4 md:grid-cols-2">
+            {paginatedFAQs.map((faq) => (
+              <div
+                key={faq.id}
+                className="p-5 rounded-2xl border border-slate-800 bg-slate-900/20 flex flex-col justify-between hover:bg-slate-900 hover:border-slate-700 transition-all"
+              >
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="inline-flex items-center px-2 py-0.5 rounded bg-slate-800 border border-slate-700 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                      {faq.category}
+                    </span>
+                    <div className="flex items-center gap-1.5">
+                      <button
+                        onClick={() => openEditForm(faq)}
+                        className="size-7 inline-flex items-center justify-center rounded-lg border border-slate-800 text-slate-400 hover:text-white hover:bg-slate-800 transition-all"
+                        title="Edit FAQ"
+                      >
+                        <Edit2 className="size-3" />
+                      </button>
+                      <button
+                        onClick={() => setDeletingFAQ(faq)}
+                        className="size-7 inline-flex items-center justify-center rounded-lg border border-rose-500/20 bg-rose-500/5 text-rose-400 hover:text-white hover:bg-rose-500/25 transition-all"
+                        title="Delete FAQ"
+                      >
+                        <Trash2 className="size-3" />
+                      </button>
+                    </div>
+                  </div>
+                  <div className="space-y-1.5">
+                    <h3 className="text-sm font-bold text-white leading-snug">{faq.question}</h3>
+                    <p className="text-xs text-slate-400 leading-relaxed whitespace-pre-line truncate-3-lines">
+                      {faq.answer}
+                    </p>
                   </div>
                 </div>
-                <div className="space-y-1.5">
-                  <h3 className="text-sm font-bold text-white leading-snug">{faq.question}</h3>
-                  <p className="text-xs text-slate-400 leading-relaxed whitespace-pre-line truncate-3-lines">
-                    {faq.answer}
-                  </p>
-                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
+
+          <Pagination
+            totalItems={filteredFAQs.length}
+            currentPage={currentPage}
+            pageSize={pageSize}
+            onPageChange={setCurrentPage}
+            onPageSizeChange={setPageSize}
+            pageSizeOptions={[4, 8, 12, 20]}
+            className="rounded-2xl border border-slate-800 bg-slate-900/20"
+          />
         </div>
       )}
 

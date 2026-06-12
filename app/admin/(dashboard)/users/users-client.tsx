@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { type DashboardUser } from "@/lib/db-queries";
 import { createUserAction, updateUserAction, deleteUserAction } from "./actions";
+import { Pagination } from "@/components/ui/pagination";
 import {
   Users,
   UserPlus,
@@ -35,6 +36,8 @@ interface UsersClientProps {
 export function UsersClient({ initialUsers, currentUserEmail }: UsersClientProps) {
   const [users, setUsers] = useState<DashboardUser[]>(initialUsers);
   const [searchTerm, setSearchTerm] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(5);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingUser, setEditingUser] = useState<DashboardUser | null>(null);
   
@@ -50,6 +53,15 @@ export function UsersClient({ initialUsers, currentUserEmail }: UsersClientProps
       u.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       u.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const handleSearchChange = (val: string) => {
+    setSearchTerm(val);
+    setCurrentPage(1);
+  };
+
+  const startIndex = (currentPage - 1) * pageSize;
+  const endIndex = startIndex + pageSize;
+  const paginatedUsers = filteredUsers.slice(startIndex, endIndex);
 
   function openCreateForm() {
     setEditingUser(null);
@@ -181,7 +193,7 @@ export function UsersClient({ initialUsers, currentUserEmail }: UsersClientProps
           type="text"
           placeholder="Filter users by name or email..."
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          onChange={(e) => handleSearchChange(e.target.value)}
           className="w-full h-10 pl-9 pr-4 bg-slate-900 border border-slate-800 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-slate-700 transition-all"
         />
       </div>
@@ -197,14 +209,14 @@ export function UsersClient({ initialUsers, currentUserEmail }: UsersClientProps
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-800 text-sm">
-            {filteredUsers.length === 0 ? (
+            {paginatedUsers.length === 0 ? (
               <tr>
                 <td colSpan={3} className="py-12 text-center text-slate-500">
                   No admin users found matching the search criteria.
                 </td>
               </tr>
             ) : (
-              filteredUsers.map((user) => {
+              paginatedUsers.map((user) => {
                 const isSelf = user.email.toLowerCase() === currentUserEmail.toLowerCase();
                 return (
                   <tr key={user.email} className="hover:bg-white/2 transition-colors">
@@ -266,6 +278,14 @@ export function UsersClient({ initialUsers, currentUserEmail }: UsersClientProps
             )}
           </tbody>
         </table>
+
+        <Pagination
+          totalItems={filteredUsers.length}
+          currentPage={currentPage}
+          pageSize={pageSize}
+          onPageChange={setCurrentPage}
+          onPageSizeChange={setPageSize}
+        />
       </div>
 
       {/* Slide-out Sidebar Form (Drawer Modal) */}

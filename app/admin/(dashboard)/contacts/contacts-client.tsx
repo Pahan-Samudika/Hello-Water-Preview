@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { type ContactSubmission } from "@/lib/db-queries";
 import { updateContactStatusAction, deleteContactAction } from "./actions";
+import { Pagination } from "@/components/ui/pagination";
 import {
   PhoneCall,
   Search,
@@ -34,6 +35,8 @@ export function ContactsClient({ initialContacts, canManage }: ContactsClientPro
   const [contacts, setContacts] = useState<ContactSubmission[]>(initialContacts);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("All");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(5);
 
   const [loading, setLoading] = useState(false);
   const [deletingContact, setDeletingContact] = useState<ContactSubmission | null>(null);
@@ -55,6 +58,20 @@ export function ContactsClient({ initialContacts, canManage }: ContactsClientPro
 
     return matchesSearch && matchesStatus;
   });
+
+  const handleSearchChange = (val: string) => {
+    setSearchTerm(val);
+    setCurrentPage(1);
+  };
+
+  const handleStatusFilterChange = (val: string | null) => {
+    setStatusFilter(val || "All");
+    setCurrentPage(1);
+  };
+
+  const startIndex = (currentPage - 1) * pageSize;
+  const endIndex = startIndex + pageSize;
+  const paginatedContacts = filteredContacts.slice(startIndex, endIndex);
 
   async function handleStatusChange(id: string, newStatus: ContactSubmission["status"]) {
     setLoading(true);
@@ -123,13 +140,13 @@ export function ContactsClient({ initialContacts, canManage }: ContactsClientPro
             type="text"
             placeholder="Search contacts by name, email, suburb, message..."
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={(e) => handleSearchChange(e.target.value)}
             className="w-full h-10 pl-9 pr-4 bg-slate-900 border border-slate-800 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-slate-700 transition-all"
           />
         </div>
 
         {/* Status filter selector */}
-        <Select value={statusFilter} onValueChange={(val) => setStatusFilter(val || "All")}>
+        <Select value={statusFilter} onValueChange={handleStatusFilterChange}>
           <SelectTrigger className="h-10 w-44 bg-slate-900 border border-slate-800 rounded-xl text-sm text-white focus:outline-none focus:border-slate-700 transition-all">
             <SelectValue placeholder="All Statuses" />
           </SelectTrigger>
@@ -156,14 +173,14 @@ export function ContactsClient({ initialContacts, canManage }: ContactsClientPro
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-800 text-sm">
-            {filteredContacts.length === 0 ? (
+            {paginatedContacts.length === 0 ? (
               <tr>
                 <td colSpan={canManage ? 6 : 5} className="py-12 text-center text-slate-500">
                   No contact form submissions recorded.
                 </td>
               </tr>
             ) : (
-              filteredContacts.map((c) => {
+              paginatedContacts.map((c) => {
                 const currentStatus = c.status || "New";
                 return (
                   <tr key={c.id} className="hover:bg-white/2 transition-colors">
@@ -222,7 +239,7 @@ export function ContactsClient({ initialContacts, canManage }: ContactsClientPro
                             className={`h-8 min-w-28 px-2.5 rounded-lg border-3 text-xs font-bold text-white focus:outline-none transition-all ${
                               currentStatus === "Resolved"
                                 ? "bg-emerald-500/10 border-emerald-500/20 hover:bg-emerald-500/20"
-                                : currentStatus === "In Progress"
+                               : currentStatus === "In Progress"
                                 ? "bg-amber-500/10 border-amber-500/20 hover:bg-amber-500/20"
                                 : "bg-blue-500/10 border-blue-500/20 hover:bg-blue-500/20"
                             }`}
@@ -275,6 +292,14 @@ export function ContactsClient({ initialContacts, canManage }: ContactsClientPro
             )}
           </tbody>
         </table>
+
+        <Pagination
+          totalItems={filteredContacts.length}
+          currentPage={currentPage}
+          pageSize={pageSize}
+          onPageChange={setCurrentPage}
+          onPageSizeChange={setPageSize}
+        />
       </div>
 
       {/* Message Reader Modal */}

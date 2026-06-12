@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { type Product } from "@/constants/products";
 import { createProductAction, updateProductAction, deleteProductAction } from "./actions";
+import { Pagination } from "@/components/ui/pagination";
 import {
   Droplets,
   Plus,
@@ -24,6 +25,8 @@ interface ProductsClientProps {
 export function ProductsClient({ initialProducts }: ProductsClientProps) {
   const [products, setProducts] = useState<Product[]>(initialProducts);
   const [searchTerm, setSearchTerm] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(5);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
 
@@ -42,6 +45,15 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
       p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       p.category.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const handleSearchChange = (val: string) => {
+    setSearchTerm(val);
+    setCurrentPage(1);
+  };
+
+  const startIndex = (currentPage - 1) * pageSize;
+  const endIndex = startIndex + pageSize;
+  const paginatedProducts = filteredProducts.slice(startIndex, endIndex);
 
   function slugify(text: string) {
     return text
@@ -207,7 +219,7 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
           type="text"
           placeholder="Filter products by name or category..."
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          onChange={(e) => handleSearchChange(e.target.value)}
           className="w-full h-10 pl-9 pr-4 bg-slate-900 border border-slate-800 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-slate-700 transition-all"
         />
       </div>
@@ -225,14 +237,14 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-800 text-sm">
-            {filteredProducts.length === 0 ? (
+            {paginatedProducts.length === 0 ? (
               <tr>
                 <td colSpan={5} className="py-12 text-center text-slate-500">
                   No products registered in the database.
                 </td>
               </tr>
             ) : (
-              filteredProducts.map((product) => (
+              paginatedProducts.map((product) => (
                 <tr key={product.slug} className="hover:bg-white/2 transition-colors">
                   <td className="py-4 px-6">
                     <div className="flex items-center gap-4">
@@ -309,6 +321,14 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
             )}
           </tbody>
         </table>
+
+        <Pagination
+          totalItems={filteredProducts.length}
+          currentPage={currentPage}
+          pageSize={pageSize}
+          onPageChange={setCurrentPage}
+          onPageSizeChange={setPageSize}
+        />
       </div>
 
       {/* Drawer overlay form */}

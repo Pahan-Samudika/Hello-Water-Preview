@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { type Enquiry } from "@/lib/db-queries";
 import { updateEnquiryStatusAction, deleteEnquiryAction } from "./actions";
+import { Pagination } from "@/components/ui/pagination";
 import {
   Inbox,
   Search,
@@ -31,6 +32,8 @@ export function EnquiriesClient({ initialEnquiries, canManage }: EnquiriesClient
   const [enquiries, setEnquiries] = useState<Enquiry[]>(initialEnquiries);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("All");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(5);
 
   const [loading, setLoading] = useState(false);
   const [deletingEnquiry, setDeletingEnquiry] = useState<Enquiry | null>(null);
@@ -51,6 +54,20 @@ export function EnquiriesClient({ initialEnquiries, canManage }: EnquiriesClient
 
     return matchesSearch && matchesStatus;
   });
+
+  const handleSearchChange = (val: string) => {
+    setSearchTerm(val);
+    setCurrentPage(1);
+  };
+
+  const handleStatusFilterChange = (val: string | null) => {
+    setStatusFilter(val || "All");
+    setCurrentPage(1);
+  };
+
+  const startIndex = (currentPage - 1) * pageSize;
+  const endIndex = startIndex + pageSize;
+  const paginatedEnquiries = filteredEnquiries.slice(startIndex, endIndex);
 
   async function handleStatusChange(id: string, newStatus: Enquiry["status"]) {
     setLoading(true);
@@ -120,13 +137,13 @@ export function EnquiriesClient({ initialEnquiries, canManage }: EnquiriesClient
             type="text"
             placeholder="Search leads by name, email, phone, postcode..."
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={(e) => handleSearchChange(e.target.value)}
             className="w-full h-10 pl-9 pr-4 bg-slate-900 border border-slate-800 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-slate-700 transition-all"
           />
         </div>
 
         {/* Status filter selector */}
-        <Select value={statusFilter} onValueChange={(val) => setStatusFilter(val || "All")}>
+        <Select value={statusFilter} onValueChange={handleStatusFilterChange}>
           <SelectTrigger className="h-10 w-44 bg-slate-900 border border-slate-800 rounded-xl text-sm text-white focus:outline-none focus:border-slate-700 transition-all">
             <SelectValue placeholder="All Statuses" />
           </SelectTrigger>
@@ -153,14 +170,14 @@ export function EnquiriesClient({ initialEnquiries, canManage }: EnquiriesClient
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-800 text-sm">
-            {filteredEnquiries.length === 0 ? (
+            {paginatedEnquiries.length === 0 ? (
               <tr>
                 <td colSpan={canManage ? 6 : 5} className="py-12 text-center text-slate-500">
                   No enquiries found matching the search criteria.
                 </td>
               </tr>
             ) : (
-              filteredEnquiries.map((enq) => {
+              paginatedEnquiries.map((enq) => {
                 const currentStatus = enq.status || "New";
                 return (
                   <tr key={enq.id} className="hover:bg-white/2 transition-colors">
@@ -257,6 +274,14 @@ export function EnquiriesClient({ initialEnquiries, canManage }: EnquiriesClient
             )}
           </tbody>
         </table>
+
+        <Pagination
+          totalItems={filteredEnquiries.length}
+          currentPage={currentPage}
+          pageSize={pageSize}
+          onPageChange={setCurrentPage}
+          onPageSizeChange={setPageSize}
+        />
       </div>
 
       {/* Delete Confirmation Modal */}

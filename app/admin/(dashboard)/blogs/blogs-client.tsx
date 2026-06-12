@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { type DBBlogPost } from "@/lib/db-queries";
 import { type BlogParagraph } from "@/constants/blogs";
 import { createBlogAction, updateBlogAction, deleteBlogAction } from "./actions";
+import { Pagination } from "@/components/ui/pagination";
 import {
   BookOpen,
   Plus,
@@ -34,6 +35,8 @@ interface BlogSource {
 export function BlogsClient({ initialBlogs }: BlogsClientProps) {
   const [blogs, setBlogs] = useState<DBBlogPost[]>(initialBlogs);
   const [searchTerm, setSearchTerm] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(5);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingBlog, setEditingBlog] = useState<DBBlogPost | null>(null);
 
@@ -54,6 +57,15 @@ export function BlogsClient({ initialBlogs }: BlogsClientProps) {
       b.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       b.author.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const handleSearchChange = (val: string) => {
+    setSearchTerm(val);
+    setCurrentPage(1);
+  };
+
+  const startIndex = (currentPage - 1) * pageSize;
+  const endIndex = startIndex + pageSize;
+  const paginatedBlogs = filteredBlogs.slice(startIndex, endIndex);
 
   function slugify(text: string) {
     return text
@@ -291,7 +303,7 @@ export function BlogsClient({ initialBlogs }: BlogsClientProps) {
           type="text"
           placeholder="Filter blogs by title or author..."
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          onChange={(e) => handleSearchChange(e.target.value)}
           className="w-full h-10 pl-9 pr-4 bg-slate-900 border border-slate-800 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-slate-700 transition-all"
         />
       </div>
@@ -309,14 +321,14 @@ export function BlogsClient({ initialBlogs }: BlogsClientProps) {
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-800 text-sm">
-            {filteredBlogs.length === 0 ? (
+            {paginatedBlogs.length === 0 ? (
               <tr>
                 <td colSpan={5} className="py-12 text-center text-slate-500">
                   No blog posts registered in the database.
                 </td>
               </tr>
             ) : (
-              filteredBlogs.map((post) => (
+              paginatedBlogs.map((post) => (
                 <tr key={post.slug} className="hover:bg-white/2 transition-colors">
                   <td className="py-4 px-6">
                     <div className="flex items-center gap-4">
@@ -385,6 +397,14 @@ export function BlogsClient({ initialBlogs }: BlogsClientProps) {
             )}
           </tbody>
         </table>
+
+        <Pagination
+          totalItems={filteredBlogs.length}
+          currentPage={currentPage}
+          pageSize={pageSize}
+          onPageChange={setCurrentPage}
+          onPageSizeChange={setPageSize}
+        />
       </div>
 
       {/* Slide-out Sidebar Form (CMS Drawer) */}
