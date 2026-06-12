@@ -408,7 +408,7 @@ export function EnquiriesClient({ initialEnquiries, canManage }: EnquiriesClient
 
       {/* Delete Confirmation Modal */}
       {deletingEnquiry && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 animate-fadeIn px-4">
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[70] animate-fadeIn px-4">
           <div className="w-full max-w-sm bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-2xl space-y-6 animate-scaleUp">
             <div className="flex items-center gap-3 text-rose-400">
               <AlertTriangle className="size-8 shrink-0 text-rose-500" />

@@ -381,13 +381,13 @@ export function UsersClient({ initialUsers, currentUserEmail }: UsersClientProps
 
       {/* Slide-out Sidebar Form (Drawer Modal) */}
       {isFormOpen && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex justify-end z-50 animate-fadeIn">
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex justify-end z-[70] animate-fadeIn">
           {/* Backdrop closer */}
           <div className="absolute inset-0 -z-10" onClick={() => setIsFormOpen(false)} />
 
-          <div className="w-full max-w-lg bg-slate-900 border-l border-slate-800 h-full flex flex-col justify-between shadow-2xl p-6 md:p-8 animate-slideLeft">
+          <div className="w-full max-w-lg bg-slate-900 border-l border-slate-800 h-full flex flex-col justify-between shadow-2xl p-4 sm:p-6 md:p-8 animate-slideLeft">
             {/* Header */}
-            <div className="flex items-center justify-between pb-6 border-b border-slate-800">
+            <div className="flex items-center justify-between pb-4 sm:pb-6 border-b border-slate-800">
               <div>
                 <h3 className="text-lg font-bold text-white flex items-center gap-2">
                   {editingUser ? <Edit2 className="size-5 text-primary" /> : <UserPlus className="size-5 text-primary" />}
@@ -406,7 +406,7 @@ export function UsersClient({ initialUsers, currentUserEmail }: UsersClientProps
             </div>
 
             {/* Scrollable form body */}
-            <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto py-6 space-y-6">
+            <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto no-scrollbar py-4 sm:py-6 space-y-4 sm:space-y-6">
               {formError && (
                 <div className="rounded-xl bg-destructive/10 border border-destructive/20 p-4 text-xs text-destructive-foreground flex gap-2">
                   <ShieldAlert className="size-4 shrink-0 text-rose-400 mt-0.5" />
@@ -486,14 +486,14 @@ export function UsersClient({ initialUsers, currentUserEmail }: UsersClientProps
                       return (
                         <label
                           key={perm}
-                          className="flex items-start gap-3 p-3 rounded-xl border border-slate-800 bg-slate-950/40 hover:bg-slate-950 hover:border-slate-700 transition-all cursor-pointer select-none"
+                          className="flex items-center gap-3 p-3 rounded-xl border border-slate-800 bg-slate-950/40 hover:bg-slate-950 hover:border-slate-700 transition-all cursor-pointer select-none"
                         >
                           <input
                             type="checkbox"
                             name="permissions"
                             value={perm}
                             defaultChecked={isDefaultChecked}
-                            className="size-4 mt-0.5 rounded border-slate-800 bg-slate-900 text-primary focus:ring-primary focus:ring-offset-slate-950"
+                            className="size-4 rounded border-slate-800 bg-slate-900 text-primary focus:ring-primary focus:ring-offset-slate-950"
                           />
                           <span className="text-xs font-semibold text-slate-300 leading-tight">
                             {perm}
@@ -506,7 +506,7 @@ export function UsersClient({ initialUsers, currentUserEmail }: UsersClientProps
               </div>
 
               {/* Drawer footer actions */}
-              <div className="pt-6 border-t border-slate-800 flex items-center justify-end gap-3">
+              <div className="pt-4 sm:pt-6 border-t border-slate-800 flex items-center justify-end gap-3">
                 <button
                   type="button"
                   onClick={() => setIsFormOpen(false)}
@@ -535,7 +535,7 @@ export function UsersClient({ initialUsers, currentUserEmail }: UsersClientProps
 
       {/* Delete Confirmation Modal */}
       {deletingUser && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 animate-fadeIn px-4">
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[70] animate-fadeIn px-4">
           <div className="w-full max-w-sm bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-2xl space-y-6 animate-scaleUp">
             <div className="flex items-center gap-3 text-rose-400">
               <ShieldAlert className="size-8 shrink-0 text-rose-500" />

@@ -283,12 +283,12 @@ export function FAQsClient({ initialFAQs }: FAQsClientProps) {
 
       {/* Drawer overlay form */}
       {isFormOpen && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex justify-end z-50 animate-fadeIn">
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex justify-end z-[70] animate-fadeIn">
           <div className="absolute inset-0 -z-10" onClick={() => setIsFormOpen(false)} />
 
-          <div className="w-full max-w-lg bg-slate-900 border-l border-slate-800 h-full flex flex-col justify-between shadow-2xl p-6 md:p-8 animate-slideLeft">
+          <div className="w-full max-w-lg bg-slate-900 border-l border-slate-800 h-full flex flex-col justify-between shadow-2xl p-4 sm:p-6 md:p-8 animate-slideLeft">
             {/* Header */}
-            <div className="flex items-center justify-between pb-6 border-b border-slate-800">
+            <div className="flex items-center justify-between pb-4 sm:pb-6 border-b border-slate-800">
               <div>
                 <h3 className="text-lg font-bold text-white flex items-center gap-2">
                   <HelpCircle className="size-5 text-primary" />
@@ -307,7 +307,7 @@ export function FAQsClient({ initialFAQs }: FAQsClientProps) {
             </div>
 
             {/* Scrollable form body */}
-            <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto py-6 space-y-6">
+            <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto no-scrollbar py-4 sm:py-6 space-y-4 sm:space-y-6">
               {formError && (
                 <div className="rounded-xl bg-destructive/10 border border-destructive/20 p-4 text-xs text-destructive-foreground flex gap-2">
                   <AlertTriangle className="size-4 shrink-0 text-rose-400 mt-0.5" />
@@ -379,7 +379,7 @@ export function FAQsClient({ initialFAQs }: FAQsClientProps) {
               </div>
 
               {/* Drawer footer actions */}
-              <div className="pt-6 border-t border-slate-800 flex items-center justify-end gap-3 mt-6">
+              <div className="pt-4 sm:pt-6 border-t border-slate-800 flex items-center justify-end gap-3 mt-6">
                 <button
                   type="button"
                   onClick={() => setIsFormOpen(false)}
@@ -408,7 +408,7 @@ export function FAQsClient({ initialFAQs }: FAQsClientProps) {
 
       {/* Delete Confirmation Modal */}
       {deletingFAQ && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 animate-fadeIn px-4">
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[70] animate-fadeIn px-4">
           <div className="w-full max-w-sm bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-2xl space-y-6 animate-scaleUp">
             <div className="flex items-center gap-3 text-rose-400">
               <AlertTriangle className="size-8 shrink-0 text-rose-500" />
