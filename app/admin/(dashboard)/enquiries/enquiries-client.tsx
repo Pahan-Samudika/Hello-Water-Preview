@@ -114,46 +114,47 @@ export function EnquiriesClient({ initialEnquiries, canManage }: EnquiriesClient
   return (
     <div className="space-y-6">
       {/* Header toolbar */}
-      <div className="pb-6 border-b border-slate-800 space-y-1">
-        <h1 className="text-2xl font-black text-white flex items-center gap-2">
-          <Inbox className="size-6 text-primary" />
-          Customer Enquiries
-        </h1>
-        <p className="text-xs text-slate-500">
-          {canManage
-            ? "View and update lead statuses or delete entries"
-            : "View and filter submitted lead enquiries (Read Only)"}
-        </p>
-      </div>
-
-      {/* Filter and search bar */}
-      <div className="flex flex-col sm:flex-row gap-3">
-        {/* Search */}
-        <div className="relative flex-1 max-w-md">
-          <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-500">
-            <Search className="size-4" />
-          </span>
-          <input
-            type="text"
-            placeholder="Search leads by name, email, phone, postcode..."
-            value={searchTerm}
-            onChange={(e) => handleSearchChange(e.target.value)}
-            className="w-full h-10 pl-9 pr-4 bg-slate-900 border border-slate-800 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-slate-700 transition-all"
-          />
+      <div className="flex flex-col xl:flex-row gap-4 items-start xl:items-center justify-between pb-6 border-b border-slate-800">
+        <div className="space-y-1">
+          <h1 className="text-2xl font-black text-white flex items-center gap-2">
+            <Inbox className="size-6 text-primary" />
+            Customer Enquiries
+          </h1>
+          <p className="text-xs text-slate-500">
+            {canManage
+              ? "View and update lead statuses or delete entries"
+              : "View and filter submitted lead enquiries (Read Only)"}
+          </p>
         </div>
 
-        {/* Status filter selector */}
-        <Select value={statusFilter} onValueChange={handleStatusFilterChange}>
-          <SelectTrigger className="h-10 w-44 bg-slate-900 border border-slate-800 rounded-xl text-sm text-white focus:outline-none focus:border-slate-700 transition-all">
-            <SelectValue placeholder="All Statuses" />
-          </SelectTrigger>
-          <SelectContent className="bg-slate-950 border border-slate-800 rounded-xl">
-            <SelectItem value="All">All Statuses</SelectItem>
-            <SelectItem value="New">New</SelectItem>
-            <SelectItem value="In Progress">In Progress</SelectItem>
-            <SelectItem value="Resolved">Resolved</SelectItem>
-          </SelectContent>
-        </Select>
+        <div className="flex flex-col sm:flex-row gap-3 w-full xl:w-auto items-stretch sm:items-center">
+          {/* Search */}
+          <div className="relative flex-1 sm:w-80">
+            <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-500">
+              <Search className="size-4" />
+            </span>
+            <input
+              type="text"
+              placeholder="Search leads by name, email, phone, postcode..."
+              value={searchTerm}
+              onChange={(e) => handleSearchChange(e.target.value)}
+              className="w-full h-10 pl-9 pr-4 bg-slate-900 border border-slate-800 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-slate-700 transition-all"
+            />
+          </div>
+
+          {/* Status filter selector */}
+          <Select value={statusFilter} onValueChange={handleStatusFilterChange}>
+            <SelectTrigger className="h-10 w-full sm:w-44 bg-slate-900 border border-slate-800 rounded-xl text-sm text-white focus:outline-none focus:border-slate-700 transition-all">
+              <SelectValue placeholder="All Statuses" />
+            </SelectTrigger>
+            <SelectContent className="bg-slate-950 border border-slate-800 rounded-xl">
+              <SelectItem value="All">All Statuses</SelectItem>
+              <SelectItem value="New">New</SelectItem>
+              <SelectItem value="In Progress">In Progress</SelectItem>
+              <SelectItem value="Resolved">Resolved</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
       </div>
 
       {/* Enquiries table view */}

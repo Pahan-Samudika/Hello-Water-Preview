@@ -164,7 +164,7 @@ export function UsersClient({ initialUsers, currentUserEmail }: UsersClientProps
   return (
     <div className="space-y-6">
       {/* Header toolbar */}
-      <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between pb-6 border-b border-slate-800">
+      <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between pb-6 border-b border-slate-800">
         <div className="space-y-1">
           <h1 className="text-2xl font-black text-white flex items-center gap-2">
             <Users className="size-6 text-primary" />
@@ -175,27 +175,29 @@ export function UsersClient({ initialUsers, currentUserEmail }: UsersClientProps
           </p>
         </div>
 
-        <button
-          onClick={openCreateForm}
-          className="h-10 inline-flex items-center gap-2 px-4 rounded-xl bg-primary text-xs font-bold text-primary-foreground hover:bg-primary/95 shadow-md shadow-primary/15 transition-all"
-        >
-          <UserPlus className="size-4" />
-          <span>Create User</span>
-        </button>
-      </div>
+        <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto items-stretch sm:items-center">
+          {/* Filter and search bar */}
+          <div className="relative w-full sm:w-72">
+            <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-500">
+              <Search className="size-4" />
+            </span>
+            <input
+              type="text"
+              placeholder="Filter users by name or email..."
+              value={searchTerm}
+              onChange={(e) => handleSearchChange(e.target.value)}
+              className="w-full h-10 pl-9 pr-4 bg-slate-900 border border-slate-800 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-slate-700 transition-all"
+            />
+          </div>
 
-      {/* Filter and search bar */}
-      <div className="relative max-w-md">
-        <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-500">
-          <Search className="size-4" />
-        </span>
-        <input
-          type="text"
-          placeholder="Filter users by name or email..."
-          value={searchTerm}
-          onChange={(e) => handleSearchChange(e.target.value)}
-          className="w-full h-10 pl-9 pr-4 bg-slate-900 border border-slate-800 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-slate-700 transition-all"
-        />
+          <button
+            onClick={openCreateForm}
+            className="h-10 inline-flex items-center justify-center gap-2 px-4 rounded-xl bg-primary text-xs font-bold text-primary-foreground hover:bg-primary/95 shadow-md shadow-primary/15 transition-all shrink-0"
+          >
+            <UserPlus className="size-4" />
+            <span>Create User</span>
+          </button>
+        </div>
       </div>
 
       {/* Users table */}

@@ -5,6 +5,13 @@ import { type FAQ } from "@/lib/db-queries";
 import { createFAQAction, updateFAQAction, deleteFAQAction } from "./actions";
 import { Pagination } from "@/components/ui/pagination";
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
   HelpCircle,
   Plus,
   Edit2,
@@ -162,7 +169,7 @@ export function FAQsClient({ initialFAQs }: FAQsClientProps) {
   return (
     <div className="space-y-6">
       {/* Header toolbar */}
-      <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between pb-6 border-b border-slate-800">
+      <div className="flex flex-col xl:flex-row gap-4 items-start xl:items-center justify-between pb-6 border-b border-slate-800">
         <div className="space-y-1">
           <h1 className="text-2xl font-black text-white flex items-center gap-2">
             <HelpCircle className="size-6 text-primary" />
@@ -173,44 +180,47 @@ export function FAQsClient({ initialFAQs }: FAQsClientProps) {
           </p>
         </div>
 
-        <button
-          onClick={openCreateForm}
-          className="h-10 inline-flex items-center gap-2 px-4 rounded-xl bg-primary text-xs font-bold text-primary-foreground hover:bg-primary/95 shadow-md shadow-primary/15 transition-all"
-        >
-          <Plus className="size-4" />
-          <span>Add FAQ</span>
-        </button>
-      </div>
+        <div className="flex flex-col sm:flex-row gap-3 w-full xl:w-auto items-stretch sm:items-center">
+          {/* Search */}
+          <div className="relative flex-1 sm:w-64">
+            <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-500">
+              <Search className="size-4" />
+            </span>
+            <input
+              type="text"
+              placeholder="Search FAQs by keywords..."
+              value={searchTerm}
+              onChange={(e) => handleSearchChange(e.target.value)}
+              className="w-full h-10 pl-9 pr-4 bg-slate-900 border border-slate-800 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-slate-700 transition-all"
+            />
+          </div>
 
-      {/* Filter and search bar */}
-      <div className="flex flex-col sm:flex-row gap-3">
-        {/* Search */}
-        <div className="relative flex-1 max-w-md">
-          <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-500">
-            <Search className="size-4" />
-          </span>
-          <input
-            type="text"
-            placeholder="Search FAQs by keywords..."
-            value={searchTerm}
-            onChange={(e) => handleSearchChange(e.target.value)}
-            className="w-full h-10 pl-9 pr-4 bg-slate-900 border border-slate-800 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-slate-700 transition-all"
-          />
+          {/* Category selector */}
+          <Select
+            value={selectedCategory}
+            onValueChange={(val) => handleCategoryFilterChange(val || "All")}
+          >
+            <SelectTrigger className="h-10 w-full sm:w-48 bg-slate-900 border border-slate-800 rounded-xl text-sm text-white focus:outline-none focus:border-slate-700 transition-all shrink-0">
+              <SelectValue placeholder="All Categories" />
+            </SelectTrigger>
+            <SelectContent className="bg-slate-950 border border-slate-800 rounded-xl">
+              <SelectItem value="All">All Categories</SelectItem>
+              {FAQ_CATEGORIES.map((cat) => (
+                <SelectItem key={cat} value={cat}>
+                  {cat}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+
+          <button
+            onClick={openCreateForm}
+            className="h-10 inline-flex items-center justify-center gap-2 px-4 rounded-xl bg-primary text-xs font-bold text-primary-foreground hover:bg-primary/95 shadow-md shadow-primary/15 transition-all shrink-0"
+          >
+            <Plus className="size-4" />
+            <span>Add FAQ</span>
+          </button>
         </div>
-
-        {/* Category selector */}
-        <select
-          value={selectedCategory}
-          onChange={(e) => handleCategoryFilterChange(e.target.value)}
-          className="h-10 px-4 bg-slate-900 border border-slate-800 rounded-xl text-sm text-white focus:outline-none focus:border-slate-700 transition-all"
-        >
-          <option value="All">All Categories</option>
-          {FAQ_CATEGORIES.map((cat) => (
-            <option key={cat} value={cat}>
-              {cat}
-            </option>
-          ))}
-        </select>
       </div>
 
       {/* FAQs list rendering */}
@@ -318,19 +328,21 @@ export function FAQsClient({ initialFAQs }: FAQsClientProps) {
                   <label className="text-xs font-bold text-slate-400 uppercase tracking-wider" htmlFor="form-category">
                     Category Group
                   </label>
-                  <select
-                    id="form-category"
+                  <Select
                     name="category"
-                    required
                     defaultValue={editingFAQ?.category || FAQ_CATEGORIES[0]}
-                    className="w-full h-11 px-4 bg-slate-950 border border-slate-800 rounded-xl text-sm text-white focus:outline-none focus:border-primary transition-all"
                   >
-                    {FAQ_CATEGORIES.map((cat) => (
-                      <option key={cat} value={cat}>
-                        {cat}
-                      </option>
-                    ))}
-                  </select>
+                    <SelectTrigger className="w-full h-11 bg-slate-950 border border-slate-800 rounded-xl text-sm text-white focus:outline-none focus:border-primary transition-all">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent className="bg-slate-950 border border-slate-800 rounded-xl">
+                      {FAQ_CATEGORIES.map((cat) => (
+                        <SelectItem key={cat} value={cat}>
+                          {cat}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
 
                 {/* Question */}

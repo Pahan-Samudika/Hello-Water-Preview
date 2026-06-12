@@ -3,6 +3,13 @@
 import React from "react";
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface PaginationProps {
   totalItems: number;
@@ -91,17 +98,21 @@ export function Pagination({
         {onPageSizeChange && (
           <div className="flex items-center gap-2 border-l border-slate-800 pl-4">
             <span className="text-[11px] text-slate-500 font-medium">Rows per page:</span>
-            <select
-              value={pageSize}
-              onChange={(e) => onPageSizeChange(Number(e.target.value))}
-              className="h-7 bg-slate-950 border border-slate-800 rounded-lg text-[11px] font-semibold text-slate-300 px-2 py-0.5 focus:outline-none focus:border-slate-700 transition-all cursor-pointer"
+            <Select
+              value={String(pageSize)}
+              onValueChange={(val) => onPageSizeChange(Number(val))}
             >
-              {pageSizeOptions.map((opt) => (
-                <option key={opt} value={opt}>
-                  {opt}
-                </option>
-              ))}
-            </select>
+              <SelectTrigger size="sm" className="h-7 bg-slate-950 border border-slate-800 rounded-lg text-[11px] font-semibold text-slate-300 gap-1 pl-2 pr-1.5 focus:outline-none focus:border-slate-700 transition-all">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent className="bg-slate-950 border border-slate-800 rounded-lg min-w-[70px]">
+                {pageSizeOptions.map((opt) => (
+                  <SelectItem key={opt} value={String(opt)}>
+                    {opt}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
         )}
       </div>
