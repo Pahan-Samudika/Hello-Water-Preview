@@ -2,7 +2,8 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Mail, Lock, User, ShieldAlert, ShieldCheck } from "lucide-react";
+import { Mail, Lock, User, ShieldAlert, ShieldCheck, Smartphone } from "lucide-react";
+import { usePwa } from "@/hooks/use-pwa";
 import { loginAction, registerInitialAdminAction } from "./actions";
 
 interface LoginFormProps {
@@ -12,6 +13,7 @@ interface LoginFormProps {
 export function LoginForm({ isFirstRun }: LoginFormProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const { isInstallable, installPwa } = usePwa();
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
 
@@ -179,6 +181,19 @@ export function LoginForm({ isFirstRun }: LoginFormProps) {
           "Sign In"
         )}
       </button>
+
+      {isInstallable && (
+        <div className="pt-4 border-t border-white/10 mt-6 text-center">
+          <button
+            type="button"
+            onClick={installPwa}
+            className="w-full h-11 inline-flex items-center justify-center gap-2 rounded-xl border border-primary/20 bg-primary/5 text-xs font-bold text-primary hover:bg-primary/10 active:scale-98 transition-all cursor-pointer"
+          >
+            <Smartphone className="size-4 text-primary animate-bounce" />
+            <span>Install App on Mobile</span>
+          </button>
+        </div>
+      )}
     </form>
   );
 }
