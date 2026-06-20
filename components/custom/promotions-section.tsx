@@ -28,7 +28,7 @@ const staggerContainer = {
 
 export const PromotionsSection = () => {
   return (
-    <section className="relative overflow-hidden px-6 py-16 sm:px-6 sm:py-24">
+    <section id="offers" className="relative scroll-mt-20 overflow-hidden px-6 py-16 sm:px-6 sm:py-24">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col items-center gap-12 px-2 py-4 sm:px-4 sm:py-6">
 
