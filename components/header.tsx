@@ -136,7 +136,7 @@ export function Header() {
                     item.children ? (
                       <DropdownMenu key={item.title}>
                         <DropdownMenuTrigger
-                          className="flex items-center gap-1 cursor-pointer"
+                          className="flex items-center gap-1 cursor-pointer text-xs"
                           render={<Button size="sm" variant="ghost" />}
                         >
                           {item.title}
@@ -165,6 +165,7 @@ export function Header() {
                         key={item.href}
                         size="sm"
                         variant="ghost"
+                        className="text-xs"
                         render={<Link href={item.href} />}
                         nativeButton={false}
                       >
