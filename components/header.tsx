@@ -93,7 +93,7 @@ export function Header() {
                 aria-label="Hello Water Filtration home"
                 className="flex items-center rounded-md p-2"
               >
-                <Image src={TxtLogoSVG} alt="Hello Water Filtration" className="h-4.5 w-auto md:h-5" priority />
+                <Image src={TxtLogoSVG} alt="Hello Water Filtration" className="h-4.5 w-auto md:h-7" priority />
               </Link>
             </div>
 
