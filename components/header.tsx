@@ -45,9 +45,12 @@ export const navigationData: NavItem[] = [
       { title: "Benefits", href: "/benefits" },
       { title: "Technology", href: "/technology" },
       { title: "Certifications", href: "/certifications" },
-      { title: "Our Blogs", href: "/blogs" },
       { title: "FAQs", href: "/faq" },
     ],
+  },
+  {
+    title: "Blogs",
+    href: "/blogs",
   },
   {
     title: "Contact Us",
@@ -127,7 +130,7 @@ export function Header() {
             {/* Right: Desktop nav links + Phone CTA / Mobile Hamburger */}
             <div className="z-10 flex flex-1 items-center justify-end gap-2 md:gap-4">
               {/* Desktop nav links */}
-              <div className="hidden items-center gap-2 md:flex">
+              <div className="hidden items-center gap-2 lg:flex">
                 <div className="flex items-center">
                   {navigationData.map((item) =>
                     item.children ? (

@@ -11,7 +11,7 @@ export function MobileNav() {
 	const [open, setOpen] = React.useState(false);
 
 	return (
-		<div className="md:hidden">
+		<div className="lg:hidden">
 			<Button
 				aria-controls="mobile-menu"
 				aria-expanded={open}
