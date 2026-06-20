@@ -32,7 +32,7 @@ export default async function AdminLayout({
         </header>
 
         {/* Content Body */}
-        <main className="flex-1 p-4 sm:p-6 md:p-8 pb-[calc(5rem+env(safe-area-inset-bottom))] md:pb-8 max-w-7xl w-full mx-auto md:overflow-y-auto">
+        <main className="flex-1 p-4 sm:p-6 md:p-8 pb-[calc(5rem+env(safe-area-inset-bottom))] md:pb-8 w-full mx-auto md:overflow-y-auto">
           {children}
         </main>
       </div>

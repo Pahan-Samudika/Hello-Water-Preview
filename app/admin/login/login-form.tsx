@@ -42,8 +42,7 @@ export function LoginForm({ isFirstRun }: LoginFormProps) {
         
         // Short delay to show success animation/feedback
         setTimeout(() => {
-          router.push("/admin");
-          router.refresh();
+          window.location.href = "/admin";
         }, 1500);
       } else {
         setError(result.error || "An error occurred");
