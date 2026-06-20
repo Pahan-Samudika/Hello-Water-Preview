@@ -17,7 +17,15 @@ export default async function AdminEnquiriesPage() {
   }
 
   const canManage = hasPermission(session, "Enquiry Management");
+  const canUpdateStatus =
+    hasPermission(session, "Enquiry View") || hasPermission(session, "Enquiry Management");
   const enquiries = await getEnquiries();
 
-  return <EnquiriesClient initialEnquiries={enquiries} canManage={canManage} />;
+  return (
+    <EnquiriesClient
+      initialEnquiries={enquiries}
+      canManage={canManage}
+      canUpdateStatus={canUpdateStatus}
+    />
+  );
 }

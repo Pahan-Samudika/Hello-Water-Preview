@@ -26,9 +26,14 @@ import {
 interface EnquiriesClientProps {
   initialEnquiries: Enquiry[];
   canManage: boolean;
+  canUpdateStatus: boolean;
 }
 
-export function EnquiriesClient({ initialEnquiries, canManage }: EnquiriesClientProps) {
+export function EnquiriesClient({
+  initialEnquiries,
+  canManage,
+  canUpdateStatus,
+}: EnquiriesClientProps) {
   const [enquiries, setEnquiries] = useState<Enquiry[]>(initialEnquiries);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("All");
@@ -220,7 +225,7 @@ export function EnquiriesClient({ initialEnquiries, canManage }: EnquiriesClient
                       </span>
                     </td>
                     <td className="py-4 px-6">
-                      {canManage ? (
+                      {canUpdateStatus ? (
                         <Select
                           value={currentStatus}
                           disabled={loading}
@@ -343,7 +348,7 @@ export function EnquiriesClient({ initialEnquiries, canManage }: EnquiriesClient
                 <div className="flex sm:flex-col items-center sm:items-end justify-between sm:justify-center gap-3 shrink-0 pt-3 sm:pt-0 border-t border-slate-800/60 sm:border-t-0">
                   {/* Status Selector/Badge */}
                   <div>
-                    {canManage ? (
+                    {canUpdateStatus ? (
                       <Select
                         value={currentStatus}
                         disabled={loading}

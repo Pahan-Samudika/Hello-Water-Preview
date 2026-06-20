@@ -29,9 +29,14 @@ import {
 interface ContactsClientProps {
   initialContacts: ContactSubmission[];
   canManage: boolean;
+  canUpdateStatus: boolean;
 }
 
-export function ContactsClient({ initialContacts, canManage }: ContactsClientProps) {
+export function ContactsClient({
+  initialContacts,
+  canManage,
+  canUpdateStatus,
+}: ContactsClientProps) {
   const [contacts, setContacts] = useState<ContactSubmission[]>(initialContacts);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("All");
@@ -229,7 +234,7 @@ export function ContactsClient({ initialContacts, canManage }: ContactsClientPro
                       </span>
                     </td>
                     <td className="py-4 px-6">
-                      {canManage ? (
+                      {canUpdateStatus ? (
                         <Select
                           value={currentStatus}
                           disabled={loading}
@@ -356,7 +361,7 @@ export function ContactsClient({ initialContacts, canManage }: ContactsClientPro
                 <div className="flex sm:flex-col items-center sm:items-end justify-between sm:justify-center gap-3 shrink-0 pt-3 sm:pt-0 border-t border-slate-800/60 sm:border-t-0">
                   {/* Status Selector/Badge */}
                   <div>
-                    {canManage ? (
+                    {canUpdateStatus ? (
                       <Select
                         value={currentStatus}
                         disabled={loading}

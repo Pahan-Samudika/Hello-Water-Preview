@@ -17,7 +17,15 @@ export default async function AdminContactsPage() {
   }
 
   const canManage = hasPermission(session, "Contact Management");
+  const canUpdateStatus =
+    hasPermission(session, "Contact View") || hasPermission(session, "Contact Management");
   const contacts = await getContacts();
 
-  return <ContactsClient initialContacts={contacts} canManage={canManage} />;
+  return (
+    <ContactsClient
+      initialContacts={contacts}
+      canManage={canManage}
+      canUpdateStatus={canUpdateStatus}
+    />
+  );
 }
