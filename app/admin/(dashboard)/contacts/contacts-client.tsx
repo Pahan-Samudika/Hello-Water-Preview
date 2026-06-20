@@ -191,9 +191,10 @@ export function ContactsClient({ initialContacts, canManage }: ContactsClientPro
                         <a
                           href={`mailto:${c.email}`}
                           className="text-xs text-slate-500 hover:text-primary flex items-center gap-1 transition-all"
+                          title={c.email}
                         >
-                          <Mail className="size-3" />
-                          {c.email}
+                          <Mail className="size-3 shrink-0" />
+                          <span className="truncate max-w-[150px] sm:max-w-[200px] md:max-w-[250px]">{c.email}</span>
                         </a>
                         {c.phone && (
                           <a
@@ -326,10 +327,11 @@ export function ContactsClient({ initialContacts, canManage }: ContactsClientPro
                   <div className="flex flex-col gap-1.5 text-xs text-slate-400">
                     <a
                       href={`mailto:${c.email}`}
-                      className="hover:text-primary flex items-center gap-1.5 transition-all truncate"
+                      className="hover:text-primary flex items-center gap-1.5 transition-all"
+                      title={c.email}
                     >
                       <Mail className="size-3.5 text-slate-500 shrink-0" />
-                      <span className="truncate">{c.email}</span>
+                      <span className="truncate max-w-[180px] sm:max-w-[250px]">{c.email}</span>
                     </a>
                     {c.phone && (
                       <a

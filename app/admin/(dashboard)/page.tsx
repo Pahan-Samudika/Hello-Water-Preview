@@ -117,7 +117,7 @@ export default async function AdminDashboardPage({ searchParams }: PageProps) {
         <div className="grid gap-6 lg:grid-cols-2">
           {/* Enquiries panel */}
           {canViewEnquiries && (
-            <div className="rounded-3xl border border-slate-800 bg-slate-900/40 p-4 sm:p-6 md:p-8 space-y-6">
+            <div className="min-w-0 rounded-3xl border border-slate-800 bg-slate-900/40 p-4 sm:p-6 md:p-8 space-y-6">
               <div className="flex items-center justify-between pb-4 border-b border-slate-800">
                 <div className="space-y-1">
                   <h3 className="text-base sm:text-lg font-bold text-white">Recent Enquiries</h3>
@@ -146,7 +146,7 @@ export default async function AdminDashboardPage({ searchParams }: PageProps) {
                     >
                       <div className="min-w-0 space-y-0.5">
                         <p className="text-sm font-bold text-white truncate">{enquiry.name}</p>
-                        <p className="text-xs text-slate-500 truncate">{enquiry.email}</p>
+                        <p className="text-xs text-slate-500 truncate max-w-[150px] sm:max-w-[240px]" title={enquiry.email}>{enquiry.email}</p>
                       </div>
                       <div className="flex flex-col items-end gap-1.5 shrink-0 pl-4">
                         <span className="text-[10px] text-slate-600 flex items-center gap-1 font-semibold">
@@ -174,7 +174,7 @@ export default async function AdminDashboardPage({ searchParams }: PageProps) {
 
           {/* Contact Submissions panel */}
           {canViewContacts && (
-            <div className="rounded-3xl border border-slate-800 bg-slate-900/40 p-4 sm:p-6 md:p-8 space-y-6">
+            <div className="min-w-0 rounded-3xl border border-slate-800 bg-slate-900/40 p-4 sm:p-6 md:p-8 space-y-6">
               <div className="flex items-center justify-between pb-4 border-b border-slate-800">
                 <div className="space-y-1">
                   <h3 className="text-base sm:text-lg font-bold text-white">Recent Contacts</h3>
@@ -203,7 +203,7 @@ export default async function AdminDashboardPage({ searchParams }: PageProps) {
                     >
                       <div className="min-w-0 space-y-0.5">
                         <p className="text-sm font-bold text-white truncate">{contact.name}</p>
-                        <p className="text-xs text-slate-500 truncate">{contact.email}</p>
+                        <p className="text-xs text-slate-500 truncate max-w-[150px] sm:max-w-[240px]" title={contact.email}>{contact.email}</p>
                       </div>
                       <div className="flex flex-col items-end gap-1.5 shrink-0 pl-4">
                         <span className="text-[10px] text-slate-600 flex items-center gap-1 font-semibold">

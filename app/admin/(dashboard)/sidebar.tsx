@@ -157,7 +157,7 @@ export function Sidebar({ session }: SidebarProps) {
             </div>
             <div className="flex flex-col min-w-0">
               <span className="text-xs font-bold text-sidebar-foreground truncate">{session.name}</span>
-              <span className="text-[10px] text-sidebar-foreground/50 truncate">{session.email}</span>
+              <span className="text-[10px] text-sidebar-foreground/50 truncate" title={session.email}>{session.email}</span>
             </div>
           </div>
 
@@ -200,7 +200,7 @@ export function Sidebar({ session }: SidebarProps) {
                 </div>
                 <div className="flex flex-col min-w-0">
                   <span className="text-xs font-bold text-sidebar-foreground truncate">{session.name}</span>
-                  <span className="text-[10px] text-sidebar-foreground/50 truncate">{session.email}</span>
+                  <span className="text-[10px] text-sidebar-foreground/50 truncate" title={session.email}>{session.email}</span>
                 </div>
               </div>
 

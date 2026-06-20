@@ -232,7 +232,9 @@ export function UsersClient({ initialUsers, currentUserEmail }: UsersClientProps
                             </span>
                           )}
                         </span>
-                        <span className="text-xs text-slate-500">{user.email}</span>
+                        <span className="text-xs text-slate-500 block truncate max-w-[150px] sm:max-w-[200px] md:max-w-[250px]" title={user.email}>
+                          {user.email}
+                        </span>
                       </div>
                     </td>
                     <td className="py-4 px-6 max-w-md">
@@ -317,7 +319,7 @@ export function UsersClient({ initialUsers, currentUserEmail }: UsersClientProps
                         </span>
                       )}
                     </div>
-                    <span className="text-xs text-slate-500 block break-all mt-0.5">
+                    <span className="text-xs text-slate-500 block truncate max-w-[180px] sm:max-w-[250px] mt-0.5" title={user.email}>
                       {user.email}
                     </span>
                   </div>

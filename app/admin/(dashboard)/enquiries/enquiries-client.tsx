@@ -188,9 +188,10 @@ export function EnquiriesClient({ initialEnquiries, canManage }: EnquiriesClient
                         <a
                           href={`mailto:${enq.email}`}
                           className="text-xs text-slate-500 hover:text-primary flex items-center gap-1 transition-all"
+                          title={enq.email}
                         >
-                          <Mail className="size-3" />
-                          {enq.email}
+                          <Mail className="size-3 shrink-0" />
+                          <span className="truncate max-w-[150px] sm:max-w-[200px] md:max-w-[250px]">{enq.email}</span>
                         </a>
                         <a
                           href={`tel:${enq.mobile}`}
@@ -308,10 +309,11 @@ export function EnquiriesClient({ initialEnquiries, canManage }: EnquiriesClient
                   <div className="flex flex-col gap-1.5 text-xs text-slate-400">
                     <a
                       href={`mailto:${enq.email}`}
-                      className="hover:text-primary flex items-center gap-1.5 transition-all truncate"
+                      className="hover:text-primary flex items-center gap-1.5 transition-all"
+                      title={enq.email}
                     >
                       <Mail className="size-3.5 text-slate-500 shrink-0" />
-                      <span className="truncate">{enq.email}</span>
+                      <span className="truncate max-w-[180px] sm:max-w-[250px]">{enq.email}</span>
                     </a>
                     <a
                       href={`tel:${enq.mobile}`}
