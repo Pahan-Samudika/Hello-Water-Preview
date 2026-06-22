@@ -79,7 +79,7 @@ export function Header() {
       <div
         className={cn("w-full transition-all duration-300", {
           "h-18 md:h-16": !isHomepage,
-          "h-[116px] md:h-[112px]": isHomepage,
+          "h-[152px] md:h-[160px]": isHomepage,
         })}
       />
       <div
@@ -87,7 +87,7 @@ export function Header() {
           "fixed left-0 right-0 z-[100] w-full transition-all duration-300 ease-out",
           {
             "top-0": scrolled || !isHomepage,
-            "top-11 md:top-12": !scrolled && isHomepage,
+            "top-20 md:top-24": !scrolled && isHomepage,
           }
         )}
       >
