@@ -1,12 +1,37 @@
 "use client";
 
 import { useEffect } from "react";
+import { usePathname } from "next/navigation";
 
 export default function TawkMessenger() {
   const PROPERTY_ID = process.env.NEXT_PUBLIC_TAWK_PROPERTY_ID;
   const WIDGET_ID = process.env.NEXT_PUBLIC_TAWK_WIDGET_ID;
+  const pathname = usePathname();
 
   useEffect(() => {
+    // If on admin routes, hide the widget and skip loading
+    if (pathname.startsWith("/admin")) {
+      const tawkApi = window.Tawk_API as any;
+      if (tawkApi && typeof tawkApi.hideWidget === "function") {
+        try {
+          tawkApi.hideWidget();
+        } catch (e) {
+          console.error("Error hiding Tawk widget:", e);
+        }
+      }
+      return;
+    }
+
+    // Restore widget visibility if returning to public routes
+    const tawkApi = window.Tawk_API as any;
+    if (tawkApi && typeof tawkApi.showWidget === "function") {
+      try {
+        tawkApi.showWidget();
+      } catch (e) {
+        console.error("Error showing Tawk widget:", e);
+      }
+    }
+
     if (!PROPERTY_ID || !WIDGET_ID || document.getElementById("tawk-script")) {
       return;
     }
@@ -44,7 +69,7 @@ export default function TawkMessenger() {
         window.removeEventListener(event, loadTawk);
       });
     };
-  }, [PROPERTY_ID, WIDGET_ID]);
+  }, [PROPERTY_ID, WIDGET_ID, pathname]);
 
   return null;
 }
