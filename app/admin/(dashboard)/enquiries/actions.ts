@@ -5,7 +5,7 @@ import { getAdminSession, hasPermission } from "@/lib/admin-auth";
 import { updateEnquiryStatus, deleteEnquiry, type Enquiry } from "@/lib/db-queries";
 
 // Security guard: Ensure caller has "Enquiry Management"
-async function checkAuth() {
+async function checkManageAuth() {
   const session = await getAdminSession();
   if (!session || !hasPermission(session, "Enquiry Management")) {
     throw new Error("Unauthorized access. Permission denied.");
@@ -13,9 +13,21 @@ async function checkAuth() {
   return session;
 }
 
+// Security guard: Ensure caller has "Enquiry View" or "Enquiry Management"
+async function checkViewOrManageAuth() {
+  const session = await getAdminSession();
+  if (
+    !session ||
+    (!hasPermission(session, "Enquiry View") && !hasPermission(session, "Enquiry Management"))
+  ) {
+    throw new Error("Unauthorized access. Permission denied.");
+  }
+  return session;
+}
+
 export async function updateEnquiryStatusAction(id: string, status: Enquiry["status"]) {
   try {
-    await checkAuth();
+    await checkViewOrManageAuth();
     await updateEnquiryStatus(id, status);
     revalidatePath("/admin/enquiries");
     revalidatePath("/admin");
@@ -28,7 +40,7 @@ export async function updateEnquiryStatusAction(id: string, status: Enquiry["sta
 
 export async function deleteEnquiryAction(id: string) {
   try {
-    await checkAuth();
+    await checkManageAuth();
     await deleteEnquiry(id);
     revalidatePath("/admin/enquiries");
     revalidatePath("/admin");

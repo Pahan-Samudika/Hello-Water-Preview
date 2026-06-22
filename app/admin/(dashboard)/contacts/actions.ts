@@ -5,7 +5,7 @@ import { getAdminSession, hasPermission } from "@/lib/admin-auth";
 import { updateContactStatus, deleteContact, type ContactSubmission } from "@/lib/db-queries";
 
 // Security guard: Ensure caller has "Contact Management"
-async function checkAuth() {
+async function checkManageAuth() {
   const session = await getAdminSession();
   if (!session || !hasPermission(session, "Contact Management")) {
     throw new Error("Unauthorized access. Permission denied.");
@@ -13,9 +13,21 @@ async function checkAuth() {
   return session;
 }
 
+// Security guard: Ensure caller has "Contact View" or "Contact Management"
+async function checkViewOrManageAuth() {
+  const session = await getAdminSession();
+  if (
+    !session ||
+    (!hasPermission(session, "Contact View") && !hasPermission(session, "Contact Management"))
+  ) {
+    throw new Error("Unauthorized access. Permission denied.");
+  }
+  return session;
+}
+
 export async function updateContactStatusAction(id: string, status: ContactSubmission["status"]) {
   try {
-    await checkAuth();
+    await checkViewOrManageAuth();
     await updateContactStatus(id, status);
     revalidatePath("/admin/contacts");
     revalidatePath("/admin");
@@ -28,7 +40,7 @@ export async function updateContactStatusAction(id: string, status: ContactSubmi
 
 export async function deleteContactAction(id: string) {
   try {
-    await checkAuth();
+    await checkManageAuth();
     await deleteContact(id);
     revalidatePath("/admin/contacts");
     revalidatePath("/admin");
