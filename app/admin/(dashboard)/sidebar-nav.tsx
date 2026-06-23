@@ -11,6 +11,7 @@ import {
   Inbox,
   PhoneCall,
   ChevronRight,
+  ShoppingBag,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -33,6 +34,12 @@ export function SidebarNav({ permissions }: SidebarNavProps) {
       href: "/admin/products",
       icon: Droplets,
       show: permissions.includes("Product Management"),
+    },
+    {
+      name: "Orders",
+      href: "/admin/orders",
+      icon: ShoppingBag,
+      show: permissions.includes("Order Management"),
     },
     {
       name: "Enquiries",
