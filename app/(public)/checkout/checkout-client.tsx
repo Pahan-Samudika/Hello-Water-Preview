@@ -418,6 +418,7 @@ export function CheckoutClient({ standardDeliveryFee }: CheckoutClientProps) {
                       useNextImage
                       fill
                       sizes="56px"
+                      containerClassName="h-full w-full"
                       className="object-cover"
                     />
                   </div>

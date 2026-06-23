@@ -118,6 +118,7 @@ export function CartDrawer() {
                         useNextImage
                         fill
                         sizes="72px"
+                        containerClassName="h-full w-full"
                         className="object-cover"
                       />
                     </div>

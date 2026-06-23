@@ -549,6 +549,7 @@ export function OrdersClient({ initialOrders, shippingSettings }: OrdersClientPr
                           useNextImage
                           fill
                           sizes="48px"
+                          containerClassName="h-full w-full"
                           className="object-cover"
                         />
                       </div>

@@ -91,6 +91,7 @@ export default async function SuccessPage({ searchParams }: SuccessPageProps) {
                         useNextImage
                         fill
                         sizes="64px"
+                        containerClassName="h-full w-full"
                         className="object-cover"
                       />
                     </div>
