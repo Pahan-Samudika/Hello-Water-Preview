@@ -251,3 +251,30 @@ export async function getSession(sessionId: string): Promise<UserSession | null>
 export async function deleteSession(sessionId: string): Promise<void> {
   await db.collection("dashboard_sessions").doc(sessionId).delete();
 }
+
+// ==========================================
+// Shipping Settings Queries
+// ==========================================
+export interface ShippingSettings {
+  standardDeliveryFee: number;
+}
+
+export async function getShippingSettings(): Promise<ShippingSettings> {
+  try {
+    const doc = await db.collection("settings").doc("shipping").get();
+    if (!doc.exists) {
+      return { standardDeliveryFee: 15 };
+    }
+    const data = doc.data();
+    return {
+      standardDeliveryFee: data && typeof data.standardDeliveryFee === "number" ? data.standardDeliveryFee : 15,
+    };
+  } catch (error) {
+    console.error("Error fetching shipping settings:", error);
+    return { standardDeliveryFee: 15 };
+  }
+}
+
+export async function updateShippingSettings(fee: number): Promise<void> {
+  await db.collection("settings").doc("shipping").set({ standardDeliveryFee: fee });
+}
