@@ -5,16 +5,22 @@ import { useCart } from "@/hooks/use-cart";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { SmartImage } from "@/components/ui/smart-image";
-import { ShoppingBag, ArrowLeft, ShieldCheck, CreditCard } from "lucide-react";
+import { ShoppingBag, ArrowLeft, ShieldCheck, CreditCard, Loader2 } from "lucide-react";
 import Link from "next/link";
+import Script from "next/script";
+import { useRouter } from "next/navigation";
 
 interface CheckoutClientProps {
   standardDeliveryFee: number;
 }
 
 export function CheckoutClient({ standardDeliveryFee }: CheckoutClientProps) {
-  const { cart, subtotal, gstAmount, totalWithGst } = useCart();
+  const { cart, subtotal, gstAmount, totalWithGst, clearCart } = useCart();
+  const router = useRouter();
   const [mounted, setMounted] = useState(false);
+  const [paypalLoaded, setPaypalLoaded] = useState(false);
+  const [paymentError, setPaymentError] = useState<string | null>(null);
+  const [isProcessing, setIsProcessing] = useState(false);
 
   // Shipping form state
   const [shippingDetails, setShippingDetails] = useState({
@@ -27,6 +33,16 @@ export function CheckoutClient({ standardDeliveryFee }: CheckoutClientProps) {
     state: "",
   });
 
+  // Check if form is fully valid
+  const isFormValid =
+    shippingDetails.name.trim() !== "" &&
+    shippingDetails.email.trim() !== "" &&
+    shippingDetails.phone.trim() !== "" &&
+    shippingDetails.address.trim() !== "" &&
+    shippingDetails.suburb.trim() !== "" &&
+    shippingDetails.postcode.trim() !== "" &&
+    shippingDetails.state !== "";
+
   // Calculate final total
   const finalTotal = totalWithGst + standardDeliveryFee;
 
@@ -34,6 +50,104 @@ export function CheckoutClient({ standardDeliveryFee }: CheckoutClientProps) {
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  // Initialize PayPal Buttons
+  useEffect(() => {
+    if (!mounted || !paypalLoaded || !isFormValid) return;
+
+    const windowAny = window as any;
+    if (!windowAny.paypal) {
+      console.error("PayPal SDK not available on window");
+      return;
+    }
+
+    const container = document.getElementById("paypal-button-container");
+    if (!container) return;
+    container.innerHTML = "";
+
+    try {
+      windowAny.paypal.Buttons({
+        style: {
+          layout: "vertical",
+          color: "gold",
+          shape: "rect",
+          label: "paypal",
+        },
+        createOrder: (data: any, actions: any) => {
+          setPaymentError(null);
+          return actions.order.create({
+            purchase_units: [
+              {
+                amount: {
+                  currency_code: "AUD",
+                  value: finalTotal.toFixed(2),
+                  breakdown: {
+                    item_total: {
+                      currency_code: "AUD",
+                      value: totalWithGst.toFixed(2),
+                    },
+                    shipping: {
+                      currency_code: "AUD",
+                      value: standardDeliveryFee.toFixed(2),
+                    },
+                  },
+                },
+                description: "Hello Water Filter Cartridges Purchase",
+                items: cart.map((item) => ({
+                  name: item.name,
+                  quantity: item.quantity.toString(),
+                  unit_amount: {
+                    currency_code: "AUD",
+                    value: item.priceNumeric.toFixed(2),
+                  },
+                })),
+              },
+            ],
+          });
+        },
+        onApprove: async (data: any, actions: any) => {
+          setIsProcessing(true);
+          try {
+            const details = await actions.order.capture();
+            
+            // Temporary order persistence for testing before Step 5
+            localStorage.setItem(
+              "hw_last_order",
+              JSON.stringify({
+                id: details.id,
+                customer: shippingDetails,
+                items: cart,
+                subtotal,
+                shipping: standardDeliveryFee,
+                gst: gstAmount,
+                total: finalTotal,
+                payment: {
+                  method: "paypal",
+                  id: details.id,
+                  payerEmail: details.payer.email_address,
+                  status: details.status,
+                },
+                createdAt: new Date().toISOString(),
+              })
+            );
+
+            clearCart();
+            router.push(`/checkout/success?orderId=${details.id}`);
+          } catch (err) {
+            console.error("PayPal Capture error:", err);
+            setPaymentError("Failed to capture payment. Please contact support.");
+            setIsProcessing(false);
+          }
+        },
+        onError: (err: any) => {
+          console.error("PayPal Error:", err);
+          setPaymentError("A PayPal error occurred. Please check your account/card details.");
+        },
+      }).render("#paypal-button-container");
+    } catch (e) {
+      console.error("Error rendering PayPal buttons:", e);
+    }
+  }, [mounted, paypalLoaded, isFormValid, finalTotal, totalWithGst, standardDeliveryFee, cart, shippingDetails, subtotal, gstAmount, clearCart, router]);
 
   if (!mounted) {
     return (
@@ -50,16 +164,6 @@ export function CheckoutClient({ standardDeliveryFee }: CheckoutClientProps) {
     const { name, value } = e.target;
     setShippingDetails((prev) => ({ ...prev, [name]: value }));
   };
-
-  // Check if form is fully valid
-  const isFormValid =
-    shippingDetails.name.trim() !== "" &&
-    shippingDetails.email.trim() !== "" &&
-    shippingDetails.phone.trim() !== "" &&
-    shippingDetails.address.trim() !== "" &&
-    shippingDetails.suburb.trim() !== "" &&
-    shippingDetails.postcode.trim() !== "" &&
-    shippingDetails.state !== "";
 
   // If cart is empty, show empty state
   if (cart.length === 0) {
@@ -254,7 +358,7 @@ export function CheckoutClient({ standardDeliveryFee }: CheckoutClientProps) {
               </div>
             </div>
 
-            {/* Payment Section Placeholder (Step 3 UI) */}
+            {/* Payment Section */}
             <div className="rounded-[2rem] border border-border/40 bg-card/25 backdrop-blur-xl p-6 sm:p-8 shadow-xl">
               <h2 className="text-xl font-bold text-foreground mb-4 flex items-center gap-2">
                 <span className="flex size-7 items-center justify-center rounded-full bg-primary/10 text-xs font-black text-primary">
@@ -262,6 +366,19 @@ export function CheckoutClient({ standardDeliveryFee }: CheckoutClientProps) {
                 </span>
                 Payment Options
               </h2>
+
+              {paymentError && (
+                <div className="mb-4 rounded-xl bg-destructive/10 border border-destructive/20 p-4 text-xs text-destructive-foreground">
+                  <p className="font-semibold text-rose-300">{paymentError}</p>
+                </div>
+              )}
+
+              {isProcessing && (
+                <div className="mb-4 rounded-xl bg-primary/10 border border-primary/25 p-4 text-xs text-primary flex items-center gap-2 justify-center font-bold">
+                  <Loader2 className="animate-spin h-4 w-4 text-primary" />
+                  Processing payment capture...
+                </div>
+              )}
 
               {!isFormValid ? (
                 <div className="rounded-2xl border border-dashed border-border/60 bg-muted/10 p-8 text-center flex flex-col items-center justify-center space-y-3">
@@ -276,22 +393,8 @@ export function CheckoutClient({ standardDeliveryFee }: CheckoutClientProps) {
                   </div>
                 </div>
               ) : (
-                <div className="rounded-2xl border border-emerald-500/20 bg-emerald-500/5 p-8 text-center flex flex-col items-center justify-center space-y-3 animate-fadeIn">
-                  <div className="rounded-full bg-emerald-500/10 p-3 text-emerald-400">
-                    <ShieldCheck className="size-6" />
-                  </div>
-                  <div className="space-y-1">
-                    <p className="text-sm font-bold text-foreground">Delivery Information Complete</p>
-                    <p className="text-xs text-muted-foreground max-w-sm">
-                      PayPal payment option is ready. In the next step, the checkout will render your sandbox/live PayPal buttons right here.
-                    </p>
-                  </div>
-                  <button
-                    disabled
-                    className="mt-3 inline-flex h-11 items-center justify-center px-6 rounded-xl bg-slate-800 text-xs font-bold text-slate-400 border border-slate-700 w-full max-w-xs cursor-not-allowed"
-                  >
-                    PayPal Loading (Step 4)...
-                  </button>
+                <div className="space-y-4">
+                  <div id="paypal-button-container" className="w-full relative z-10" />
                 </div>
               )}
             </div>
@@ -369,6 +472,12 @@ export function CheckoutClient({ standardDeliveryFee }: CheckoutClientProps) {
           </div>
         </div>
       </section>
+
+      {/* Load PayPal JavaScript SDK */}
+      <Script
+        src={`https://www.paypal.com/sdk/js?client-id=${process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || "sb"}&currency=AUD`}
+        onLoad={() => setPaypalLoaded(true)}
+      />
     </main>
   );
 }
