@@ -11,6 +11,7 @@ import { SmartImage } from "@/components/ui/smart-image";
 import { JsonLd } from "@/components/seo/json-ld";
 import { createMetadata } from "@/lib/seo";
 import { breadcrumbsJsonLd, productJsonLd } from "@/lib/structured-data";
+import { AddToCartButton } from "@/components/custom/add-to-cart-button";
 
 export const revalidate = 0;
 
@@ -128,6 +129,19 @@ export default async function ProductViewPage({
               <p className="text-base leading-relaxed text-muted-foreground">
                 {product.shortDescription}
               </p>
+
+              {product.price.toLowerCase().includes("call for price") ? (
+                <div className="pt-2">
+                  <Link
+                    href={`/enquiry?product=${product.slug}`}
+                    className="flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-primary px-6 text-sm font-black text-primary-foreground hover:bg-primary/95 transition-all shadow-lg shadow-primary/10 cursor-pointer"
+                  >
+                    Enquire Now
+                  </Link>
+                </div>
+              ) : (
+                <AddToCartButton product={product} />
+              )}
 
             </MotionWrapper>
           </div>
