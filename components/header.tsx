@@ -5,9 +5,10 @@ import Link from "next/link";
 import { useScroll } from "@/hooks/use-scroll";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { PhoneCall, ChevronDown } from "lucide-react";
+import { PhoneCall, ChevronDown, ShoppingBag } from "lucide-react";
 import { MobileNav } from "@/components/mobile-nav";
 import { AnnouncementBanner } from "@/components/custom/announcement-banner";
+import { useCart } from "@/hooks/use-cart";
 
 import LogoSVG from "@/assets/svg/logo.svg";
 import TxtLogoSVG from "@/assets/svg/txtlogo-white.svg";
@@ -62,6 +63,7 @@ export function Header() {
   const scrolled = useScroll(10);
   const pathname = usePathname();
   const isHomepage = pathname === "/";
+  const { setCartOpen, itemCount } = useCart();
 
   const handleScrollToOffers = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -182,6 +184,20 @@ export function Header() {
                   1300 515 469
                 </a>
               </div>
+
+              {/* Cart Button */}
+              <button
+                onClick={() => setCartOpen(true)}
+                className="relative p-2 text-slate-300 hover:text-white transition-colors flex items-center justify-center cursor-pointer rounded-full hover:bg-white/5"
+                aria-label="Open cart"
+              >
+                <ShoppingBag className="w-5 h-5" />
+                {itemCount > 0 && (
+                  <span className="absolute -top-0.5 -right-0.5 bg-primary text-primary-foreground text-[10px] font-black w-4.5 h-4.5 rounded-full flex items-center justify-center border border-background">
+                    {itemCount}
+                  </span>
+                )}
+              </button>
 
               {/* Mobile nav */}
               <MobileNav />

@@ -8,6 +8,7 @@ import { GoogleAnalytics } from "@next/third-parties/google";
 import { JsonLd } from "@/components/seo/json-ld";
 import { createMetadata, siteConfig } from "@/lib/seo";
 import { organizationJsonLd, websiteJsonLd } from "@/lib/structured-data";
+import { CartProvider } from "@/hooks/use-cart";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -78,7 +79,9 @@ export default function RootLayout({
           enableSystem={false}
           disableTransitionOnChange
         >
-          {children}
+          <CartProvider>
+            {children}
+          </CartProvider>
           <TawkMessenger />
           <Toaster position="top-center" richColors />
         </ThemeProvider>
