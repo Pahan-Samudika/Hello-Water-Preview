@@ -9,6 +9,7 @@ import { ShoppingBag, ArrowLeft, ShieldCheck, CreditCard, Loader2 } from "lucide
 import Link from "next/link";
 import Script from "next/script";
 import { useRouter } from "next/navigation";
+import { placeOrder } from "@/app/actions/orders";
 
 interface CheckoutClientProps {
   standardDeliveryFee: number;
@@ -107,32 +108,31 @@ export function CheckoutClient({ standardDeliveryFee }: CheckoutClientProps) {
         },
         onApprove: async (data: any, actions: any) => {
           setIsProcessing(true);
+          setPaymentError(null);
           try {
             const details = await actions.order.capture();
             
-            // Temporary order persistence for testing before Step 5
-            localStorage.setItem(
-              "hw_last_order",
-              JSON.stringify({
+            // Invoke the placeOrder server action
+            const result = await placeOrder({
+              customer: shippingDetails,
+              cartItems: cart.map((item) => ({
+                slug: item.slug,
+                quantity: item.quantity,
+              })),
+              payment: {
                 id: details.id,
-                customer: shippingDetails,
-                items: cart,
-                subtotal,
-                shipping: standardDeliveryFee,
-                gst: gstAmount,
-                total: finalTotal,
-                payment: {
-                  method: "paypal",
-                  id: details.id,
-                  payerEmail: details.payer.email_address,
-                  status: details.status,
-                },
-                createdAt: new Date().toISOString(),
-              })
-            );
+                payerEmail: details.payer.email_address || "",
+                status: details.status,
+              },
+            });
 
-            clearCart();
-            router.push(`/checkout/success?orderId=${details.id}`);
+            if (result.success) {
+              clearCart();
+              router.push(`/checkout/success?orderId=${result.orderId}`);
+            } else {
+              setPaymentError(result.error || "Failed to finalize order. Please contact support.");
+              setIsProcessing(false);
+            }
           } catch (err) {
             console.error("PayPal Capture error:", err);
             setPaymentError("Failed to capture payment. Please contact support.");

@@ -278,3 +278,95 @@ export async function getShippingSettings(): Promise<ShippingSettings> {
 export async function updateShippingSettings(fee: number): Promise<void> {
   await db.collection("settings").doc("shipping").set({ standardDeliveryFee: fee });
 }
+
+// ==========================================
+// Order Queries
+// ==========================================
+export interface OrderItem {
+  id: number;
+  slug: string;
+  name: string;
+  priceString: string;
+  priceNumeric: number;
+  quantity: number;
+  image: string;
+}
+
+export interface Order {
+  id: string; // generated order ID (e.g. HW-K4M2L8)
+  customer: {
+    name: string;
+    email: string;
+    phone: string;
+    address: string;
+    suburb: string;
+    postcode: string;
+    state: string;
+  };
+  items: OrderItem[];
+  subtotal: number;
+  shipping: number;
+  gst: number;
+  total: number;
+  status: "Pending" | "Processing" | "Shipped" | "Completed" | "Cancelled";
+  payment: {
+    method: "paypal";
+    id: string; // PayPal transaction ID
+    payerEmail: string;
+    status: string;
+  };
+  createdAt: string;
+  updatedAt: string;
+}
+
+function generateOrderId(): string {
+  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  let result = "HW-";
+  for (let i = 0; i < 6; i++) {
+    result += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return result;
+}
+
+export async function createOrder(order: Omit<Order, "id">): Promise<string> {
+  let orderId = generateOrderId();
+  let doc = await db.collection("orders").doc(orderId).get();
+  let attempts = 0;
+  
+  // Ensure uniqueness
+  while (doc.exists && attempts < 5) {
+    orderId = generateOrderId();
+    doc = await db.collection("orders").doc(orderId).get();
+    attempts++;
+  }
+  
+  const finalOrder: Order = {
+    id: orderId,
+    ...order,
+  };
+  
+  await db.collection("orders").doc(orderId).set(finalOrder);
+  return orderId;
+}
+
+export async function getOrders(): Promise<Order[]> {
+  const snapshot = await db.collection("orders").orderBy("createdAt", "desc").get();
+  return snapshot.docs.map((doc) => doc.data()) as Order[];
+}
+
+export async function getOrderById(id: string): Promise<Order | null> {
+  const doc = await db.collection("orders").doc(id).get();
+  if (!doc.exists) return null;
+  return doc.data() as Order;
+}
+
+export async function updateOrderStatus(id: string, status: Order["status"]): Promise<void> {
+  await db.collection("orders").doc(id).update({
+    status,
+    updatedAt: new Date().toISOString(),
+  });
+}
+
+export async function deleteOrder(id: string): Promise<void> {
+  await db.collection("orders").doc(id).delete();
+}
