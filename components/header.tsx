@@ -63,7 +63,7 @@ export function Header() {
   const scrolled = useScroll(10);
   const pathname = usePathname();
   const isHomepage = pathname === "/";
-  const { setCartOpen, itemCount } = useCart();
+  const { setCartOpen, itemCount, cartOpen } = useCart();
 
   const handleScrollToOffers = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -188,7 +188,12 @@ export function Header() {
               {/* Cart Button */}
               <button
                 onClick={() => setCartOpen(true)}
-                className="relative p-2 text-slate-300 hover:text-white transition-colors flex items-center justify-center cursor-pointer rounded-full hover:bg-white/5"
+                className={cn(
+                  "relative text-slate-300 hover:text-white transition-all duration-300 flex items-center justify-center cursor-pointer rounded-full hover:bg-white/5",
+                  scrolled
+                    ? "opacity-0 scale-75 pointer-events-none w-0 h-0 p-0 m-0 overflow-hidden"
+                    : "w-9 h-9 p-2"
+                )}
                 aria-label="Open cart"
               >
                 <ShoppingBag className="w-5 h-5" />
@@ -205,6 +210,27 @@ export function Header() {
           </nav>
         </header>
       </div>
+
+      {/* Floating Cart Button (visible on scroll) */}
+      <button
+        onClick={() => setCartOpen(true)}
+        className={cn(
+          "fixed z-[150] flex items-center justify-center rounded-full transition-all duration-300 ease-out",
+          "bg-base-300/90 border border-white/10 hover:border-primary/50 text-slate-300 hover:text-white shadow-xl shadow-black/40 hover:scale-110 active:scale-95",
+          "w-12 h-12",
+          scrolled && !cartOpen
+            ? "top-3 right-16 md:top-4 md:right-8 opacity-100 scale-100"
+            : "top-3 right-16 md:top-4 md:right-8 opacity-0 scale-50 pointer-events-none"
+        )}
+        aria-label="Open cart"
+      >
+        <ShoppingBag className="w-5 h-5 md:w-5.5 md:h-5.5" />
+        {itemCount > 0 && (
+          <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center border border-background animate-in zoom-in-50 duration-200">
+            {itemCount}
+          </span>
+        )}
+      </button>
     </>
   );
 }

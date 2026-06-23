@@ -202,7 +202,7 @@ export function CheckoutClient({ standardDeliveryFee }: CheckoutClientProps) {
             <span>Back to Products</span>
           </Link>
           <h1 className="text-3xl font-extrabold tracking-tight sm:text-4xl text-balance">
-            Secure Checkout
+            Checkout
           </h1>
           <p className="text-sm text-muted-foreground max-w-xl">
             Please fill in your delivery details below to proceed to the PayPal payment screen.
