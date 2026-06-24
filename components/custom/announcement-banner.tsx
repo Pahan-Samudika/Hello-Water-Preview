@@ -33,13 +33,13 @@ export const AnnouncementBanner = ({ onClick }: AnnouncementBannerProps) => {
               EOFY Mega Sale:
             </span>
             <span className="font-extrabold text-foreground/90 text-[11px] sm:text-sm md:text-lg">
-              Save over $700 off Whole-Home Filtration
+              Save over $700 off Whole Home Filtration System
             </span>
           </div>
           {/* Subtext row */}
           <p className="text-[10px] sm:text-xs md:text-sm text-muted-foreground/80 font-medium leading-tight mt-0.5 sm:mt-1">
-            <span className="hidden md:inline">Professionally installed + receive a premium replacement cartridge FREE every 12 months for life!</span>
-            <span className="inline md:hidden">Get FREE replacement cartridges for life!</span>
+            <span className="hidden md:inline">Professionally installed + receive a FREE Lifetime Supply of Premium Pentair Gradient Density Cartridge every 12 months!</span>
+            <span className="inline md:hidden">Get a FREE Lifetime Supply of Premium Pentair Gradient Density Cartridge every 12 months!</span>
           </p>
         </div>
 
