@@ -7,9 +7,8 @@ import { Label } from "@/components/ui/label";
 import { SmartImage } from "@/components/ui/smart-image";
 import { ShoppingBag, ArrowLeft, ShieldCheck, CreditCard, Loader2 } from "lucide-react";
 import Link from "next/link";
-import Script from "next/script";
-import { useRouter } from "next/navigation";
-import { placeOrder } from "@/app/actions/orders";
+import { useRouter, useSearchParams } from "next/navigation";
+import { initiatePaypalCheckout } from "@/app/actions/orders";
 
 interface CheckoutClientProps {
   standardDeliveryFee: number;
@@ -18,8 +17,8 @@ interface CheckoutClientProps {
 export function CheckoutClient({ standardDeliveryFee }: CheckoutClientProps) {
   const { cart, subtotal, gstAmount, totalWithGst, clearCart } = useCart();
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [mounted, setMounted] = useState(false);
-  const [paypalLoaded, setPaypalLoaded] = useState(false);
   const [paymentError, setPaymentError] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
 
@@ -52,106 +51,54 @@ export function CheckoutClient({ standardDeliveryFee }: CheckoutClientProps) {
     setMounted(true);
   }, []);
 
-  // Initialize PayPal Buttons
+  // Sync error parameters from URL to state
   useEffect(() => {
-    if (!mounted || !paypalLoaded || !isFormValid) return;
+    const errorParam = searchParams.get("error");
+    if (errorParam) {
+      if (errorParam === "cancelled") {
+        setPaymentError("Payment was cancelled. You can try again or proceed with a different transaction.");
+      } else {
+        setPaymentError(decodeURIComponent(errorParam));
+      }
+    }
+  }, [searchParams]);
 
-    const windowAny = window as any;
-    if (!windowAny.paypal) {
-      console.error("PayPal SDK not available on window");
+  const handlePayWithPaypal = async () => {
+    if (!isFormValid) {
+      setPaymentError("Please fill in all the required delivery details first.");
+      const formElement = document.getElementById("checkout-name");
+      if (formElement) {
+        formElement.scrollIntoView({ behavior: "smooth", block: "center" });
+        formElement.focus();
+      }
       return;
     }
 
-    const container = document.getElementById("paypal-button-container");
-    if (!container) return;
-    container.innerHTML = "";
+    setIsProcessing(true);
+    setPaymentError(null);
 
     try {
-      windowAny.paypal.Buttons({
-        style: {
-          layout: "vertical",
-          color: "gold",
-          shape: "rect",
-          label: "paypal",
-        },
-        createOrder: (data: any, actions: any) => {
-          setPaymentError(null);
-          return actions.order.create({
-            purchase_units: [
-              {
-                amount: {
-                  currency_code: "AUD",
-                  value: finalTotal.toFixed(2),
-                  breakdown: {
-                    item_total: {
-                      currency_code: "AUD",
-                      value: subtotal.toFixed(2),
-                    },
-                    tax_total: {
-                      currency_code: "AUD",
-                      value: gstAmount.toFixed(2),
-                    },
-                    shipping: {
-                      currency_code: "AUD",
-                      value: standardDeliveryFee.toFixed(2),
-                    },
-                  },
-                },
-                description: "Hello Water Filter Cartridges Purchase",
-                items: cart.map((item) => ({
-                  name: item.name,
-                  quantity: item.quantity.toString(),
-                  unit_amount: {
-                    currency_code: "AUD",
-                    value: item.priceNumeric.toFixed(2),
-                  },
-                })),
-              },
-            ],
-          });
-        },
-        onApprove: async (data: any, actions: any) => {
-          setIsProcessing(true);
-          setPaymentError(null);
-          try {
-            const details = await actions.order.capture();
-            
-            // Invoke the placeOrder server action
-            const result = await placeOrder({
-              customer: shippingDetails,
-              cartItems: cart.map((item) => ({
-                slug: item.slug,
-                quantity: item.quantity,
-              })),
-              payment: {
-                id: details.id,
-                payerEmail: details.payer.email_address || "",
-                status: details.status,
-              },
-            });
+      const result = await initiatePaypalCheckout({
+        customer: shippingDetails,
+        cartItems: cart.map((item) => ({
+          slug: item.slug,
+          quantity: item.quantity,
+        })),
+      });
 
-            if (result.success) {
-              clearCart();
-              router.push(`/checkout/success?orderId=${result.orderId}`);
-            } else {
-              setPaymentError(result.error || "Failed to finalize order. Please contact support.");
-              setIsProcessing(false);
-            }
-          } catch (err) {
-            console.error("PayPal Capture error:", err);
-            setPaymentError("Failed to capture payment. Please contact support.");
-            setIsProcessing(false);
-          }
-        },
-        onError: (err: any) => {
-          console.error("PayPal Error:", err);
-          setPaymentError("A PayPal error occurred. Please check your account/card details.");
-        },
-      }).render("#paypal-button-container");
-    } catch (e) {
-      console.error("Error rendering PayPal buttons:", e);
+      if (result.success && result.approvalUrl) {
+        // Redirect browser to PayPal payment approval
+        window.location.href = result.approvalUrl;
+      } else {
+        setPaymentError(result.error || "Failed to initiate PayPal checkout. Please try again.");
+        setIsProcessing(false);
+      }
+    } catch (err) {
+      console.error("PayPal checkout initiation failed:", err);
+      setPaymentError("An unexpected error occurred while connecting to PayPal. Please try again.");
+      setIsProcessing(false);
     }
-  }, [mounted, paypalLoaded, isFormValid, finalTotal, totalWithGst, standardDeliveryFee, cart, shippingDetails, subtotal, gstAmount, clearCart, router]);
+  };
 
   if (!mounted) {
     return (
@@ -362,46 +309,6 @@ export function CheckoutClient({ standardDeliveryFee }: CheckoutClientProps) {
               </div>
             </div>
 
-            {/* Payment Section */}
-            <div className="rounded-[2rem] border border-border/40 bg-card/25 backdrop-blur-xl p-6 sm:p-8 shadow-xl">
-              <h2 className="text-xl font-bold text-foreground mb-4 flex items-center gap-2">
-                <span className="flex size-7 items-center justify-center rounded-full bg-primary/10 text-xs font-black text-primary">
-                  2
-                </span>
-                Payment Options
-              </h2>
-
-              {paymentError && (
-                <div className="mb-4 rounded-xl bg-destructive/10 border border-destructive/20 p-4 text-xs text-destructive-foreground">
-                  <p className="font-semibold text-rose-300">{paymentError}</p>
-                </div>
-              )}
-
-              {isProcessing && (
-                <div className="mb-4 rounded-xl bg-primary/10 border border-primary/25 p-4 text-xs text-primary flex items-center gap-2 justify-center font-bold">
-                  <Loader2 className="animate-spin h-4 w-4 text-primary" />
-                  Processing payment capture...
-                </div>
-              )}
-
-              {!isFormValid ? (
-                <div className="rounded-2xl border border-dashed border-border/60 bg-muted/10 p-8 text-center flex flex-col items-center justify-center space-y-3">
-                  <div className="rounded-full bg-muted/40 p-3 text-muted-foreground">
-                    <CreditCard className="size-6" />
-                  </div>
-                  <div className="space-y-1">
-                    <p className="text-sm font-semibold text-foreground">Payment forms locked</p>
-                    <p className="text-xs text-muted-foreground max-w-sm">
-                      Please fill in all the required delivery details above to unlock your payment and PayPal payment options.
-                    </p>
-                  </div>
-                </div>
-              ) : (
-                <div className="space-y-4">
-                  <div id="paypal-button-container" className="w-full relative z-10" />
-                </div>
-              )}
-            </div>
           </div>
 
           {/* Right Column: Order Summary */}
@@ -462,27 +369,36 @@ export function CheckoutClient({ standardDeliveryFee }: CheckoutClientProps) {
               </div>
             </div>
 
-            {/* Guarantees */}
-            <div className="rounded-2rem bg-muted/30 p-4 border border-white/5 space-y-3.5">
-              <div className="flex items-start gap-3">
-                <ShieldCheck className="size-4.5 text-primary shrink-0 mt-0.5" />
-                <div className="space-y-0.5">
-                  <h4 className="text-xs font-bold text-foreground">Secure SSL Encrypted Checkout</h4>
-                  <p className="text-[10px] text-muted-foreground leading-normal">
-                    We ensure secure transactions with high grade SSL protocols. Your payment info is handled externally by PayPal.
-                  </p>
+
+            {/* Payment Area */}
+            <div className="pt-4 border-t border-border/40 space-y-4">
+              {paymentError && (
+                <div className="rounded-xl bg-destructive/10 border border-destructive/20 p-4 text-xs text-destructive-foreground">
+                  <p className="font-semibold text-rose-300">{paymentError}</p>
                 </div>
-              </div>
+              )}
+
+              <button
+                type="button"
+                disabled={isProcessing}
+                onClick={handlePayWithPaypal}
+                className="w-full h-12 rounded-full bg-primary text-primary-foreground font-black text-sm hover:bg-primary/95 transition-all shadow-lg shadow-primary/10 cursor-pointer flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {isProcessing ? (
+                  <>
+                    <Loader2 className="animate-spin h-5 w-5 text-primary-foreground" />
+                    Connecting to PayPal...
+                  </>
+                ) : (
+                  <>
+                    Proceed to Payment
+                  </>
+                )}
+              </button>
             </div>
           </div>
         </div>
       </section>
-
-      {/* Load PayPal JavaScript SDK */}
-      <Script
-        src={`https://www.paypal.com/sdk/js?client-id=${process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || "sb"}&currency=AUD`}
-        onLoad={() => setPaypalLoaded(true)}
-      />
     </main>
   );
 }
