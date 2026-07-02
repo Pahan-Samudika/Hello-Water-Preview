@@ -7,6 +7,7 @@ import { createMetadata } from "@/lib/seo";
 import { MotionWrapper } from "@/components/custom/motion-wrapper";
 import { JsonLd } from "@/components/seo/json-ld";
 import { breadcrumbsJsonLd, webPageJsonLd } from "@/lib/structured-data";
+import { RelatedArticlesCarousel } from "@/components/custom/related-articles-carousel";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -45,7 +46,7 @@ export default async function BlogDetailPage({ params }: PageProps) {
 
   // Find other posts for the "Read More" section at the bottom
   const allBlogs = await getBlogs();
-  const otherPosts = allBlogs.filter((p) => p.slug !== slug).slice(0, 2);
+  const otherPosts = allBlogs.filter((p) => p.slug !== slug).slice(0, 6);
 
   return (
     <main className="relative w-full min-h-screen">
@@ -205,40 +206,7 @@ export default async function BlogDetailPage({ params }: PageProps) {
         )}
 
         {/* Dynamic Footer for reading other blogs */}
-        {otherPosts.length > 0 && (
-          <div className="mt-20 pt-10 border-t border-border">
-            <h3 className="text-2xl font-bold text-foreground mb-8">Other Articles You Might Like</h3>
-            <div className="grid gap-6 sm:grid-cols-2">
-              {otherPosts.map((other) => (
-                <Link
-                  key={other.slug}
-                  href={`/blogs/${other.slug}`}
-                  className="flex flex-col group overflow-hidden rounded-xl border border-border bg-card/40 hover:border-primary/20 hover:shadow-xs transition-all duration-300"
-                >
-                  <div className="relative aspect-video overflow-hidden bg-muted">
-                    <Image
-                      src={other.coverImage}
-                      alt={other.title}
-                      fill
-                      className="object-cover transition-transform duration-500 group-hover:scale-105"
-                      sizes="(max-width: 640px) 100vw, 350px"
-                    />
-                  </div>
-                  <div className="p-5 flex-1 flex flex-col justify-between">
-                    <div>
-                      <h4 className="font-bold text-foreground group-hover:text-primary transition-colors leading-snug line-clamp-2">
-                        {other.title}
-                      </h4>
-                    </div>
-                    <span className="text-xs text-muted-foreground mt-4 block">
-                      {other.publishedAt}
-                    </span>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </div>
-        )}
+        <RelatedArticlesCarousel posts={otherPosts} />
         </div>
       </article>
     </main>

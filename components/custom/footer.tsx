@@ -32,7 +32,7 @@ const footerLinks: FooterSection[] = [
 		links: [
 			{ title: "About Us", href: "/about-us" },
 			{ title: "Benefits", href: "/benefits" },
-			{ title: "Our Blogs", href: "/blogs" },
+			{ title: "Blogs", href: "/blogs" },
 			{ title: "FAQs", href: "/faq" },
 			{ title: "Contact Us", href: "/contact" },
 		],

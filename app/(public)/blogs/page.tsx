@@ -31,7 +31,7 @@ export default async function BlogsPage() {
             }}
           >
             <h1 className="text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl text-balance">
-              Our Blogs
+              Water News
             </h1>
           </MotionWrapper>
           <MotionWrapper
