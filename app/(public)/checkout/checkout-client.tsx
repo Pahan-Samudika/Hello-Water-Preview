@@ -85,7 +85,11 @@ export function CheckoutClient({ standardDeliveryFee }: CheckoutClientProps) {
                   breakdown: {
                     item_total: {
                       currency_code: "AUD",
-                      value: totalWithGst.toFixed(2),
+                      value: subtotal.toFixed(2),
+                    },
+                    tax_total: {
+                      currency_code: "AUD",
+                      value: gstAmount.toFixed(2),
                     },
                     shipping: {
                       currency_code: "AUD",
