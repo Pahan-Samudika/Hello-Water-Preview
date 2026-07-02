@@ -6,7 +6,6 @@ import { AboutSummary } from "@/components/custom/about-summary";
 import { PFASSummary } from "@/components/custom/pfas-summary";
 import { TechnologySummary } from "@/components/custom/technology-summary";
 import { TrustindexReviewsSection } from "@/components/custom/trustindex-reviews-section";
-import { PromotionsSection } from "@/components/custom/promotions-section";
 
 import { menudata } from "@/constants";
 import { createMetadata } from "@/lib/seo";
@@ -38,7 +37,6 @@ export default function PublicHomePage() {
         ]}
       />
       <HeroSection menudata={menudata} />
-      <PromotionsSection />
       <AboutSummary />
       <PFASSummary />
       <TechnologySummary />
