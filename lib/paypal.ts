@@ -109,6 +109,53 @@ interface CaptureOrderResponse {
   };
 }
 
+export interface PaypalOrderDetails {
+  id: string;
+  status: string;
+  purchase_units: {
+    amount: {
+      value: string;
+      currency_code: string;
+    };
+    payments?: {
+      captures?: {
+        id: string;
+        status: string;
+        amount: {
+          value: string;
+          currency_code: string;
+        };
+      }[];
+    };
+  }[];
+  payer?: {
+    email_address: string;
+    payer_id: string;
+  };
+}
+
+/**
+ * Fetch a PayPal Order's details
+ */
+export async function getPaypalOrder(paypalOrderId: string): Promise<PaypalOrderDetails> {
+  const accessToken = await getAccessToken();
+
+  const response = await fetch(`${BASE_URL}/v2/checkout/orders/${paypalOrderId}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`PayPal Get Order failed: ${response.status} - ${errorText}`);
+  }
+
+  return (await response.json()) as PaypalOrderDetails;
+}
+
 /**
  * Capture a PayPal Order payment after authorization
  */
