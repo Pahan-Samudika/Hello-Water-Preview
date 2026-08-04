@@ -93,12 +93,13 @@ export function CartDrawer() {
                       Add some replacement cartridges to your cart to get started with your checkout.
                     </p>
                   </div>
-                  <button
+                  <Link
+                    href="/products"
                     onClick={() => setCartOpen(false)}
                     className="inline-flex h-10 items-center justify-center px-6 rounded-full bg-primary text-xs font-bold text-primary-foreground hover:bg-primary/95 transition-all shadow-md shadow-primary/10 cursor-pointer"
                   >
                     Browse Cartridges
-                  </button>
+                  </Link>
                 </div>
               ) : (
                 cart.map((item) => (
