@@ -4,10 +4,12 @@ import React, { useEffect, useState, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { capturePaypalCheckout } from "@/app/actions/orders";
 import { Loader2, ShieldCheck, AlertCircle } from "lucide-react";
+import { useCart } from "@/hooks/use-cart";
 
 function CaptureContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const { clearCart } = useCart();
   const [status, setStatus] = useState<"loading" | "success" | "error">("loading");
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
@@ -29,6 +31,7 @@ function CaptureContent() {
 
         if (result.success && result.orderId) {
           setStatus("success");
+          clearCart();
           // Redirect to success page
           router.replace(`/checkout/success?orderId=${result.orderId}`);
         } else {
