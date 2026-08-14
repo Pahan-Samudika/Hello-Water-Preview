@@ -5,7 +5,7 @@ import Image from "next/image";
 import { ArrowRightIcon, GiftIcon, PercentIcon, SparklesIcon, PhoneCall as PhoneCallIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "motion/react";
-import Countdown from "react-countdown";
+// import Countdown from "react-countdown";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 32 },
@@ -56,6 +56,7 @@ export const PromotionsSection = () => {
                 Don't miss our exclusive deals. Get premium water filtration systems professionally installed in your home with special seasonal savings.
               </p>
             </motion.div>
+            {/* 
             <motion.div className="flex items-center justify-center gap-3" variants={fadeUp}>
               <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                 Ends in:
@@ -88,9 +89,10 @@ export const PromotionsSection = () => {
                 )}
               />
             </motion.div>
+            */}
           </motion.div>
 
-          {/* EOFY Promo Poster Card */}
+          {/* Winter Sale Promo Poster Card */}
           <motion.div
             className="w-full"
             variants={fadeUp}
@@ -103,8 +105,8 @@ export const PromotionsSection = () => {
               {/* Full-width responsive Auto-height Image */}
               <Link href="/enquiry" className="block w-full lg:pointer-events-none">
                 <Image
-                  src="https://res.cloudinary.com/dnlb02zp9/image/upload/v1780570398/EOFY_ocpxnc.webp"
-                  alt="End of Financial Year Sale Banner"
+                  src="https://res.cloudinary.com/dnlb02zp9/image/upload/v1786681412/WINTER_SALE_Web_Poster_ng7yhu.webp"
+                  alt="Winter Sale Banner"
                   width={2128}
                   height={788}
                   priority
@@ -122,11 +124,11 @@ export const PromotionsSection = () => {
                   </div>
 
                   <h3 className="text-2xl font-bold tracking-tight text-white sm:text-3xl lg:text-3xl xl:text-4xl">
-                    EOFY Mega Savings
+                    Winter Sale
                   </h3>
 
                   <p className="mt-2 text-sm leading-relaxed text-zinc-300 sm:text-base lg:text-white/95">
-                    Upgrade your home with a premium Pentair USA-designed Hellowater Whole Home Water Filtration System. Save over $700 off the installed price and receive an industry-leading Gradient Density Sediment Cartridge FREE every 12 months for life!
+                    This Winter Sale, upgrade your home with a premium Pentair USA-designed Hellowater Whole Home Water Filtration System & save over $700 off the installed price— plus receive an industry-leading Gradient Density Sediment Cartridge FREE every 12 months for life!
                   </p>
 
 
