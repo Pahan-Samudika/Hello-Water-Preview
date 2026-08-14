@@ -3,14 +3,18 @@
 import React from "react";
 import { Sparkles, ArrowRight } from "lucide-react";
 
-interface AnnouncementBannerProps {
-  onClick: (e: React.MouseEvent<HTMLDivElement>) => void;
-}
+export const AnnouncementBanner = () => {
+  const handleScrollToOffers = (e: React.MouseEvent) => {
+    e.preventDefault();
+    const element = document.getElementById("offers");
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
-export const AnnouncementBanner = ({ onClick }: AnnouncementBannerProps) => {
   return (
     <div
-      onClick={onClick}
+      onClick={handleScrollToOffers}
       className="group relative w-full h-20 md:h-24 bg-primary/10 dark:bg-primary/10 backdrop-blur-md text-foreground cursor-pointer select-none border-b border-primary/10 flex items-center justify-center transition-all duration-300 hover:bg-primary/15"
     >
       {/* Subtle bottom gradient glow line */}
@@ -29,11 +33,11 @@ export const AnnouncementBanner = ({ onClick }: AnnouncementBannerProps) => {
         <div className="flex flex-col items-start md:items-center justify-center flex-1 min-w-0 py-1">
           {/* Title row */}
           <div className="text-left md:text-center leading-snug md:leading-tight">
-            <span className="bg-gradient-to-r from-primary via-sky-500 to-cyan-500 bg-clip-text text-transparent font-extrabold text-[12px] sm:text-sm md:text-lg tracking-wide uppercase mr-1.5 md:mr-2 block md:inline-block">
-              Winter Sale
+            <span className="bg-gradient-to-r from-primary via-sky-500 to-cyan-500 bg-clip-text text-transparent font-extrabold text-[16px] sm:text-sm md:text-lg tracking-wide uppercase mr-1.5 md:mr-2 block md:inline-block">
+              ❄️ Winter Sale <span className="md:hidden">❄️</span>
             </span>
             <span className="font-extrabold text-foreground/90 text-[12px] sm:text-sm md:text-lg">
-              Save over $700 off Whole Home Filtration System
+              Save over $700 off Whole Home Filtration System <span className="hidden md:inline">❄️</span>
             </span>
           </div>
           {/* Subtext row */}

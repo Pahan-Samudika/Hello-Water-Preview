@@ -7,7 +7,6 @@ import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { PhoneCall, ChevronDown } from "lucide-react";
 import { MobileNav } from "@/components/mobile-nav";
-import { AnnouncementBanner } from "@/components/custom/announcement-banner";
 
 import LogoSVG from "@/assets/svg/logo.svg";
 import TxtLogoSVG from "@/assets/svg/txtlogo-white.svg";
@@ -63,31 +62,14 @@ export function Header() {
   const pathname = usePathname();
   const isHomepage = pathname === "/";
 
-  const handleScrollToOffers = (e: React.MouseEvent) => {
-    e.preventDefault();
-    const element = document.getElementById("offers");
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-
   return (
     <>
-      {isHomepage && (
-        <AnnouncementBanner onClick={handleScrollToOffers} />
-      )}
-      <div
-        className={cn("w-full transition-all duration-300", {
-          "h-18 md:h-16": !isHomepage,
-          "h-[152px] md:h-[160px]": isHomepage,
-        })}
-      />
+      <div className="w-full transition-all duration-300 h-18 md:h-16" />
       <div
         className={cn(
           "fixed left-0 right-0 z-[100] w-full transition-all duration-300 ease-out",
           {
-            "top-0": scrolled || !isHomepage,
-            "top-20 md:top-24": !scrolled && isHomepage,
+            "top-0": true,
           }
         )}
       >
