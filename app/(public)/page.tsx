@@ -38,6 +38,7 @@ export default function PublicHomePage() {
           serviceJsonLd(),
         ]}
       />
+      <AnnouncementBanner />
       <HeroSection menudata={menudata} />
       <PromotionsSection />
       <AboutSummary />

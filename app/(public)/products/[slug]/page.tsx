@@ -11,7 +11,7 @@ import { SmartImage } from "@/components/ui/smart-image";
 import { JsonLd } from "@/components/seo/json-ld";
 import { createMetadata } from "@/lib/seo";
 import { breadcrumbsJsonLd, productJsonLd } from "@/lib/structured-data";
-
+import { FinancingOptionsPreview } from "@/components/custom/financing-options-preview";
 export const revalidate = 0;
 
 export async function generateStaticParams() {
@@ -128,6 +128,8 @@ export default async function ProductViewPage({
               <p className="text-base leading-relaxed text-muted-foreground">
                 {product.shortDescription}
               </p>
+
+              <FinancingOptionsPreview />
 
             </MotionWrapper>
           </div>
