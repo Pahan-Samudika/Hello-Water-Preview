@@ -3,8 +3,9 @@
 import Image from "next/image";
 import { motion } from "motion/react";
 import { MotionWrapper } from "@/components/custom/motion-wrapper";
-import { CheckCircle2, Phone, Mail, Globe, ArrowRightIcon, Laptop, Calculator, CreditCard, Wrench } from "lucide-react";
+import { CheckCircle2, Globe, ArrowRightIcon, Laptop, Calculator, CreditCard, Wrench } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ContactCTA } from "@/components/custom/contact-cta";
 
 import { paymentOptions, howItWorksData, financingDisclaimers } from "@/constants/financing";
 
@@ -61,7 +62,7 @@ export default function RepaymentOptionsPage() {
               }}
             >
               <h1 className="text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl text-balance">
-                Flexible Repayment Options
+                Zero Interest Repayment Options
               </h1>
             </MotionWrapper>
             <MotionWrapper
@@ -205,42 +206,10 @@ export default function RepaymentOptionsPage() {
 
       {/* CTA Section */}
       <section className="mx-auto w-full max-w-4xl px-6 pb-16 sm:px-6 lg:px-8">
-        <motion.div
-          variants={cardVariant}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          className="relative rounded-3xl p-8 md:p-12 overflow-hidden border border-white/35 bg-white/35 shadow-[0_12px_32px_rgba(15,23,42,0.08)] backdrop-blur-md dark:border-white/10 dark:bg-white/5 text-center flex flex-col items-center"
-        >
-          <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-4 text-foreground">
-            Ready to get started?
-          </h2>
-          <p className="text-muted-foreground mb-8 max-w-xl mx-auto">
-            Talk to our team about the repayment option available for your system and find the best fit for your home.
-          </p>
-
-          <div className="flex flex-col md:flex-row items-center justify-center gap-4 w-full md:w-auto">
-            <Button
-              size="lg"
-              className="w-full md:w-auto group relative overflow-hidden rounded-full px-8 text-base before:absolute before:inset-0 before:rounded-[inherit] before:bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.5)_50%,transparent_75%,transparent_100%)] before:bg-[length:250%_250%,100%_100%] before:bg-[position:200%_0,0_0] before:bg-no-repeat before:transition-[background-position_0s_ease] before:duration-1000 hover:before:bg-[position:-100%_0,0_0] dark:before:bg-[linear-gradient(45deg,transparent_25%,rgba(0,0,0,0.2)_50%,transparent_75%,transparent_100%)]"
-              render={<a href="tel:1300515469" />}
-              nativeButton={false}
-            >
-              <Phone className="w-4 h-4 mr-2" />
-              1300 515 469
-            </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              className="w-full md:w-auto rounded-full px-8 text-base"
-              render={<a href="mailto:sales@hellowater.com.au" />}
-              nativeButton={false}
-            >
-              <Mail className="w-4 h-4 mr-2 text-muted-foreground" />
-              sales@hellowater.com.au
-            </Button>
-          </div>
-        </motion.div>
+        <ContactCTA
+          title="Ready to get started?"
+          description="Talk to our team about the repayment option available for your system and find the best fit for your home."
+        />
       </section>
       {/* Disclaimers Section */}
       <section className="mx-auto w-full max-w-6xl px-6 pt-8 pb-16 border-t border-border/40 mt-4">
