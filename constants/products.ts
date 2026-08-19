@@ -11,6 +11,7 @@ export type Product = {
   shortDescription: string;
   description: string[];
   features: string[];
+  showFinancing?: boolean;
 };
 
 export const products: Product[] = [
