@@ -7,7 +7,7 @@ import { MotionWrapper } from "@/components/custom/motion-wrapper";
 type ContactInfoProps = React.ComponentProps<"div"> & {
 	icon: React.ReactNode;
 	label: string;
-	value: string;
+	value: React.ReactNode;
 };
 
 type ContactCardProps = React.ComponentProps<typeof MotionWrapper> & {
