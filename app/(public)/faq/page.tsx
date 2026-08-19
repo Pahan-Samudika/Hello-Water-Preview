@@ -1,9 +1,9 @@
-import { ChevronDown, HelpCircle, MessageCircle, PhoneCall, Wrench, Settings, CreditCard, ShieldCheck, Waves, ArrowRightIcon } from "lucide-react";
-import Link from "next/link";
+import { ChevronDown, HelpCircle, Wrench, Settings, CreditCard, ShieldCheck, Waves } from "lucide-react";
 import { JsonLd } from "@/components/seo/json-ld";
 import { faqPageJsonLd } from "@/lib/structured-data";
 import { MotionWrapper } from "@/components/custom/motion-wrapper";
 import { getFAQs } from "@/lib/db-queries";
+import { ContactCTA } from "@/components/custom/contact-cta";
 
 export const revalidate = 0;
 
@@ -158,38 +158,7 @@ export default async function FAQPage() {
         </div>
 
         {/* Contact CTA */}
-        <MotionWrapper
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-24 p-8 md:p-12 rounded-[2.5rem] border border-white/40 bg-white/20 backdrop-blur-2xl text-center relative overflow-hidden dark:border-white/10 dark:bg-white/5"
-        >
-          <div className="flex size-16 items-center justify-center rounded-2xl bg-primary/10 text-primary mx-auto mb-6 shadow-inner ring-1 ring-white/50">
-            <HelpCircle className="w-8 h-8" />
-          </div>
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 tracking-tight">Cannot find the answer you are looking for?</h2>
-          <p className="text-muted-foreground text-lg mb-10 max-w-2xl mx-auto">
-            Our water specialists are here to provide expert advice tailored to your home&apos;s unique needs. Reach out to us directly for a personalized solution
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <a
-              href="tel:1300515469"
-              className="inline-flex w-full sm:w-auto h-14 items-center justify-center rounded-full bg-primary px-10 text-lg font-bold text-primary-foreground shadow-lg shadow-primary/25 hover:scale-105 active:scale-95 transition-all"
-            >
-              <PhoneCall className="w-5 h-5 mr-2" />
-              1300 515 469
-            </a>
-            <Link
-              href="/contact"
-              className="group relative inline-flex w-full sm:w-auto h-14 items-center justify-center overflow-hidden rounded-full px-10 text-lg font-bold border border-white/40 bg-white/10 backdrop-blur-sm hover:bg-white/20 dark:border-white/20 dark:bg-white/5 dark:hover:bg-white/10"
-            >
-              <MessageCircle className="w-5 h-5 mr-2" />
-              Contact Us
-              <ArrowRightIcon className="w-4 h-4 ml-1 transition-transform group-hover:translate-x-1" />
-            </Link>
-          </div>
-        </MotionWrapper>
+        <ContactCTA className="mt-24" />
       </section>
     </main>
   );

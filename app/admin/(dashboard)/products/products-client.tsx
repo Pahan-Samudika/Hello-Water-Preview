@@ -44,6 +44,7 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
   const [deletingProduct, setDeletingProduct] = useState<Product | null>(null);
 
   const [recentChecked, setRecentChecked] = useState(false);
+  const [showFinancingChecked, setShowFinancingChecked] = useState(false);
   const [manualSlug, setManualSlug] = useState(false);
 
   // Filter products by name or category
@@ -82,6 +83,7 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
     setFormError(null);
     setFormSuccess(null);
     setRecentChecked(false);
+    setShowFinancingChecked(false);
     setManualSlug(false);
     setIsFormOpen(true);
   }
@@ -91,6 +93,7 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
     setFormError(null);
     setFormSuccess(null);
     setRecentChecked(!!product.recent);
+    setShowFinancingChecked(!!product.showFinancing);
     setManualSlug(true);
     setIsFormOpen(true);
   }
@@ -103,6 +106,7 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
 
     const formData = new FormData(event.currentTarget);
     formData.append("recent", recentChecked ? "true" : "false");
+    formData.append("showFinancing", showFinancingChecked ? "true" : "false");
 
     try {
       let result;
@@ -142,6 +146,7 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
           category,
           price,
           recent: recentChecked,
+          showFinancing: showFinancingChecked,
           image,
           imageAlt,
           cardDescription,
@@ -614,6 +619,22 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
                     <div className="flex flex-col">
                       <span className="text-xs font-bold text-foreground/90">Highlight as Recent Product</span>
                       <span className="text-[10px] text-muted-foreground/75">Adds an absolute ribbon badge and pushes item to prominent blocks</span>
+                    </div>
+                  </label>
+                </div>
+
+                {/* Financing setting */}
+                <div className="sm:col-span-2 p-4 rounded-xl border border-sidebar-border bg-background/40 select-none">
+                  <label className="flex items-center gap-3 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={showFinancingChecked}
+                      onChange={(e) => setShowFinancingChecked(e.target.checked)}
+                      className="size-4.5 rounded border-sidebar-border bg-background text-primary focus:ring-primary focus:ring-offset-background"
+                    />
+                    <div className="flex flex-col">
+                      <span className="text-xs font-bold text-foreground/90">Show Flexible Financing</span>
+                      <span className="text-[10px] text-muted-foreground/75">Displays the financing banner on the product details page</span>
                     </div>
                   </label>
                 </div>

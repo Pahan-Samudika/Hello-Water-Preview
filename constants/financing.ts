@@ -22,7 +22,7 @@ export const howItWorksData: TimelineData[] = [
   },
   {
     timeframe: "Step 4",
-    title: "Apply & Arrange Installation",
+    title: "Apply Together & Arrange Installation",
     description: "Get approved quickly and schedule your installation.",
     icon: Wrench,
   },
