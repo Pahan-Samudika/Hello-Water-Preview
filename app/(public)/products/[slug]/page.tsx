@@ -129,7 +129,7 @@ export default async function ProductViewPage({
                 {product.shortDescription}
               </p>
 
-              <FinancingOptionsPreview />
+              {product.showFinancing === true && <FinancingOptionsPreview />}
 
             </MotionWrapper>
           </div>

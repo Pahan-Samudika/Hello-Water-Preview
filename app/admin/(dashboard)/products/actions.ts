@@ -23,6 +23,7 @@ export async function createProductAction(prevState: any, formData: FormData) {
     const category = formData.get("category") as string;
     const price = formData.get("price") as string;
     const recent = formData.get("recent") === "true";
+    const showFinancing = formData.get("showFinancing") === "true";
     const image = formData.get("image") as string;
     const imageAlt = formData.get("imageAlt") as string;
     const cardDescription = formData.get("cardDescription") as string;
@@ -66,6 +67,7 @@ export async function createProductAction(prevState: any, formData: FormData) {
       category: category.trim(),
       price: price.trim(),
       recent,
+      showFinancing,
       image: image.trim(),
       imageAlt: imageAlt.trim(),
       cardDescription: cardDescription.trim(),
@@ -94,6 +96,7 @@ export async function updateProductAction(oldSlug: string, prevState: any, formD
     const category = formData.get("category") as string;
     const price = formData.get("price") as string;
     const recent = formData.get("recent") === "true";
+    const showFinancing = formData.get("showFinancing") === "true";
     const image = formData.get("image") as string;
     const imageAlt = formData.get("imageAlt") as string;
     const cardDescription = formData.get("cardDescription") as string;
@@ -139,6 +142,7 @@ export async function updateProductAction(oldSlug: string, prevState: any, formD
       category: category.trim(),
       price: price.trim(),
       recent,
+      showFinancing,
       image: image.trim(),
       imageAlt: imageAlt.trim(),
       cardDescription: cardDescription.trim(),

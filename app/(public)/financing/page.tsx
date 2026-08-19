@@ -212,7 +212,7 @@ export default function RepaymentOptionsPage() {
         />
       </section>
       {/* Disclaimers Section */}
-      <section className="mx-auto w-full max-w-6xl px-6 pt-8 pb-16 border-t border-border/40 mt-4">
+      <section className="mx-auto w-full max-w-6xl px-6 pb-16">
         <div className="text-[10px] sm:text-xs text-muted-foreground/60 space-y-4 text-justify leading-relaxed transition-opacity hover:text-muted-foreground">
           {financingDisclaimers.map((disclaimer, index) => (
             <p key={index}>{disclaimer}</p>
