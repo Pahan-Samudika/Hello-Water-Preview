@@ -44,6 +44,7 @@ export const navigationData: NavItem[] = [
       { title: "Benefits", href: "/benefits" },
       { title: "Technology", href: "/technology" },
       { title: "Certifications", href: "/certifications" },
+      { title: "Financing", href: "/financing" },
       { title: "FAQs", href: "/faq" },
     ],
   },
