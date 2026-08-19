@@ -2,9 +2,10 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { FacebookIcon } from "lucide-react";
+import { FacebookIcon, InstagramIcon, YoutubeIcon } from "lucide-react";
 import txtLogoWhite from "@/assets/svg/txtlogo-white.svg";
 import txtLogoBlack from "@/assets/svg/txtlogo-black.svg";
+import { WhatsappIcon } from "@/assets/svg/whatsapp-icon";
 
 type FooterLink = {
 	title: string;
@@ -19,10 +20,11 @@ type FooterSection = {
 
 const footerLinks: FooterSection[] = [
 	{
-		label: "Filtration Solutions",
+		label: "Explore",
 		links: [
 			{ title: "Filtration Systems", href: "/products" },
 			{ title: "Cartridges", href: "/products" },
+			{ title: "Financing", href: "/financing" },
 			{ title: "Technology", href: "/technology" },
 			{ title: "Certifications", href: "/certifications" },
 		],
@@ -55,9 +57,9 @@ const footerLinks: FooterSection[] = [
 					/>
 				),
 			},
-			/* {
+			{
 				title: "Instagram",
-				href: "#",
+				href: "https://www.instagram.com/hellowater.filtration/",
 				icon: (
 					<InstagramIcon
 					/>
@@ -65,20 +67,19 @@ const footerLinks: FooterSection[] = [
 			},
 			{
 				title: "Youtube",
-				href: "#",
+				href: "https://www.youtube.com/@HelloWaterFiltrationAU",
 				icon: (
 					<YoutubeIcon
 					/>
 				),
 			},
 			{
-				title: "LinkedIn",
-				href: "#",
+				title: "WhatsApp",
+				href: "https://wa.me/61459803881",
 				icon: (
-					<LinkedinIcon
-					/>
+					<WhatsappIcon />
 				),
-			}, */
+			},
 		],
 	},
 ];
