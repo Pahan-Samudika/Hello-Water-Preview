@@ -22,8 +22,6 @@ export type MenuData = {
   id: number;
   img: string;
   imgAlt: string;
-  userAvatar: string;
-  userComment: string;
 };
 
 const HeroSection = ({ menudata }: { menudata: MenuData[] }) => {
