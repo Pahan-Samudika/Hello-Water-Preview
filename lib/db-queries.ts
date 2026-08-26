@@ -88,7 +88,12 @@ export interface DBBlogPost extends Omit<BlogPost, "author"> {
 
 export async function getBlogs(): Promise<DBBlogPost[]> {
   const snapshot = await db.collection("blogs").orderBy("publishedAt", "desc").get();
-  return snapshot.docs.map((doc) => doc.data()) as DBBlogPost[];
+  const blogs = snapshot.docs.map((doc) => doc.data()) as DBBlogPost[];
+  return blogs.sort((a, b) => {
+    const timeA = new Date(a.publishedAt).getTime() || 0;
+    const timeB = new Date(b.publishedAt).getTime() || 0;
+    return timeB - timeA;
+  });
 }
 
 export async function getBlogBySlug(slug: string): Promise<DBBlogPost | null> {
