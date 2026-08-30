@@ -167,6 +167,7 @@ function ProductGridItem({ product }: { product: Product }) {
         imageAlt={product.imageAlt}
         recent={product.recent}
         href={`/products/${product.slug}`}
+        variants={product.variants}
       />
     </MotionWrapper>
   );
