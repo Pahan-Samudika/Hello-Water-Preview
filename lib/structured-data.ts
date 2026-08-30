@@ -1,4 +1,4 @@
-import { products, type Product } from "@/constants/products";
+import { type Product } from "@/constants/products";
 import { absoluteUrl, siteConfig } from "@/lib/seo";
 
 const organizationId = `${siteConfig.url}/#organization`;
@@ -106,8 +106,63 @@ export function breadcrumbsJsonLd(items: { name: string; path: string }[]) {
   };
 }
 
-export function productJsonLd(product: Product) {
+export function productJsonLd(
+  product: Product,
+  compatibleSystems?: Product[]
+) {
   const numericPrice = product.price.match(/\$([\d,.]+)/)?.[1]?.replace(/,/g, "");
+
+  // Build per-variant offers when variants exist
+  const offers =
+    product.variants && product.variants.length > 0
+      ? product.variants.map((variant) => {
+          const vPrice = variant.price?.match(/\$([\d,.]+)/)?.[1]?.replace(/,/g, "");
+          return {
+            "@type": "Offer",
+            url: absoluteUrl(`/products/${product.slug}?variant=${variant.id}`),
+            availability: "https://schema.org/InStock",
+            priceCurrency: "AUD",
+            name: variant.label || variant.name,
+            ...(vPrice ? { price: vPrice } : {}),
+            priceSpecification: {
+              "@type": "PriceSpecification",
+              priceCurrency: "AUD",
+              description: variant.price || product.price,
+            },
+          };
+        })
+      : {
+          "@type": "Offer",
+          url: absoluteUrl(`/products/${product.slug}`),
+          availability: "https://schema.org/InStock",
+          priceCurrency: "AUD",
+          ...(numericPrice ? { price: numericPrice } : {}),
+          priceSpecification: {
+            "@type": "PriceSpecification",
+            priceCurrency: "AUD",
+            description: product.price,
+          },
+        };
+
+  // Features as structured additionalProperty
+  const additionalProperty =
+    product.features && product.features.length > 0
+      ? product.features.map((f) => ({
+          "@type": "PropertyValue",
+          name: "Feature",
+          value: f,
+        }))
+      : undefined;
+
+  // Related compatible systems (for cartridges)
+  const isRelatedTo =
+    compatibleSystems && compatibleSystems.length > 0
+      ? compatibleSystems.map((sys) => ({
+          "@type": "Product",
+          name: sys.name,
+          url: absoluteUrl(`/products/${sys.slug}`),
+        }))
+      : undefined;
 
   return {
     "@context": "https://schema.org",
@@ -123,18 +178,9 @@ export function productJsonLd(product: Product) {
       "@type": "Brand",
       name: siteConfig.name,
     },
-    offers: {
-      "@type": "Offer",
-      url: absoluteUrl(`/products/${product.slug}`),
-      availability: "https://schema.org/InStock",
-      priceCurrency: "AUD",
-      ...(numericPrice ? { price: numericPrice } : {}),
-      priceSpecification: {
-        "@type": "PriceSpecification",
-        priceCurrency: "AUD",
-        description: product.price,
-      },
-    },
+    offers,
+    ...(additionalProperty ? { additionalProperty } : {}),
+    ...(isRelatedTo ? { isRelatedTo } : {}),
   };
 }
 

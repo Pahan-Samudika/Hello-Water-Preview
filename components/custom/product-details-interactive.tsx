@@ -16,14 +16,16 @@ import {
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { FiltrationStagesTimeline } from "@/components/custom/filtration-stages-timeline";
-import { Check } from "lucide-react";
+import { Check, ArrowRight } from "lucide-react";
+import { CompatibleSystemCard } from "@/components/custom/compatible-system-card";
 
 interface ProductDetailsInteractiveProps {
   product: Product;
   allProducts: Product[];
+  initialCompatibleSystems?: Product[];
 }
 
-export function ProductDetailsInteractive({ product, allProducts }: ProductDetailsInteractiveProps) {
+export function ProductDetailsInteractive({ product, allProducts, initialCompatibleSystems = [] }: ProductDetailsInteractiveProps) {
   const hasVariants = !!(product.variants && product.variants.length > 0);
   
   // State for active variant
@@ -38,12 +40,55 @@ export function ProductDetailsInteractive({ product, allProducts }: ProductDetai
     ? product.variants!.find((v) => v.id === selectedVariantId) || null
     : null;
 
-  const activeSizeKey = activeVariant?.sizeKey
-    || product.sizeKey
-    || (product.variants && product.variants.length > 0 ? product.variants[0].sizeKey : "")
-    || "";
+  // Only apply a size filter when the user has explicitly chosen a variant.
+  // In overview state (no selection), keep sizeKey empty so the timeline
+  // shows ALL compatible cartridges regardless of variant.
+  const activeSizeKey = selectedVariantId
+    ? (activeVariant?.sizeKey || product.sizeKey || "")
+    : (product.sizeKey || "");
 
   const hasStages = !!(product.stages && product.stages.length > 0);
+
+  const isCartridge = product.category === "Cartridges";
+
+  // Compatible systems:
+  // - Server provided list is the default (no variant filter, crawlable)
+  // - When user picks a specific variant, re-filter client-side
+  const compatibleSystems = React.useMemo(() => {
+    if (!isCartridge) return [];
+    // If user has selected a specific variant, filter by it
+    if (selectedVariantId) {
+      return allProducts.filter((p) => {
+        if (p.category !== "Filtration Systems" || !p.stages) return false;
+        return p.stages.some((stage) =>
+          stage.cartridges.some((link) => {
+            const isSlugMatch = link.slug === product.slug;
+            if (!isSlugMatch) return false;
+            return link.variantId === selectedVariantId || link.variantId === "";
+          })
+        );
+      });
+    }
+    // No variant selected — use the server-computed list (best for SEO & first load)
+    return initialCompatibleSystems;
+  }, [isCartridge, product.slug, selectedVariantId, allProducts, initialCompatibleSystems]);
+
+  const getSystemStageLabel = (system: Product) => {
+    if (!system.stages) return "";
+    const stagesUsingCartridge = system.stages
+      .filter((stage) =>
+        stage.cartridges.some((link) => {
+          const isSlugMatch = link.slug === product.slug;
+          if (!isSlugMatch) return false;
+          if (selectedVariantId) {
+            return link.variantId === selectedVariantId || link.variantId === "";
+          }
+          return true;
+        })
+      )
+      .map((stage) => `Stage ${stage.stageNumber}`);
+    return stagesUsingCartridge.join(" & ");
+  };
 
   // Active details to display
   const displayName = activeVariant ? activeVariant.name : product.name;
@@ -338,13 +383,17 @@ export function ProductDetailsInteractive({ product, allProducts }: ProductDetai
               Filtration Stages
             </h2>
             <p className="text-sm text-muted-foreground mt-2">
-              Genuine replacement cartridges optimized for this configuration. 
-              {activeSizeKey && (
-                <span className="font-semibold text-primary">
-                  {" "}Currently displaying compatible {activeSizeKey === "10" ? '10"' : '20"'} cartridges.
-                </span>
-              )}
+              Compatible replacement cartridges for the {product.name}.
             </p>
+            {hasVariants && !selectedVariantId ? (
+              <div className="mt-3 inline-flex items-center gap-2 rounded-full border border-primary/25 bg-primary/8 px-4 py-1.5 text-xs font-semibold text-primary">
+                Select a size above to see cartridges for that size
+              </div>
+            ) : activeSizeKey ? (
+              <p className="mt-1.5 text-xs font-semibold text-primary">
+              Showing cartridges for the {activeVariant?.label ?? activeSizeKey}
+              </p>
+            ) : null}
           </div>
 
           <FiltrationStagesTimeline
@@ -353,6 +402,63 @@ export function ProductDetailsInteractive({ product, allProducts }: ProductDetai
             allProducts={allProducts}
           />
         </MotionWrapper>
+      )}
+
+      {/* COMPATIBLE FILTRATION SYSTEMS SECTION */}
+      {isCartridge && compatibleSystems.length > 0 && (
+        <MotionWrapper
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="space-y-8 rounded-[2.5rem] border bg-card/50 backdrop-blur-xl p-6 sm:p-8 lg:p-12 shadow-2xl mt-12 text-left"
+        >
+          <div className="border-b border-border/60 pb-6">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-primary/80">
+              System Compatibility
+            </p>
+            <h2 className="mt-2 text-2xl font-bold tracking-tight sm:text-3xl">
+              Compatible Filtration Systems
+            </h2>
+            <p className="text-sm text-muted-foreground mt-2">
+              Filtration systems that use the {product.name} in their setup.
+            </p>
+            {hasVariants && !selectedVariantId ? (
+              <div className="mt-3 inline-flex items-center gap-2 rounded-full border border-primary/25 bg-primary/8 px-4 py-1.5 text-xs font-semibold text-primary">
+                Select a size above to see compatible systems for that size
+              </div>
+            ) : activeVariant ? (
+              <p className="mt-1.5 text-xs font-semibold text-primary">
+                Showing systems compatible with the {activeVariant.label} size
+              </p>
+            ) : null}
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
+            {compatibleSystems.map((system) => {
+              const stageLabel = getSystemStageLabel(system);
+
+              return (
+                <CompatibleSystemCard
+                  key={system.slug}
+                  name={system.name}
+                  image={system.image}
+                  imageAlt={system.imageAlt || system.name}
+                  href={`/products/${system.slug}`}
+                  stageLabel={stageLabel || undefined}
+                />
+              );
+            })}
+          </div>
+        </MotionWrapper>
+      )}
+
+      {/* No-results fallback when a variant is selected but has no compatible systems */}
+      {isCartridge && selectedVariantId && compatibleSystems.length === 0 && (
+        <div className="mt-12 rounded-[2.5rem] border border-dashed border-border/60 bg-card/30 p-8 text-center text-sm text-muted-foreground">
+          No filtration systems found for the selected size. Try a different size or{" "}
+          <Link href="/products" className="text-primary font-semibold hover:underline">browse all products</Link>.
+        </div>
       )}
     </div>
   );

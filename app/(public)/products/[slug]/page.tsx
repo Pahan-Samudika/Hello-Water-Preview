@@ -41,7 +41,12 @@ export async function generateMetadata({
     description: product.shortDescription,
     path: `/products/${product.slug}`,
     image: product.image || "/opengraph-image",
-    keywords: [product.category, product.name],
+    type: "article",
+    keywords: [
+      product.category,
+      product.name,
+      ...(product.features?.slice(0, 5) ?? []),
+    ],
   });
 }
 
@@ -59,6 +64,17 @@ export default async function ProductViewPage({
 
   const allProducts = await getProducts();
 
+  // Compute compatible systems server-side so crawlers can index the links
+  const isCartridge = product.category === "Cartridges";
+  const compatibleSystems = isCartridge
+    ? allProducts.filter((p) => {
+        if (p.category !== "Filtration Systems" || !p.stages) return false;
+        return p.stages.some((stage) =>
+          stage.cartridges.some((link) => link.slug === product!.slug)
+        );
+      })
+    : [];
+
   return (
     <main className="relative overflow-hidden w-full min-h-screen">
       <JsonLd
@@ -68,7 +84,7 @@ export default async function ProductViewPage({
             { name: "Products", path: "/products" },
             { name: product.name, path: `/products/${product.slug}` },
           ]),
-          productJsonLd(product),
+          productJsonLd(product, compatibleSystems.length > 0 ? compatibleSystems : undefined),
         ]}
       />
       <section className="mx-auto w-full max-w-6xl px-6 py-8 md:py-12 sm:px-6 lg:px-8">
@@ -88,7 +104,28 @@ export default async function ProductViewPage({
             </Link>
           </MotionWrapper>
 
-          <ProductDetailsInteractive product={product} allProducts={allProducts} />
+          <ProductDetailsInteractive
+            product={product}
+            allProducts={allProducts}
+            initialCompatibleSystems={compatibleSystems}
+          />
+
+          {/* Server-rendered compatible systems links — visible to crawlers, hidden visually */}
+          {compatibleSystems.length > 0 && (
+            <nav
+              aria-label="Compatible filtration systems"
+              className="sr-only"
+            >
+              <h2>Compatible Filtration Systems</h2>
+              <ul>
+                {compatibleSystems.map((sys) => (
+                  <li key={sys.slug}>
+                    <a href={`/products/${sys.slug}`}>{sys.name}</a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          )}
           <MotionWrapper
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
