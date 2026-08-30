@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { type Product } from "@/constants/products";
+import { type Product, type ProductVariant } from "@/constants/products";
 import { createProductAction, updateProductAction, deleteProductAction } from "./actions";
 import { Pagination } from "@/components/ui/pagination";
 import {
@@ -47,6 +47,49 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
   const [showFinancingChecked, setShowFinancingChecked] = useState(false);
   const [manualSlug, setManualSlug] = useState(false);
 
+  const [formVariants, setFormVariants] = useState<ProductVariant[]>([]);
+
+  function handleAddVariant() {
+    setFormVariants([
+      ...formVariants,
+      {
+        id: "",
+        label: "",
+        name: "",
+        price: "",
+        shortDescription: "",
+        image: "",
+      },
+    ]);
+  }
+
+  function handleRemoveVariant(index: number) {
+    setFormVariants(formVariants.filter((_, i) => i !== index));
+  }
+
+  function handleVariantFieldChange(
+    index: number,
+    field: keyof ProductVariant,
+    value: string
+  ) {
+    setFormVariants(
+      formVariants.map((v, i) => {
+        if (i !== index) return v;
+        const updated = { ...v, [field]: value };
+        if (field === "label") {
+          if (!v.id) {
+            updated.id = slugify(value);
+          }
+          if (!v.name) {
+            const currentName = (document.getElementById("form-name") as HTMLInputElement)?.value || "";
+            updated.name = `${currentName} ${value}`;
+          }
+        }
+        return updated;
+      })
+    );
+  }
+
   // Filter products by name or category
   const filteredProducts = products.filter(
     (p) =>
@@ -85,6 +128,7 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
     setRecentChecked(false);
     setShowFinancingChecked(false);
     setManualSlug(false);
+    setFormVariants([]);
     setIsFormOpen(true);
   }
 
@@ -95,6 +139,7 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
     setRecentChecked(!!product.recent);
     setShowFinancingChecked(!!product.showFinancing);
     setManualSlug(true);
+    setFormVariants(product.variants || []);
     setIsFormOpen(true);
   }
 
@@ -107,6 +152,7 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
     const formData = new FormData(event.currentTarget);
     formData.append("recent", recentChecked ? "true" : "false");
     formData.append("showFinancing", showFinancingChecked ? "true" : "false");
+    formData.append("variants", JSON.stringify(formVariants));
 
     try {
       let result;
@@ -153,6 +199,7 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
           shortDescription,
           description,
           features,
+          variants: formVariants.length > 0 ? formVariants : undefined,
         };
 
         if (editingProduct) {
@@ -701,6 +748,141 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
                     rows={5}
                     className="w-full p-4 bg-background border border-sidebar-border rounded-xl text-sm text-foreground placeholder-muted-foreground/50 focus:outline-none focus:border-primary transition-all resize-y"
                   />
+                </div>
+
+                {/* Product Variants section */}
+                <div className="space-y-4 sm:col-span-2 border-t border-sidebar-border/60 pt-4">
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-0.5">
+                      <h4 className="text-xs font-bold text-foreground uppercase tracking-wider">Product Variants</h4>
+                      <p className="text-[10px] text-muted-foreground">Define different options such as sizes or models for this product.</p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={handleAddVariant}
+                      className="h-9 px-3 rounded-lg border border-primary/20 bg-primary/5 hover:bg-primary/10 text-primary text-[11px] font-bold transition-all flex items-center gap-1.5 cursor-pointer"
+                    >
+                      <Plus className="size-3.5" />
+                      <span>Add Variant</span>
+                    </button>
+                  </div>
+
+                  {formVariants.length > 0 ? (
+                    <div className="space-y-4 max-h-[360px] overflow-y-auto pr-1 no-scrollbar">
+                      {formVariants.map((variant, index) => (
+                        <div key={index} className="p-4 rounded-xl border border-sidebar-border bg-background/30 space-y-4 relative group/variant">
+                          <div className="flex items-center justify-between pb-3 border-b border-sidebar-border/30">
+                            <span className="text-[10px] font-black uppercase tracking-wider text-primary/90">
+                              Variant #{index + 1}
+                            </span>
+                            <button
+                              type="button"
+                              onClick={() => handleRemoveVariant(index)}
+                              className="size-7 rounded-lg border border-rose-500/20 bg-rose-500/5 text-rose-400 hover:text-white hover:bg-rose-500/25 transition-all flex items-center justify-center cursor-pointer"
+                              title="Remove variant"
+                            >
+                              <Trash2 className="size-3.5" />
+                            </button>
+                          </div>
+
+                          <div className="grid gap-3 sm:grid-cols-2">
+                            {/* Variant Label */}
+                            <div className="space-y-1">
+                              <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide">
+                                Variant Label (e.g. 10", 20", UV5501)
+                              </label>
+                              <input
+                                type="text"
+                                required
+                                value={variant.label}
+                                onChange={(e) => handleVariantFieldChange(index, "label", e.target.value)}
+                                placeholder='10"'
+                                className="w-full h-9 px-3 bg-background border border-sidebar-border rounded-lg text-xs text-foreground placeholder-muted-foreground/50 focus:outline-none focus:border-primary transition-all"
+                              />
+                            </div>
+
+                            {/* Variant ID */}
+                            <div className="space-y-1">
+                              <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide">
+                                Variant ID (URL key: e.g. 10, 20, uv5501)
+                              </label>
+                              <input
+                                type="text"
+                                required
+                                value={variant.id}
+                                onChange={(e) => handleVariantFieldChange(index, "id", e.target.value)}
+                                placeholder="10"
+                                className="w-full h-9 px-3 bg-background border border-sidebar-border rounded-lg text-xs text-foreground placeholder-muted-foreground/50 focus:outline-none focus:border-primary transition-all"
+                              />
+                            </div>
+
+                            {/* Variant Full Name */}
+                            <div className="space-y-1 sm:col-span-2">
+                              <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide">
+                                Variant Name (full header title)
+                              </label>
+                              <input
+                                type="text"
+                                required
+                                value={variant.name}
+                                onChange={(e) => handleVariantFieldChange(index, "name", e.target.value)}
+                                placeholder='Pentek DGD Series 10"'
+                                className="w-full h-9 px-3 bg-background border border-sidebar-border rounded-lg text-xs text-foreground placeholder-muted-foreground/50 focus:outline-none focus:border-primary transition-all"
+                              />
+                            </div>
+
+                            {/* Variant Price */}
+                            <div className="space-y-1">
+                              <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide">
+                                Variant Price
+                              </label>
+                              <input
+                                type="text"
+                                required
+                                value={variant.price}
+                                onChange={(e) => handleVariantFieldChange(index, "price", e.target.value)}
+                                placeholder="$49.00 + GST"
+                                className="w-full h-9 px-3 bg-background border border-sidebar-border rounded-lg text-xs text-foreground placeholder-muted-foreground/50 focus:outline-none focus:border-primary transition-all"
+                              />
+                            </div>
+
+                            {/* Variant Image */}
+                            <div className="space-y-1">
+                              <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide">
+                                Variant Image URL (Optional)
+                              </label>
+                              <input
+                                type="text"
+                                value={variant.image || ""}
+                                onChange={(e) => handleVariantFieldChange(index, "image", e.target.value)}
+                                placeholder="https://res.cloudinary.com/..."
+                                className="w-full h-9 px-3 bg-background border border-sidebar-border rounded-lg text-xs text-foreground placeholder-muted-foreground/50 focus:outline-none focus:border-primary transition-all"
+                              />
+                            </div>
+
+                            {/* Variant Short Description */}
+                            <div className="space-y-1 sm:col-span-2">
+                              <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide">
+                                Variant Short Description
+                              </label>
+                              <textarea
+                                required
+                                value={variant.shortDescription}
+                                onChange={(e) => handleVariantFieldChange(index, "shortDescription", e.target.value)}
+                                placeholder='A 10" high-capacity sediment reduction cartridge...'
+                                rows={2}
+                                className="w-full p-3 bg-background border border-sidebar-border rounded-lg text-xs text-foreground placeholder-muted-foreground/50 focus:outline-none focus:border-primary transition-all resize-y"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="rounded-xl border border-dashed border-sidebar-border p-6 text-center">
+                      <span className="text-xs text-muted-foreground">No variants configured. Product will render as standard.</span>
+                    </div>
+                  )}
                 </div>
               </div>
 

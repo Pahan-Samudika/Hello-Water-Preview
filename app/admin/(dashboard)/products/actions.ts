@@ -32,6 +32,7 @@ export async function createProductAction(prevState: any, formData: FormData) {
 
     const descriptionText = formData.get("description") as string || "";
     const featuresText = formData.get("features") as string || "";
+    const variantsText = formData.get("variants") as string;
 
     const description = descriptionText
       .split("\n")
@@ -41,6 +42,18 @@ export async function createProductAction(prevState: any, formData: FormData) {
       .split("\n")
       .map((f) => f.trim())
       .filter(Boolean);
+
+    let variants = undefined;
+    if (variantsText) {
+      try {
+        const parsed = JSON.parse(variantsText);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          variants = parsed;
+        }
+      } catch (e) {
+        console.error("Failed to parse variants JSON:", e);
+      }
+    }
 
     if (
       !name ||
@@ -74,6 +87,7 @@ export async function createProductAction(prevState: any, formData: FormData) {
       shortDescription: shortDescription.trim(),
       description,
       features,
+      variants,
     };
 
     await createProduct(newProduct);
@@ -105,6 +119,7 @@ export async function updateProductAction(oldSlug: string, prevState: any, formD
 
     const descriptionText = formData.get("description") as string || "";
     const featuresText = formData.get("features") as string || "";
+    const variantsText = formData.get("variants") as string;
 
     const description = descriptionText
       .split("\n")
@@ -114,6 +129,18 @@ export async function updateProductAction(oldSlug: string, prevState: any, formD
       .split("\n")
       .map((f) => f.trim())
       .filter(Boolean);
+
+    let variants = undefined;
+    if (variantsText) {
+      try {
+        const parsed = JSON.parse(variantsText);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          variants = parsed;
+        }
+      } catch (e) {
+        console.error("Failed to parse variants JSON:", e);
+      }
+    }
 
     if (
       !name ||
@@ -149,6 +176,7 @@ export async function updateProductAction(oldSlug: string, prevState: any, formD
       shortDescription: shortDescription.trim(),
       description,
       features,
+      variants,
     };
 
     await updateProduct(oldSlug, productUpdates);

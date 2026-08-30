@@ -1,3 +1,12 @@
+export type ProductVariant = {
+  id: string;
+  label: string;
+  name: string;
+  price: string;
+  shortDescription: string;
+  image?: string;
+};
+
 export type Product = {
   id: number;
   slug: string;
@@ -12,6 +21,7 @@ export type Product = {
   description: string[];
   features: string[];
   showFinancing?: boolean;
+  variants?: ProductVariant[];
 };
 
 export const products: Product[] = [

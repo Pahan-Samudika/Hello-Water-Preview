@@ -7,11 +7,10 @@ import { getProductBySlug, getProducts } from "@/lib/db-queries";
 import { type Product } from "@/constants/products";
 import { MotionWrapper } from "@/components/custom/motion-wrapper";
 import { MoreProducts } from "@/components/custom/more-products";
-import { SmartImage } from "@/components/ui/smart-image";
 import { JsonLd } from "@/components/seo/json-ld";
 import { createMetadata } from "@/lib/seo";
 import { breadcrumbsJsonLd, productJsonLd } from "@/lib/structured-data";
-import { FinancingOptionsPreview } from "@/components/custom/financing-options-preview";
+import { ProductDetailsInteractive } from "@/components/custom/product-details-interactive";
 export const revalidate = 0;
 
 export async function generateStaticParams() {
@@ -89,50 +88,7 @@ export default async function ProductViewPage({
             </Link>
           </MotionWrapper>
 
-          <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.95fr)]">
-            <MotionWrapper
-              initial={{ opacity: 0, scale: 0.96 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
-              className="overflow-hidden rounded-[2.5rem] border bg-muted/20 shadow-xl"
-            >
-              <SmartImage
-                src={product.image}
-                alt={product.imageAlt}
-                useNextImage
-                fill
-                priority
-                sizes="(min-width: 1024px) 48vw, 100vw"
-                containerClassName="aspect-square w-full"
-                className="object-cover"
-              />
-            </MotionWrapper>
-
-            <MotionWrapper
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
-              className="space-y-5 rounded-[2.5rem] border bg-background p-6 sm:p-8 lg:p-10 shadow-xl h-full"
-            >
-              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary/80">
-                {product.category}
-              </p>
-              <h1 className="text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl text-balance">
-                {product.name}
-              </h1>
-
-              <p className="text-3xl font-semibold bg-linear-to-r from-primary via-sky-500 to-cyan-400 bg-clip-text text-transparent w-fit">
-                {product.price}
-              </p>
-
-              <p className="text-base leading-relaxed text-muted-foreground">
-                {product.shortDescription}
-              </p>
-
-              {product.showFinancing === true && <FinancingOptionsPreview />}
-
-            </MotionWrapper>
-          </div>
+          <ProductDetailsInteractive product={product} />
 
           <MotionWrapper
             initial={{ opacity: 0, y: 20 }}
