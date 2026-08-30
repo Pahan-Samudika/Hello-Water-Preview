@@ -77,6 +77,30 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
     return options;
   }, [initialProducts]);
 
+  // Reverse map: cartridge slug → list of systems that use it (with stage info)
+  const cartridgeCompatibilityMap = useMemo(() => {
+    const map = new Map<string, { system: Product; stageNumbers: number[] }[]>();
+    initialProducts
+      .filter((p) => p.category === "Filtration Systems" && p.stages)
+      .forEach((system) => {
+        system.stages!.forEach((stage) => {
+          stage.cartridges.forEach((link) => {
+            const existing = map.get(link.slug) || [];
+            const systemEntry = existing.find((e) => e.system.slug === system.slug);
+            if (systemEntry) {
+              if (!systemEntry.stageNumbers.includes(stage.stageNumber)) {
+                systemEntry.stageNumbers.push(stage.stageNumber);
+              }
+            } else {
+              existing.push({ system, stageNumbers: [stage.stageNumber] });
+            }
+            map.set(link.slug, existing);
+          });
+        });
+      });
+    return map;
+  }, [initialProducts]);
+
   function handleAddStage() {
     setFormStages([
       ...formStages,
@@ -430,6 +454,14 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
                       <span className="px-2 py-0.5 rounded bg-slate-800/60 border border-slate-700/60 text-[9px] font-bold text-slate-400">
                         {product.features.length} Features
                       </span>
+                      {product.category === "Cartridges" && (() => {
+                        const systems = cartridgeCompatibilityMap.get(product.slug) || [];
+                        return systems.length > 0 ? (
+                          <span className="px-2 py-0.5 rounded bg-sky-500/10 border border-sky-500/20 text-[9px] font-black text-sky-400 uppercase" title={systems.map((s) => s.system.name).join(", ")}>
+                            {systems.length} System{systems.length !== 1 ? "s" : ""}
+                          </span>
+                        ) : null;
+                      })()}
                     </div>
                   </td>
                   <td className="py-4 px-6 text-right">
@@ -1090,6 +1122,56 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
                     )}
                   </div>
                 )}
+
+                {/* Cartridge Reverse Compatibility Audit (read-only, edit mode only) */}
+                {formCategory === "Cartridges" && editingProduct && (() => {
+                  const systems = cartridgeCompatibilityMap.get(editingProduct.slug) || [];
+                  return (
+                    <div className="space-y-3 sm:col-span-2 border-t border-sidebar-border/60 pt-4">
+                      <div className="space-y-0.5">
+                        <h4 className="text-xs font-bold text-foreground uppercase tracking-wider">Used In Filtration Systems</h4>
+                        <p className="text-[10px] text-muted-foreground">Read-only view of systems that reference this cartridge in their stages.</p>
+                      </div>
+                      {systems.length > 0 ? (
+                        <div className="space-y-2">
+                          {systems.map(({ system, stageNumbers }) => (
+                            <div
+                              key={system.slug}
+                              className="flex items-center justify-between gap-3 p-3 rounded-xl border border-sidebar-border bg-background/30"
+                            >
+                              <div className="flex items-center gap-3 min-w-0">
+                                {system.image && (
+                                  <div className="relative size-8 rounded-lg border border-slate-800 bg-slate-950 overflow-hidden shrink-0">
+                                    <Image src={system.image} alt={system.name} fill className="object-cover" sizes="32px" />
+                                  </div>
+                                )}
+                                <div className="min-w-0">
+                                  <span className="text-xs font-bold text-foreground block truncate">{system.name}</span>
+                                  <span className="text-[10px] text-muted-foreground">
+                                    {stageNumbers.sort((a, b) => a - b).map((n) => `Stage ${n}`).join(" & ")}
+                                  </span>
+                                </div>
+                              </div>
+                              <a
+                                href={`/products/${system.slug}`}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="size-7 inline-flex items-center justify-center rounded-lg border border-slate-800 text-slate-500 hover:text-white hover:bg-slate-800 transition-all shrink-0"
+                                title="View public page"
+                              >
+                                <ExternalLink className="size-3" />
+                              </a>
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <div className="rounded-xl border border-dashed border-sidebar-border p-5 text-center">
+                          <span className="text-xs text-muted-foreground">This cartridge is not linked to any filtration system stages yet.</span>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })()}
               </div>
 
               {/* Drawer footer actions */}
