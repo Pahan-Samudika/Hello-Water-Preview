@@ -105,7 +105,7 @@ export function ProductDetailsInteractive({ product, allProducts, initialCompati
     ...(product.variants || []).map((v) => ({
       src: v.image || product.image,
       alt: `${v.name} View`,
-      label: `${v.label} Size`,
+      label: `${v.label}`,
       variantId: v.id,
     })),
   ];
