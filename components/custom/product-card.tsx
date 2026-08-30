@@ -6,6 +6,7 @@ import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { SmartImage } from "@/components/ui/smart-image";
 import Link from "next/link";
+import { useMemo } from "react";
 
 type ProductCardProps = {
   name: string;
@@ -16,6 +17,7 @@ type ProductCardProps = {
   recent?: boolean;
   href?: string;
   className?: string;
+  variants?: { id: string; label: string; name: string; price: string; shortDescription?: string; image?: string }[];
 };
 
 export function ProductCard({
@@ -27,7 +29,50 @@ export function ProductCard({
   recent = false,
   href = "#",
   className,
+  variants = [],
 }: ProductCardProps) {
+  // Check if variants exist to render multi-price stack
+  const hasMultiplePrices = variants && variants.length > 0;
+
+  const renderPriceContent = (align: "left" | "right" = "right") => {
+    if (hasMultiplePrices) {
+      const hasGst = variants.some((v) => v.price && /GST/i.test(v.price));
+      
+      return (
+        <div
+          className={cn(
+            "flex flex-col gap-1 font-medium",
+            align === "right" ? "items-end text-right" : "items-start text-left"
+          )}
+        >
+          {variants.map((v) => {
+            return (
+              <div key={v.id} className="whitespace-nowrap leading-none py-0.5">
+                {align === "left" ? (
+                  <>
+                    <span className="text-xs uppercase tracking-wider text-white/55 mr-1.5">{v.label}:</span>
+                    <span className="font-extrabold text-base text-white">{v.price}</span>
+                  </>
+                ) : (
+                  <>
+                    <span className="text-[10px] uppercase tracking-wider text-white/55 mr-1.5">{v.label}</span>
+                    <span className="font-extrabold text-sm">{v.price}</span>
+                  </>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      );
+    }
+
+    return (
+      <span className={cn("font-medium", align === "left" ? "text-lg text-white" : "text-xl")}>
+        {price}
+      </span>
+    );
+  };
+
   return (
     <Card
       className={cn(
@@ -52,8 +97,13 @@ export function ProductCard({
       ) : null}
 
       {/* Floating Price (hidden on mobile, visible on desktop until hover) */}
-      <div className="pointer-events-none absolute right-3 bottom-3 z-20 hidden rounded-full bg-black/65 px-3 py-1.5 text-xl font-medium text-white backdrop-blur-sm transition-opacity duration-200 lg:block lg:group-hover:opacity-0">
-        {price}
+      <div
+        className={cn(
+          "pointer-events-none absolute right-3 bottom-3 z-20 hidden bg-black/65 px-3.5 py-2 text-white backdrop-blur-sm transition-opacity duration-200 lg:block lg:group-hover:opacity-0",
+          hasMultiplePrices ? "rounded-2xl" : "rounded-full"
+        )}
+      >
+        {renderPriceContent("right")}
       </div>
 
       {/* Mobile full-card tap target (hidden on desktop) */}
@@ -68,9 +118,14 @@ export function ProductCard({
             {name}
           </h3>
           
-          <div className="pointer-events-none absolute right-3 top-3 z-20 rounded-full bg-black/65 px-3 py-1.5 text-xl font-medium text-white backdrop-blur-sm transition-opacity duration-200 lg:hidden lg:group-hover:opacity-0">
-        {price}
-      </div>
+          <div
+            className={cn(
+              "pointer-events-none absolute right-3 top-3 z-20 bg-black/65 px-3.5 py-2 text-white backdrop-blur-sm transition-opacity duration-200 lg:hidden lg:group-hover:opacity-0",
+              hasMultiplePrices ? "rounded-2xl" : "rounded-full"
+            )}
+          >
+            {renderPriceContent("right")}
+          </div>
 
           {description ? (
             <p className="mt-3 hidden line-clamp-3 text-sm leading-6 text-white/80 lg:block lg:group-hover:block">
@@ -80,7 +135,9 @@ export function ProductCard({
 
           {/* Desktop details */}
           <div className="mt-4 hidden w-full flex-col gap-3 lg:flex lg:group-hover:flex">
-            <span className="text-lg font-medium text-white/90 text-start">{price}</span>
+            <div className="w-full text-start">
+              {renderPriceContent("left")}
+            </div>
             <Button
               size="sm"
               className="w-full bg-white/95 text-black hover:bg-white"
