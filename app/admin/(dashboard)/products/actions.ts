@@ -47,11 +47,11 @@ export async function createProductAction(prevState: any, formData: FormData) {
       .map((f) => f.trim())
       .filter(Boolean);
 
-    let variants = undefined;
+    let variants: any[] = [];
     if (variantsText) {
       try {
         const parsed = JSON.parse(variantsText);
-        if (Array.isArray(parsed) && parsed.length > 0) {
+        if (Array.isArray(parsed)) {
           variants = parsed;
         }
       } catch (e) {
@@ -59,11 +59,11 @@ export async function createProductAction(prevState: any, formData: FormData) {
       }
     }
 
-    let stages = undefined;
+    let stages: any[] = [];
     if (stagesText) {
       try {
         const parsed = JSON.parse(stagesText);
-        if (Array.isArray(parsed) && parsed.length > 0) {
+        if (Array.isArray(parsed)) {
           stages = parsed;
         }
       } catch (e) {
@@ -105,8 +105,8 @@ export async function createProductAction(prevState: any, formData: FormData) {
       features,
       variants,
       stages,
-      cartridgeSize: cartridgeSize ? cartridgeSize.trim() : undefined,
-      sizeKey: sizeKey ? sizeKey.trim() : undefined,
+      cartridgeSize: cartridgeSize ? cartridgeSize.trim() : "",
+      sizeKey: sizeKey ? sizeKey.trim() : "",
     };
 
     await createProduct(newProduct);
@@ -153,11 +153,11 @@ export async function updateProductAction(oldSlug: string, prevState: any, formD
       .map((f) => f.trim())
       .filter(Boolean);
 
-    let variants = undefined;
+    let variants: any[] = [];
     if (variantsText) {
       try {
         const parsed = JSON.parse(variantsText);
-        if (Array.isArray(parsed) && parsed.length > 0) {
+        if (Array.isArray(parsed)) {
           variants = parsed;
         }
       } catch (e) {
@@ -165,11 +165,11 @@ export async function updateProductAction(oldSlug: string, prevState: any, formD
       }
     }
 
-    let stages = undefined;
+    let stages: any[] = [];
     if (stagesText) {
       try {
         const parsed = JSON.parse(stagesText);
-        if (Array.isArray(parsed) && parsed.length > 0) {
+        if (Array.isArray(parsed)) {
           stages = parsed;
         }
       } catch (e) {
@@ -213,8 +213,8 @@ export async function updateProductAction(oldSlug: string, prevState: any, formD
       features,
       variants,
       stages,
-      cartridgeSize: cartridgeSize ? cartridgeSize.trim() : undefined,
-      sizeKey: sizeKey ? sizeKey.trim() : undefined,
+      cartridgeSize: cartridgeSize ? cartridgeSize.trim() : "",
+      sizeKey: sizeKey ? sizeKey.trim() : "",
     };
 
     await updateProduct(oldSlug, productUpdates);
