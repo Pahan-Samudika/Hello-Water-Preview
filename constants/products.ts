@@ -1,3 +1,25 @@
+export type ProductVariant = {
+  id: string;
+  label: string;
+  name: string;
+  price: string;
+  shortDescription: string;
+  image?: string;
+  cartridgeSize?: string;
+  sizeKey?: string;
+};
+
+export type StageCartridgeLink = {
+  slug: string;
+  variantId: string;
+};
+
+export type SystemStage = {
+  stageNumber: number;
+  stageName: string;
+  cartridges: StageCartridgeLink[];
+};
+
 export type Product = {
   id: number;
   slug: string;
@@ -12,6 +34,10 @@ export type Product = {
   description: string[];
   features: string[];
   showFinancing?: boolean;
+  variants?: ProductVariant[];
+  stages?: SystemStage[];
+  cartridgeSize?: string;
+  sizeKey?: string;
 };
 
 export const products: Product[] = [
