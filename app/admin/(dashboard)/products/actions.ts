@@ -34,6 +34,10 @@ export async function createProductAction(prevState: any, formData: FormData) {
     const featuresText = formData.get("features") as string || "";
     const variantsText = formData.get("variants") as string;
 
+    const cartridgeSize = formData.get("cartridgeSize") as string;
+    const sizeKey = formData.get("sizeKey") as string;
+    const stagesText = formData.get("stages") as string;
+
     const description = descriptionText
       .split("\n")
       .map((p) => p.trim())
@@ -52,6 +56,18 @@ export async function createProductAction(prevState: any, formData: FormData) {
         }
       } catch (e) {
         console.error("Failed to parse variants JSON:", e);
+      }
+    }
+
+    let stages = undefined;
+    if (stagesText) {
+      try {
+        const parsed = JSON.parse(stagesText);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          stages = parsed;
+        }
+      } catch (e) {
+        console.error("Failed to parse stages JSON:", e);
       }
     }
 
@@ -88,6 +104,9 @@ export async function createProductAction(prevState: any, formData: FormData) {
       description,
       features,
       variants,
+      stages,
+      cartridgeSize: cartridgeSize ? cartridgeSize.trim() : undefined,
+      sizeKey: sizeKey ? sizeKey.trim() : undefined,
     };
 
     await createProduct(newProduct);
@@ -121,6 +140,10 @@ export async function updateProductAction(oldSlug: string, prevState: any, formD
     const featuresText = formData.get("features") as string || "";
     const variantsText = formData.get("variants") as string;
 
+    const cartridgeSize = formData.get("cartridgeSize") as string;
+    const sizeKey = formData.get("sizeKey") as string;
+    const stagesText = formData.get("stages") as string;
+
     const description = descriptionText
       .split("\n")
       .map((p) => p.trim())
@@ -139,6 +162,18 @@ export async function updateProductAction(oldSlug: string, prevState: any, formD
         }
       } catch (e) {
         console.error("Failed to parse variants JSON:", e);
+      }
+    }
+
+    let stages = undefined;
+    if (stagesText) {
+      try {
+        const parsed = JSON.parse(stagesText);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          stages = parsed;
+        }
+      } catch (e) {
+        console.error("Failed to parse stages JSON:", e);
       }
     }
 
@@ -177,6 +212,9 @@ export async function updateProductAction(oldSlug: string, prevState: any, formD
       description,
       features,
       variants,
+      stages,
+      cartridgeSize: cartridgeSize ? cartridgeSize.trim() : undefined,
+      sizeKey: sizeKey ? sizeKey.trim() : undefined,
     };
 
     await updateProduct(oldSlug, productUpdates);

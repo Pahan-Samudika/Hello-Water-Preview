@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
-import { type Product, type ProductVariant } from "@/constants/products";
+import React, { useState, useMemo } from "react";
+import { type Product, type ProductVariant, type SystemStage } from "@/constants/products";
 import { createProductAction, updateProductAction, deleteProductAction } from "./actions";
 import { Pagination } from "@/components/ui/pagination";
 import {
@@ -48,6 +48,74 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
   const [manualSlug, setManualSlug] = useState(false);
 
   const [formVariants, setFormVariants] = useState<ProductVariant[]>([]);
+  const [formCategory, setFormCategory] = useState("Filtration Systems");
+  const [formStages, setFormStages] = useState<SystemStage[]>([]);
+  const [cartridgeSize, setCartridgeSize] = useState("");
+  const [sizeKey, setSizeKey] = useState("");
+
+  const cartridgeOptions = useMemo(() => {
+    const options: { label: string; slug: string; variantId: string }[] = [];
+    initialProducts
+      .filter((p) => p.category === "Cartridges")
+      .forEach((p) => {
+        if (p.variants && p.variants.length > 0) {
+          p.variants.forEach((v) => {
+            options.push({
+              label: `${p.name} (${v.label})`,
+              slug: p.slug,
+              variantId: v.id,
+            });
+          });
+        } else {
+          options.push({
+            label: p.name,
+            slug: p.slug,
+            variantId: "",
+          });
+        }
+      });
+    return options;
+  }, [initialProducts]);
+
+  function handleAddStage() {
+    setFormStages([
+      ...formStages,
+      {
+        stageNumber: formStages.length + 1,
+        stageName: `Stage ${formStages.length + 1}`,
+        cartridges: [],
+      },
+    ]);
+  }
+
+  function handleRemoveStage(index: number) {
+    const updated = formStages
+      .filter((_, i) => i !== index)
+      .map((stage, i) => ({
+        ...stage,
+        stageNumber: i + 1,
+      }));
+    setFormStages(updated);
+  }
+
+  function handleStageNameChange(index: number, name: string) {
+    setFormStages(
+      formStages.map((stage, i) => (i === index ? { ...stage, stageName: name } : stage))
+    );
+  }
+
+  function handleStageCartridgeToggle(stageIndex: number, slug: string, variantId: string) {
+    setFormStages(
+      formStages.map((stage, i) => {
+        if (i !== stageIndex) return stage;
+        const exists = stage.cartridges.some((c) => c.slug === slug && c.variantId === variantId);
+        const updatedCartridges = exists
+          ? stage.cartridges.filter((c) => !(c.slug === slug && c.variantId === variantId))
+          : [...stage.cartridges, { slug, variantId }];
+        return { ...stage, cartridges: updatedCartridges };
+      })
+    );
+  }
 
   function handleAddVariant() {
     setFormVariants([
@@ -129,6 +197,10 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
     setShowFinancingChecked(false);
     setManualSlug(false);
     setFormVariants([]);
+    setFormCategory("Filtration Systems");
+    setFormStages([]);
+    setCartridgeSize("");
+    setSizeKey("");
     setIsFormOpen(true);
   }
 
@@ -140,6 +212,10 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
     setShowFinancingChecked(!!product.showFinancing);
     setManualSlug(true);
     setFormVariants(product.variants || []);
+    setFormCategory(product.category);
+    setFormStages(product.stages || []);
+    setCartridgeSize(product.cartridgeSize || "");
+    setSizeKey(product.sizeKey || "");
     setIsFormOpen(true);
   }
 
@@ -153,6 +229,9 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
     formData.append("recent", recentChecked ? "true" : "false");
     formData.append("showFinancing", showFinancingChecked ? "true" : "false");
     formData.append("variants", JSON.stringify(formVariants));
+    formData.append("stages", JSON.stringify(formStages));
+    formData.append("cartridgeSize", cartridgeSize);
+    formData.append("sizeKey", sizeKey);
 
     try {
       let result;
@@ -200,6 +279,9 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
           description,
           features,
           variants: formVariants.length > 0 ? formVariants : undefined,
+          stages: formStages.length > 0 ? formStages : undefined,
+          cartridgeSize: cartridgeSize ? cartridgeSize.trim() : undefined,
+          sizeKey: sizeKey ? sizeKey.trim() : undefined,
         };
 
         if (editingProduct) {
@@ -578,7 +660,8 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
                   </label>
                   <Select
                     name="category"
-                    defaultValue={editingProduct?.category || "Filtration Systems"}
+                    value={formCategory}
+                    onValueChange={(val) => setFormCategory(val || "")}
                   >
                     <SelectTrigger className="w-full h-11 bg-background border border-sidebar-border rounded-xl text-sm text-foreground focus:outline-none focus:border-primary transition-all">
                       <SelectValue />
@@ -884,6 +967,129 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
                     </div>
                   )}
                 </div>
+
+                {/* Filtration System Stages Configurator */}
+                {formCategory === "Filtration Systems" && (
+                  <div className="space-y-4 sm:col-span-2 border-t border-sidebar-border/60 pt-4">
+                    <div className="flex items-center justify-between">
+                      <div className="space-y-0.5">
+                        <h4 className="text-xs font-bold text-foreground uppercase tracking-wider">Filtration System Stages</h4>
+                        <p className="text-[10px] text-muted-foreground">Configure the stages and link compatible cartridges.</p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={handleAddStage}
+                        className="h-9 px-3 rounded-lg border border-primary/20 bg-primary/5 hover:bg-primary/10 text-primary text-[11px] font-bold transition-all flex items-center gap-1.5 cursor-pointer"
+                      >
+                        <Plus className="size-3.5" />
+                        <span>Add Stage</span>
+                      </button>
+                    </div>
+
+                    {/* Sizing Details */}
+                    <div className="grid gap-3 sm:grid-cols-2 p-4 rounded-xl border border-sidebar-border bg-background/25">
+                      <div className="space-y-1">
+                        <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide">
+                          Default Cartridge Size
+                        </label>
+                        <input
+                          type="text"
+                          value={cartridgeSize}
+                          onChange={(e) => setCartridgeSize(e.target.value)}
+                          placeholder='e.g. 20" BB'
+                          className="w-full h-9 px-3 bg-background border border-sidebar-border rounded-lg text-xs text-foreground placeholder-muted-foreground/50 focus:outline-none focus:border-primary transition-all"
+                        />
+                      </div>
+                      <div className="space-y-1">
+                        <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide">
+                          Default Size Key
+                        </label>
+                        <input
+                          type="text"
+                          value={sizeKey}
+                          onChange={(e) => setSizeKey(e.target.value)}
+                          placeholder='e.g. 20 (matches cartridge variant)'
+                          className="w-full h-9 px-3 bg-background border border-sidebar-border rounded-lg text-xs text-foreground placeholder-muted-foreground/50 focus:outline-none focus:border-primary transition-all"
+                        />
+                      </div>
+                    </div>
+
+                    {formStages.length > 0 ? (
+                      <div className="space-y-4 max-h-[400px] overflow-y-auto pr-1 no-scrollbar">
+                        {formStages.map((stage, stageIdx) => (
+                          <div key={stageIdx} className="p-4 rounded-xl border border-sidebar-border bg-background/30 space-y-4 relative group/stage">
+                            <div className="flex items-center justify-between pb-3 border-b border-sidebar-border/30">
+                              <span className="text-[10px] font-black uppercase tracking-wider text-primary/90">
+                                Stage #{stage.stageNumber}
+                              </span>
+                              <button
+                                type="button"
+                                onClick={() => handleRemoveStage(stageIdx)}
+                                className="size-7 rounded-lg border border-rose-500/20 bg-rose-500/5 text-rose-400 hover:text-white hover:bg-rose-500/25 transition-all flex items-center justify-center cursor-pointer"
+                                title="Remove stage"
+                              >
+                                <Trash2 className="size-3.5" />
+                              </button>
+                            </div>
+
+                            {/* Stage Name */}
+                            <div className="space-y-1.5">
+                              <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide">
+                                Stage Description / Title
+                              </label>
+                              <input
+                                type="text"
+                                required
+                                value={stage.stageName}
+                                onChange={(e) => handleStageNameChange(stageIdx, e.target.value)}
+                                placeholder="Stage Name (e.g. Sediment Pre-Filter)"
+                                className="w-full h-9 px-3 bg-background border border-sidebar-border rounded-lg text-xs text-foreground placeholder-muted-foreground/50 focus:outline-none focus:border-primary transition-all"
+                              />
+                            </div>
+
+                            {/* Cartridge Checklist */}
+                            <div className="space-y-2">
+                              <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block">
+                                Compatible Replacement Cartridges
+                              </label>
+                              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 p-3 rounded-lg border border-sidebar-border bg-background/10">
+                                {cartridgeOptions.length > 0 ? (
+                                  cartridgeOptions.map((opt) => {
+                                    const isChecked = stage.cartridges.some(
+                                      (c) => c.slug === opt.slug && c.variantId === opt.variantId
+                                    );
+                                    return (
+                                      <label
+                                        key={`${opt.slug}-${opt.variantId}`}
+                                        className="flex items-center gap-2 text-xs font-semibold text-foreground/80 hover:text-foreground cursor-pointer select-none py-0.5"
+                                      >
+                                        <input
+                                          type="checkbox"
+                                          checked={isChecked}
+                                          onChange={() => handleStageCartridgeToggle(stageIdx, opt.slug, opt.variantId)}
+                                          className="rounded border-sidebar-border text-primary focus:ring-primary size-3.5 cursor-pointer"
+                                        />
+                                        <span className="truncate">{opt.label}</span>
+                                      </label>
+                                    );
+                                  })
+                                ) : (
+                                  <span className="text-[10px] text-muted-foreground italic sm:col-span-2">
+                                    No cartridge products found in database.
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="rounded-xl border border-dashed border-sidebar-border p-6 text-center">
+                        <span className="text-xs text-muted-foreground">No stages configured. Compatible cartridges section will not render.</span>
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
 
               {/* Drawer footer actions */}

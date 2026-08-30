@@ -88,8 +88,7 @@ export default async function ProductViewPage({
             </Link>
           </MotionWrapper>
 
-          <ProductDetailsInteractive product={product} />
-
+          <ProductDetailsInteractive product={product} allProducts={allProducts} />
           <MotionWrapper
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -131,7 +130,6 @@ export default async function ProductViewPage({
               </div>
             </article>
           </MotionWrapper>
-
           <MotionWrapper
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
