@@ -2,8 +2,8 @@
 
 import { revalidatePath } from "next/cache";
 import { getAdminSession, hasPermission } from "@/lib/admin-auth";
-import { createProduct, updateProduct, deleteProduct, getProductBySlug } from "@/lib/db-queries";
-import { type Product } from "@/constants/products";
+import { createProduct, updateProduct, deleteProduct, getProductBySlug, getCertifications } from "@/lib/db-queries";
+import { type Product, type Certification } from "@/constants/products";
 
 // Security guard: Ensure caller has "Product Management"
 async function checkAuth() {
@@ -37,6 +37,7 @@ export async function createProductAction(prevState: any, formData: FormData) {
     const cartridgeSize = formData.get("cartridgeSize") as string;
     const sizeKey = formData.get("sizeKey") as string;
     const stagesText = formData.get("stages") as string;
+    const certificationsText = formData.get("certifications") as string;
 
     const description = descriptionText
       .split("\n")
@@ -70,6 +71,18 @@ export async function createProductAction(prevState: any, formData: FormData) {
         console.error("Failed to parse stages JSON:", e);
       }
     }
+
+    let certIds: string[] = [];
+    if (certificationsText) {
+      try {
+        certIds = JSON.parse(certificationsText);
+      } catch (e) {
+        console.error("Failed to parse certifications JSON:", e);
+      }
+    }
+
+    const allCerts = await getCertifications();
+    const certifications = allCerts.filter((c) => certIds.includes(c.id));
 
     if (
       !name ||
@@ -107,6 +120,7 @@ export async function createProductAction(prevState: any, formData: FormData) {
       stages,
       cartridgeSize: cartridgeSize ? cartridgeSize.trim() : "",
       sizeKey: sizeKey ? sizeKey.trim() : "",
+      certifications,
     };
 
     await createProduct(newProduct);
@@ -143,6 +157,7 @@ export async function updateProductAction(oldSlug: string, prevState: any, formD
     const cartridgeSize = formData.get("cartridgeSize") as string;
     const sizeKey = formData.get("sizeKey") as string;
     const stagesText = formData.get("stages") as string;
+    const certificationsText = formData.get("certifications") as string;
 
     const description = descriptionText
       .split("\n")
@@ -176,6 +191,18 @@ export async function updateProductAction(oldSlug: string, prevState: any, formD
         console.error("Failed to parse stages JSON:", e);
       }
     }
+
+    let certIds: string[] = [];
+    if (certificationsText) {
+      try {
+        certIds = JSON.parse(certificationsText);
+      } catch (e) {
+        console.error("Failed to parse certifications JSON:", e);
+      }
+    }
+
+    const allCerts = await getCertifications();
+    const certifications = allCerts.filter((c) => certIds.includes(c.id));
 
     if (
       !name ||
@@ -215,6 +242,7 @@ export async function updateProductAction(oldSlug: string, prevState: any, formD
       stages,
       cartridgeSize: cartridgeSize ? cartridgeSize.trim() : "",
       sizeKey: sizeKey ? sizeKey.trim() : "",
+      certifications,
     };
 
     await updateProduct(oldSlug, productUpdates);

@@ -20,6 +20,14 @@ export type SystemStage = {
   cartridges: StageCartridgeLink[];
 };
 
+export type Certification = {
+  id: string;
+  name: string;
+  image: string;
+  alt: string;
+  description: string;
+};
+
 export type Product = {
   id: number;
   slug: string;
@@ -38,6 +46,7 @@ export type Product = {
   stages?: SystemStage[];
   cartridgeSize?: string;
   sizeKey?: string;
+  certifications?: Certification[];
 };
 
 export const products: Product[] = [

@@ -1,5 +1,5 @@
 import { db } from "./firebase";
-import { type Product } from "@/constants/products";
+import { type Product, type Certification } from "@/constants/products";
 import { type BlogPost } from "@/constants/blogs";
 
 // ==========================================
@@ -72,6 +72,17 @@ export async function updateProduct(slug: string, product: Partial<Product>): Pr
 
 export async function deleteProduct(slug: string): Promise<void> {
   await db.collection("products").doc(slug).delete();
+}
+
+// ==========================================
+// Certification Queries
+// ==========================================
+export async function getCertifications(): Promise<Certification[]> {
+  const snapshot = await db.collection("certifications").get();
+  return snapshot.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  })) as Certification[];
 }
 
 // ==========================================
