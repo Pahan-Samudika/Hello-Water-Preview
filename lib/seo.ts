@@ -46,7 +46,7 @@ export function absoluteUrl(path = "/") {
 
   const normalizedPath = path.startsWith("/") ? path : `/${path}`;
 
-  return new URL(normalizedPath, `${siteConfig.url}/`).toString();
+  return `${siteConfig.url}${normalizedPath}`;
 }
 
 export function createMetadata({
