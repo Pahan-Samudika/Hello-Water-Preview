@@ -220,63 +220,96 @@ export function ProductDetailsInteractive({ product, allProducts, initialCompati
 
   return (
     <div className="space-y-16">
-      <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)]">
-        {/* LEFT COLUMN: Premium Image Carousel */}
-        <MotionWrapper
-          initial={{ opacity: 0, scale: 0.96 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
-          className="relative overflow-hidden rounded-[2.5rem] border bg-muted/20 shadow-xl w-full"
-        >
-          <Carousel setApi={setCarouselApi} className="w-full h-full group/carousel">
-            <CarouselContent>
-              {slides.map((slide, index) => (
-                <CarouselItem key={index} className="relative aspect-square w-full">
-                  <SmartImage
-                    src={slide.src}
-                    alt={slide.alt}
-                    useNextImage
-                    fill
-                    priority={index === 0}
-                    sizes="(min-width: 1024px) 48vw, 100vw"
-                    containerClassName="h-full w-full"
-                    className="object-cover"
-                  />
-                  
-                  {/* Floating Overlay Size Indicator */}
-                  <span className="absolute top-5 left-9 z-10 select-none pointer-events-none rounded-full bg-black/60 dark:bg-black/75 backdrop-blur-md px-3.5 py-1.5 text-[10px] font-bold uppercase tracking-wider text-white border border-white/10 shadow-lg">
-                    {slide.label}
-                  </span>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-            
-            {/* Carousel navigation controls */}
-            {slides.length > 1 && (
-              <>
-                <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2 size-10 rounded-full border border-white/10 bg-black/45 hover:bg-black/60 text-white hover:text-white backdrop-blur-xs transition-all opacity-0 group-hover/carousel:opacity-100 flex items-center justify-center cursor-pointer shadow-md hover:scale-105" />
-                <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2 size-10 rounded-full border border-white/10 bg-black/45 hover:bg-black/60 text-white hover:text-white backdrop-blur-xs transition-all opacity-0 group-hover/carousel:opacity-100 flex items-center justify-center cursor-pointer shadow-md hover:scale-105" />
-              </>
-            )}
+      <div className="grid gap-8 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:items-stretch items-start">
+        {/* LEFT COLUMN: Premium Image Carousel & Certifications */}
+        <div className="flex flex-col gap-6 w-full lg:h-full">
+          <MotionWrapper
+            initial={{ opacity: 0, scale: 0.96 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
+            className="relative overflow-hidden rounded-[2.5rem] border bg-muted/20 shadow-xl w-full"
+          >
+            <Carousel setApi={setCarouselApi} className="w-full h-full group/carousel">
+              <CarouselContent>
+                {slides.map((slide, index) => (
+                  <CarouselItem key={index} className="relative aspect-square w-full">
+                    <SmartImage
+                      src={slide.src}
+                      alt={slide.alt}
+                      useNextImage
+                      fill
+                      priority={index === 0}
+                      sizes="(min-width: 1024px) 48vw, 100vw"
+                      containerClassName="h-full w-full"
+                      className="object-cover"
+                    />
+                    
+                    {/* Floating Overlay Size Indicator */}
+                    <span className="absolute top-5 left-9 z-10 select-none pointer-events-none rounded-full bg-black/60 dark:bg-black/75 backdrop-blur-md px-3.5 py-1.5 text-[10px] font-bold uppercase tracking-wider text-white border border-white/10 shadow-lg">
+                      {slide.label}
+                    </span>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              
+              {/* Carousel navigation controls */}
+              {slides.length > 1 && (
+                <>
+                  <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2 size-10 rounded-full border border-white/10 bg-black/45 hover:bg-black/60 text-white hover:text-white backdrop-blur-xs transition-all opacity-0 group-hover/carousel:opacity-100 flex items-center justify-center cursor-pointer shadow-md hover:scale-105" />
+                  <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2 size-10 rounded-full border border-white/10 bg-black/45 hover:bg-black/60 text-white hover:text-white backdrop-blur-xs transition-all opacity-0 group-hover/carousel:opacity-100 flex items-center justify-center cursor-pointer shadow-md hover:scale-105" />
+                </>
+              )}
 
-            {/* Dot page indicators */}
-            {slides.length > 1 && (
-              <div className="absolute bottom-5 left-1/2 -translate-x-1/2 flex items-center gap-1.5 z-10 px-3 py-1.5 rounded-full bg-black/55 backdrop-blur-xs border border-white/5">
-                {slides.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => carouselApi?.scrollTo(index)}
-                    className={cn(
-                      "size-2 rounded-full transition-all duration-300",
-                      currentSlide === index ? "w-5 bg-primary" : "bg-white/40 hover:bg-white/70"
+              {/* Dot page indicators */}
+              {slides.length > 1 && (
+                <div className="absolute bottom-5 left-1/2 -translate-x-1/2 flex items-center gap-1.5 z-10 px-3 py-1.5 rounded-full bg-black/55 backdrop-blur-xs border border-white/5">
+                  {slides.map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => carouselApi?.scrollTo(index)}
+                      className={cn(
+                        "size-2 rounded-full transition-all duration-300",
+                        currentSlide === index ? "w-5 bg-primary" : "bg-white/40 hover:bg-white/70"
+                      )}
+                      aria-label={`Go to slide ${index + 1}`}
+                    />
+                  ))}
+                </div>
+              )}
+            </Carousel>
+          </MotionWrapper>
+
+          {/* Product Certifications Row */}
+          {product.certifications && product.certifications.length > 0 && (
+            <MotionWrapper
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="flex-1 flex flex-col items-center justify-center p-3 sm:p-4 lg:p-5 rounded-2xl sm:rounded-3xl lg:rounded-[2rem] border bg-card/60 backdrop-blur-md shadow-md space-y-2 sm:space-y-3 lg:space-y-4"
+            >
+              <span className="text-[9px] sm:text-[10px] font-semibold uppercase tracking-[0.24em] text-primary/70 select-none">
+                Certified Quality & Safety
+              </span>
+              <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 md:gap-8 py-1">
+                {product.certifications.map((cert) => (
+                  <div
+                    key={cert.id}
+                    className="h-7 sm:h-9 lg:h-10 w-auto flex items-center justify-center transition-transform duration-300 hover:scale-105"
+                    title={cert.name}
+                  >
+                    {cert.image && (
+                      <img
+                        src={cert.image}
+                        alt={cert.alt || cert.name}
+                        className="h-full w-auto object-contain max-w-[70px] sm:max-w-[90px] lg:max-w-[110px] opacity-85 hover:opacity-100 transition-opacity duration-300"
+                      />
                     )}
-                    aria-label={`Go to slide ${index + 1}`}
-                  />
+                  </div>
                 ))}
               </div>
-            )}
-          </Carousel>
-        </MotionWrapper>
+            </MotionWrapper>
+          )}
+        </div>
 
         {/* RIGHT COLUMN: Product details & Variant Select */}
         <MotionWrapper

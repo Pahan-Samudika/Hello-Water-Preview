@@ -1,5 +1,6 @@
 import { type Product } from "@/constants/products";
 import { absoluteUrl, siteConfig } from "@/lib/seo";
+import type { DBBlogPost } from "@/lib/db-queries";
 
 const organizationId = `${siteConfig.url}/#organization`;
 const websiteId = `${siteConfig.url}/#website`;
@@ -220,5 +221,33 @@ export function faqPageJsonLd(
         },
       }))
     ),
+  };
+}
+
+export function articleJsonLd(post: DBBlogPost) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "@id": `${absoluteUrl(`/blogs/${post.slug}`)}#article`,
+    headline: post.title,
+    description: post.excerpt,
+    url: absoluteUrl(`/blogs/${post.slug}`),
+    datePublished: post.publishedAt,
+    dateModified: post.publishedAt,
+    image: post.coverImage ? absoluteUrl(post.coverImage) : absoluteUrl("/opengraph-image"),
+    author: {
+      "@type": "Person",
+      name: post.author.name,
+    },
+    publisher: {
+      "@id": organizationId,
+    },
+    isPartOf: {
+      "@id": websiteId,
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": absoluteUrl(`/blogs/${post.slug}`),
+    },
   };
 }

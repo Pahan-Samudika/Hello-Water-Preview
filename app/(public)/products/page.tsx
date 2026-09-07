@@ -76,6 +76,7 @@ export default async function ProductsPage() {
               className="mb-8"
             >
               <h2 className="text-center sm:text-left text-2xl font-bold text-foreground sm:text-3xl">Filtration Systems</h2>
+              <p className="mt-2 text-center sm:text-left text-muted-foreground">Whole-home &amp; under-sink solutions engineered for every water challenge</p>
             </MotionWrapper>
             
             <MotionWrapper
@@ -114,6 +115,7 @@ export default async function ProductsPage() {
               className="mb-8"
             >
               <h2 className="text-center sm:text-left text-2xl font-bold text-foreground sm:text-3xl">Cartridges</h2>
+              <p className="mt-2 text-center sm:text-left text-muted-foreground">Industry-leading filtration technology from Pentair and EnnoPure</p>
             </MotionWrapper>
 
             <MotionWrapper

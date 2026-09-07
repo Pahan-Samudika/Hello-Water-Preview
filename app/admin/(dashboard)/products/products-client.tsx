@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
-import { type Product, type ProductVariant, type SystemStage } from "@/constants/products";
+import { type Product, type ProductVariant, type SystemStage, type Certification } from "@/constants/products";
 import { createProductAction, updateProductAction, deleteProductAction } from "./actions";
 import { Pagination } from "@/components/ui/pagination";
 import {
@@ -27,9 +27,10 @@ import Image from "next/image";
 
 interface ProductsClientProps {
   initialProducts: Product[];
+  certifications: Certification[];
 }
 
-export function ProductsClient({ initialProducts }: ProductsClientProps) {
+export function ProductsClient({ initialProducts, certifications = [] }: ProductsClientProps) {
   const [products, setProducts] = useState<Product[]>(initialProducts);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -52,6 +53,7 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
   const [formStages, setFormStages] = useState<SystemStage[]>([]);
   const [cartridgeSize, setCartridgeSize] = useState("");
   const [sizeKey, setSizeKey] = useState("");
+  const [formCertifications, setFormCertifications] = useState<string[]>([]);
 
   const cartridgeOptions = useMemo(() => {
     const options: { label: string; slug: string; variantId: string }[] = [];
@@ -213,6 +215,12 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
     }
   }
 
+  function handleCertificationToggle(id: string) {
+    setFormCertifications((prev) =>
+      prev.includes(id) ? prev.filter((c) => c !== id) : [...prev, id]
+    );
+  }
+
   function openCreateForm() {
     setEditingProduct(null);
     setFormError(null);
@@ -225,6 +233,7 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
     setFormStages([]);
     setCartridgeSize("");
     setSizeKey("");
+    setFormCertifications([]);
     setIsFormOpen(true);
   }
 
@@ -240,6 +249,7 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
     setFormStages(product.stages || []);
     setCartridgeSize(product.cartridgeSize || "");
     setSizeKey(product.sizeKey || "");
+    setFormCertifications(product.certifications?.map((c) => c.id) || []);
     setIsFormOpen(true);
   }
 
@@ -256,6 +266,7 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
     formData.append("stages", JSON.stringify(formStages));
     formData.append("cartridgeSize", cartridgeSize);
     formData.append("sizeKey", sizeKey);
+    formData.append("certifications", JSON.stringify(formCertifications));
 
     try {
       let result;
@@ -302,10 +313,11 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
           shortDescription,
           description,
           features,
-          variants: formVariants.length > 0 ? formVariants : undefined,
-          stages: formStages.length > 0 ? formStages : undefined,
-          cartridgeSize: cartridgeSize ? cartridgeSize.trim() : undefined,
-          sizeKey: sizeKey ? sizeKey.trim() : undefined,
+          variants: formVariants,
+          stages: formStages,
+          cartridgeSize: cartridgeSize ? cartridgeSize.trim() : "",
+          sizeKey: sizeKey ? sizeKey.trim() : "",
+          certifications: certifications.filter((c) => formCertifications.includes(c.id)),
         };
 
         if (editingProduct) {
@@ -1172,6 +1184,44 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
                     </div>
                   );
                 })()}
+
+                {/* Certifications Configurator */}
+                <div className="space-y-4 sm:col-span-2 border-t border-sidebar-border/60 pt-4">
+                  <div className="space-y-0.5">
+                    <h4 className="text-xs font-bold text-foreground uppercase tracking-wider">Product Certifications</h4>
+                    <p className="text-[10px] text-muted-foreground">Select the certifications applicable to this product.</p>
+                  </div>
+                  <div className="grid gap-3 p-4 rounded-xl border border-sidebar-border bg-background/25">
+                    {certifications.length > 0 ? (
+                      certifications.map((cert) => {
+                        const isChecked = formCertifications.includes(cert.id);
+                        return (
+                          <label key={cert.id} className="flex items-start gap-3 cursor-pointer select-none p-2 rounded-lg hover:bg-background/10 transition-colors">
+                            <input
+                              type="checkbox"
+                              checked={isChecked}
+                              onChange={() => handleCertificationToggle(cert.id)}
+                              className="size-4 rounded border-sidebar-border text-primary focus:ring-primary size-4 cursor-pointer mt-1"
+                            />
+                            <div className="flex gap-3 min-w-0">
+                              {cert.image && (
+                                <div className="relative size-10 rounded-lg border border-slate-800 bg-slate-950 overflow-hidden shrink-0 flex items-center justify-center p-1">
+                                  <img src={cert.image} alt={cert.alt} className="max-h-full max-w-full object-contain" />
+                                </div>
+                              )}
+                              <div className="min-w-0">
+                                <span className="text-xs font-bold text-foreground block">{cert.name}</span>
+                                <span className="text-[10px] text-muted-foreground line-clamp-2 leading-relaxed block mt-0.5">{cert.description}</span>
+                              </div>
+                            </div>
+                          </label>
+                        );
+                      })
+                    ) : (
+                      <span className="text-[10px] text-muted-foreground italic">No certifications found in database.</span>
+                    )}
+                  </div>
+                </div>
               </div>
 
               {/* Drawer footer actions */}

@@ -167,6 +167,7 @@ export default async function ProductViewPage({
               </div>
             </article>
           </MotionWrapper>
+
           <MotionWrapper
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
