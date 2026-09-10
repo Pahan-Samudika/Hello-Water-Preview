@@ -67,7 +67,7 @@ export function ProductCard({
     }
 
     return (
-      <span className={cn("font-medium", align === "left" ? "text-base text-white" : "text-sm ml-2")}>
+      <span className={cn("font-extrabold", align === "left" ? "text-base text-white" : "text-sm mx-2 ml-3")}>
         {price}
       </span>
     );
@@ -99,7 +99,7 @@ export function ProductCard({
       {/* Floating Price (hidden on mobile, visible on desktop until hover) */}
       <div
         className={cn(
-          "pointer-events-none absolute right-0 bottom-0 z-20 hidden bg-black/65 px-4 py-2.5 text-white backdrop-blur-sm transition-opacity duration-200 lg:block lg:group-hover:opacity-0 border",
+          "pointer-events-none absolute -right-0.5 -bottom-0.5 z-20 hidden bg-black/65 px-5 py-2.5 text-white backdrop-blur-sm transition-opacity duration-200 lg:block lg:group-hover:opacity-0 border",
           hasMultiplePrices ? "rounded-tl-2xl" : "rounded-tl-full"
         )}
       >
