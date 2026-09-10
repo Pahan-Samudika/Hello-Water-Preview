@@ -37,7 +37,7 @@ export function ProductCard({
   const renderPriceContent = (align: "left" | "right" = "right") => {
     if (hasMultiplePrices) {
       const hasGst = variants.some((v) => v.price && /GST/i.test(v.price));
-      
+
       return (
         <div
           className={cn(
@@ -50,12 +50,12 @@ export function ProductCard({
               <div key={v.id} className="whitespace-nowrap leading-none py-0.5">
                 {align === "left" ? (
                   <>
-                    <span className="text-xs uppercase tracking-wider text-white/55 mr-1.5">{v.label}:</span>
+                    <span className="text-xs uppercase tracking-wider text-white/80 mr-3">{v.label}:</span>
                     <span className="font-extrabold text-base text-white">{v.price}</span>
                   </>
                 ) : (
                   <>
-                    <span className="text-[10px] uppercase tracking-wider text-white/55 mr-1.5">{v.label}</span>
+                    <span className="text-[10px] uppercase tracking-wider text-white/80 mr-3">{v.label}</span>
                     <span className="font-extrabold text-sm">{v.price}</span>
                   </>
                 )}
@@ -67,7 +67,7 @@ export function ProductCard({
     }
 
     return (
-      <span className={cn("font-medium", align === "left" ? "text-lg text-white" : "text-xl")}>
+      <span className={cn("font-medium", align === "left" ? "text-base text-white" : "text-sm ml-2")}>
         {price}
       </span>
     );
@@ -99,8 +99,8 @@ export function ProductCard({
       {/* Floating Price (hidden on mobile, visible on desktop until hover) */}
       <div
         className={cn(
-          "pointer-events-none absolute right-3 bottom-3 z-20 hidden bg-black/65 px-3.5 py-2 text-white backdrop-blur-sm transition-opacity duration-200 lg:block lg:group-hover:opacity-0",
-          hasMultiplePrices ? "rounded-2xl" : "rounded-full"
+          "pointer-events-none absolute right-0 bottom-0 z-20 hidden bg-black/65 px-4 py-2.5 text-white backdrop-blur-sm transition-opacity duration-200 lg:block lg:group-hover:opacity-0 border",
+          hasMultiplePrices ? "rounded-tl-2xl" : "rounded-tl-full"
         )}
       >
         {renderPriceContent("right")}
@@ -117,7 +117,7 @@ export function ProductCard({
           <h3 className="line-clamp-3 text-2xl font-semibold tracking-tight text-white lg:text-3xl">
             {name}
           </h3>
-          
+
           <div
             className={cn(
               "pointer-events-none absolute right-3 top-3 z-20 bg-black/65 px-3.5 py-2 text-white backdrop-blur-sm transition-opacity duration-200 lg:hidden lg:group-hover:opacity-0",
