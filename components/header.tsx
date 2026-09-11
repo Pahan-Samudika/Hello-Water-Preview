@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 import { useScroll } from "@/hooks/use-scroll";
+import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { PhoneCall, ChevronDown, ShoppingBag } from "lucide-react";
 import { MobileNav } from "@/components/mobile-nav";
@@ -44,6 +45,7 @@ export const navigationData: NavItem[] = [
       { title: "Benefits", href: "/benefits" },
       { title: "Technology", href: "/technology" },
       { title: "Certifications", href: "/certifications" },
+      { title: "Financing", href: "/financing" },
       { title: "FAQs", href: "/faq" },
     ],
   },
@@ -60,11 +62,20 @@ export const navigationData: NavItem[] = [
 export function Header() {
   const scrolled = useScroll(10);
   const { setCartOpen, itemCount, cartOpen } = useCart();
+  const pathname = usePathname();
+  const isHomepage = pathname === "/";
 
   return (
     <>
-      <div className="w-full h-18 md:h-16" />
-      <div className="fixed left-0 right-0 z-[100] w-full top-0">
+      <div className="w-full transition-all duration-300 h-18 md:h-16" />
+      <div
+        className={cn(
+          "fixed left-0 right-0 z-[100] w-full transition-all duration-300 ease-out",
+          {
+            "top-0": true,
+          }
+        )}
+      >
         <header
           className={cn(
             "mx-auto w-full max-w-7xl bg-base-100 border-transparent border-b md:rounded-full md:border md:transition-all md:ease-out",

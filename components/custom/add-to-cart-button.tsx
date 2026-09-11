@@ -2,34 +2,40 @@
 
 import React, { useState } from "react";
 import { useCart } from "@/hooks/use-cart";
-import { type Product } from "@/constants/products";
+import { type Product, type ProductVariant } from "@/constants/products";
 import { Plus, Minus, ShoppingBag } from "lucide-react";
 import { toast } from "sonner";
 
 interface AddToCartButtonProps {
   product: Product;
+  selectedVariant?: ProductVariant | null;
 }
 
-export function AddToCartButton({ product }: AddToCartButtonProps) {
+export function AddToCartButton({ product, selectedVariant }: AddToCartButtonProps) {
   const { addItem } = useCart();
   const [quantity, setQuantity] = useState(1);
 
   const handleIncrement = () => setQuantity((q) => q + 1);
   const handleDecrement = () => setQuantity((q) => Math.max(1, q - 1));
 
+  const activeName = selectedVariant ? `${product.name} (${selectedVariant.label})` : product.name;
+  const activePrice = selectedVariant ? selectedVariant.price : product.price;
+  const activeImage = selectedVariant?.image || product.image;
+  const activeId = selectedVariant ? `${product.id}-${selectedVariant.id}` : product.id;
+
   const handleAddToCart = () => {
     addItem(
       {
-        id: product.id,
+        id: activeId,
         slug: product.slug,
-        name: product.name,
-        priceString: product.price,
-        image: product.image,
+        name: activeName,
+        priceString: activePrice,
+        image: activeImage,
       },
       quantity
     );
-    toast.success(`${product.name} added to cart!`, {
-      description: `${quantity} x ${product.price} added successfully.`,
+    toast.success(`${activeName} added to cart!`, {
+      description: `${quantity} x ${activePrice} added successfully.`,
       duration: 3000,
     });
   };

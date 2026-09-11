@@ -6,14 +6,14 @@ import { getBlogs, getBlogBySlug } from "@/lib/db-queries";
 import { createMetadata } from "@/lib/seo";
 import { MotionWrapper } from "@/components/custom/motion-wrapper";
 import { JsonLd } from "@/components/seo/json-ld";
-import { breadcrumbsJsonLd, webPageJsonLd } from "@/lib/structured-data";
+import { breadcrumbsJsonLd, webPageJsonLd, articleJsonLd } from "@/lib/structured-data";
 import { RelatedArticlesCarousel } from "@/components/custom/related-articles-carousel";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
-export const revalidate = 0;
+export const revalidate = 3600;
 
 export async function generateStaticParams() {
   const blogs = await getBlogs();
@@ -62,6 +62,7 @@ export default async function BlogDetailPage({ params }: PageProps) {
             description: post.excerpt,
             path: `/blogs/${post.slug}`,
           }),
+          articleJsonLd(post),
         ]}
       />
 

@@ -94,7 +94,7 @@ export const AboutSummary = () => {
                   Difference
                 </span>
               </h2>
-              <p className="text-base leading-relaxed text-muted-foreground sm:text-lg">
+              <p className="text-base leading-relaxed text-muted-foreground sm:text-lg text-justify md:text-center">
                 With more than 20 years of industry experience and 15 years of specialised water engineering
                 knowledge, HelloWater Filtration provides honest advice and trusted expertise in whole-home water
                 filtration solutions.

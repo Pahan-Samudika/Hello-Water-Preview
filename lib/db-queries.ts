@@ -1,5 +1,5 @@
 import { db } from "./firebase";
-import { type Product } from "@/constants/products";
+import { type Product, type Certification } from "@/constants/products";
 import { type BlogPost } from "@/constants/blogs";
 
 // ==========================================
@@ -75,6 +75,17 @@ export async function deleteProduct(slug: string): Promise<void> {
 }
 
 // ==========================================
+// Certification Queries
+// ==========================================
+export async function getCertifications(): Promise<Certification[]> {
+  const snapshot = await db.collection("certifications").get();
+  return snapshot.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  })) as Certification[];
+}
+
+// ==========================================
 // Blog Queries
 // ==========================================
 // Note: We redefine author.avatar type to string for DB storage compatibility (URL path)
@@ -88,7 +99,12 @@ export interface DBBlogPost extends Omit<BlogPost, "author"> {
 
 export async function getBlogs(): Promise<DBBlogPost[]> {
   const snapshot = await db.collection("blogs").orderBy("publishedAt", "desc").get();
-  return snapshot.docs.map((doc) => doc.data()) as DBBlogPost[];
+  const blogs = snapshot.docs.map((doc) => doc.data()) as DBBlogPost[];
+  return blogs.sort((a, b) => {
+    const timeA = new Date(a.publishedAt).getTime() || 0;
+    const timeB = new Date(b.publishedAt).getTime() || 0;
+    return timeB - timeA;
+  });
 }
 
 export async function getBlogBySlug(slug: string): Promise<DBBlogPost | null> {

@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 
 import { JsonLd } from "@/components/seo/json-ld";
 import HeroSection from "@/components/shadcn-studio/blocks/hero-section/hero-section";
+import { AnnouncementBanner } from "@/components/custom/announcement-banner";
+import { PromotionsSection } from "@/components/custom/promotions-section";
 import { AboutSummary } from "@/components/custom/about-summary";
 import { PFASSummary } from "@/components/custom/pfas-summary";
 import { TechnologySummary } from "@/components/custom/technology-summary";
@@ -36,7 +38,9 @@ export default function PublicHomePage() {
           serviceJsonLd(),
         ]}
       />
+      <AnnouncementBanner />
       <HeroSection menudata={menudata} />
+      <PromotionsSection />
       <AboutSummary />
       <PFASSummary />
       <TechnologySummary />

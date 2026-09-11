@@ -3,6 +3,7 @@
 import { ContactCard } from "@/components/custom/contact-card";
 import { ContactForm } from "@/components/custom/contact-form";
 import { MailIcon, PhoneIcon, MapPinIcon } from "lucide-react";
+import { WhatsappIcon } from "@/assets/svg/whatsapp-icon";
 
 export default function ContactPage() {
   return (
@@ -14,12 +15,17 @@ export default function ContactPage() {
               {
                 icon: <MailIcon />,
                 label: "Email",
-                value: "sales@hellowater.com.au",
+                value: <a href="mailto:sales@hellowater.com.au" className="hover:text-foreground hover:underline transition-colors">sales@hellowater.com.au</a>,
               },
               {
                 icon: <PhoneIcon />,
                 label: "Phone",
-                value: "1300 515 469",
+                value: <a href="tel:1300515469" className="hover:text-foreground hover:underline transition-colors">1300 515 469</a>,
+              },
+              {
+                icon: <WhatsappIcon />,
+                label: "WhatsApp",
+                value: <a href="https://wa.me/61459803881" target="_blank" rel="noopener noreferrer" className="hover:text-foreground hover:underline transition-colors">+61 459 803 881</a>,
               },
               {
                 icon: <MapPinIcon />,

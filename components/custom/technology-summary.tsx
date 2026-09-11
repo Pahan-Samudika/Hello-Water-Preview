@@ -84,7 +84,7 @@ export const TechnologySummary = () => {
                 </span>
                 {" "} Forever Chemicals
               </h2>
-              <p className="text-base leading-relaxed text-muted-foreground mx-auto">
+              <p className="text-base leading-relaxed text-muted-foreground mx-auto text-justify md:text-center">
                 Protecting your home begins with ensuring your water is truly safe. Our advanced 5-level, 3-stage
                 whole-home filtration system acts as a powerful barrier against unwanted contaminants throughout
                 your entire property. Engineered to reduce municipally added chemicals like chlorine and
