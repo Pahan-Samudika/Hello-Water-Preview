@@ -34,10 +34,10 @@ export const AnnouncementBanner = () => {
           {/* Title row */}
           <div className="text-left md:text-center leading-snug md:leading-tight">
             <span className="bg-gradient-to-r from-primary via-sky-500 to-cyan-500 bg-clip-text text-transparent font-extrabold text-[16px] sm:text-sm md:text-lg tracking-wide uppercase mr-1.5 md:mr-2 block md:inline-block">
-              ❄️ Winter Sale <span className="md:hidden">❄️</span>
+              Spring Bloom Sale
             </span>
             <span className="font-extrabold text-foreground/90 text-[12px] sm:text-sm md:text-lg">
-              Save over $700 off Whole Home Filtration System <span className="hidden md:inline">❄️</span>
+              Save over $700 off Whole Home Filtration System
             </span>
           </div>
           {/* Subtext row */}
