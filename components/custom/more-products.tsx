@@ -60,6 +60,7 @@ export function MoreProducts({ currentProductSlug, products }: MoreProductsProps
                   imageAlt={product.imageAlt}
                   recent={product.recent}
                   href={`/products/${product.slug}`}
+                  variants={product.variants}
                   className="shadow-md hover:shadow-xl transition-all duration-300 lg:shadow-md h-full"
                 />
               </div>
