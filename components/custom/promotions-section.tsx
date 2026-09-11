@@ -92,7 +92,7 @@ export const PromotionsSection = () => {
             */}
           </motion.div>
 
-          {/* Winter Sale Promo Poster Card */}
+          {/* Spring Bloom Sale Promo Poster Card */}
           <motion.div
             className="w-full"
             variants={fadeUp}
@@ -105,8 +105,8 @@ export const PromotionsSection = () => {
               {/* Full-width responsive Auto-height Image */}
               <Link href="/enquiry" className="block w-full lg:pointer-events-none">
                 <Image
-                  src="https://res.cloudinary.com/dnlb02zp9/image/upload/v1786681412/WINTER_SALE_Web_Poster_ng7yhu.webp"
-                  alt="Winter Sale Banner"
+                  src="https://res.cloudinary.com/dnlb02zp9/image/upload/v1788333238/spring-sale_qtaxkm.webp"
+                  alt="Spring Bloom Sale Banner"
                   width={2128}
                   height={788}
                   priority
@@ -124,11 +124,11 @@ export const PromotionsSection = () => {
                   </div>
 
                   <h3 className="text-2xl font-bold tracking-tight text-white sm:text-3xl lg:text-3xl xl:text-4xl">
-                    Winter Sale
+                    Spring Bloom Sale
                   </h3>
 
                   <p className="mt-2 text-sm leading-relaxed text-zinc-300 sm:text-base lg:text-white/95">
-                    This Winter Sale, upgrade your home with a premium Pentair USA-designed Hellowater Whole Home Water Filtration System & save over $700 off the installed price— plus receive an industry-leading Gradient Density Sediment Cartridge FREE every 12 months for life!
+                    This Spring Bloom Sale, upgrade your home with a premium Pentair USA-designed Hellowater Whole Home Water Filtration System & save over $700 off the installed price— plus receive an industry-leading Gradient Density Sediment Cartridge FREE every 12 months for life!
                   </p>
 
 
