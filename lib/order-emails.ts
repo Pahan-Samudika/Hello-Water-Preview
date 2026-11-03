@@ -127,7 +127,9 @@ export async function sendOrderConfirmationEmails(
   });
 
   // Admin Email
-  const adminRecipients = process.env.ENQUIRY_RECIPIENTS || "content@hellowaterfiltration.com.au";
+  // Comma-separated. Falls back to the enquiry list so existing deployments keep receiving alerts.
+  const adminRecipients =
+    process.env.ORDER_RECIPIENTS || process.env.ENQUIRY_RECIPIENTS || "content@hellowaterfiltration.com.au";
   await transporter.sendMail({
     from: `"Hello Water Shop Notification" <${process.env.SMTP_USER}>`,
     to: adminRecipients,
