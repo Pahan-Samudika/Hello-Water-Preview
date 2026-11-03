@@ -1,3 +1,4 @@
+import crypto from "crypto";
 import { db } from "./firebase";
 import { type Product, type Certification } from "@/constants/products";
 import { type BlogPost } from "@/constants/blogs";
@@ -306,6 +307,8 @@ export interface OrderItem {
   priceNumeric: number;
   quantity: number;
   image: string;
+  variantId?: string; // set when the product has variants (e.g. cartridge size)
+  variantLabel?: string;
 }
 
 export interface Order {
@@ -327,21 +330,30 @@ export interface Order {
   status: "Pending" | "Processing" | "Shipped" | "Completed" | "Cancelled";
   payment: {
     method: "paypal";
-    id: string; // PayPal transaction ID
+    id: string; // PayPal capture ID once paid (PayPal order ID while pending)
+    paypalOrderId?: string; // PayPal order ID; absent on orders created before this field existed
     payerEmail: string;
     status: string;
   };
   createdAt: string;
   updatedAt: string;
+  /** SHA-256 of the buyer's order access token. Server-only; never send to clients. */
+  accessTokenHash?: string;
 }
 
 function generateOrderId(): string {
   const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
   let result = "HW-";
   for (let i = 0; i < 6; i++) {
-    result += chars.charAt(Math.floor(Math.random() * chars.length));
+    result += chars.charAt(crypto.randomInt(chars.length));
   }
   return result;
+}
+
+function stripServerOnlyFields(data: FirebaseFirestore.DocumentData): Order {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { accessTokenHash, ...rest } = data;
+  return rest as Order;
 }
 
 export async function createOrder(order: Omit<Order, "id">): Promise<string> {
@@ -367,7 +379,7 @@ export async function createOrder(order: Omit<Order, "id">): Promise<string> {
 
 export async function getOrders(): Promise<Order[]> {
   const snapshot = await db.collection("orders").orderBy("createdAt", "desc").get();
-  return snapshot.docs.map((doc) => doc.data()) as Order[];
+  return snapshot.docs.map((doc) => stripServerOnlyFields(doc.data()));
 }
 
 export async function getOrderById(id: string): Promise<Order | null> {

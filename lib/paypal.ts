@@ -1,18 +1,43 @@
-const PAYPAL_CLIENT_ID = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || "sb";
-const PAYPAL_CLIENT_SECRET = process.env.PAYPAL_CLIENT_SECRET;
+const PAYPAL_BASE_URLS = {
+  live: "https://api-m.paypal.com",
+  sandbox: "https://api-m.sandbox.paypal.com",
+} as const;
 
-const isProd = process.env.NODE_ENV === "production";
-const BASE_URL = isProd
-  ? "https://api-m.paypal.com"
-  : "https://api-m.sandbox.paypal.com";
+type PaypalEnv = keyof typeof PAYPAL_BASE_URLS;
+
+/**
+ * Resolve PayPal configuration from the environment. The live/sandbox choice
+ * is explicit (PAYPAL_ENV) rather than inferred from NODE_ENV, because Vercel
+ * preview deployments also run with NODE_ENV=production. Validated on use, not
+ * at import, so `next build` works without PayPal credentials.
+ */
+function getPaypalConfig(): { clientId: string; clientSecret: string; baseUrl: string } {
+  const env = process.env.PAYPAL_ENV as PaypalEnv | undefined;
+  if (env !== "live" && env !== "sandbox") {
+    throw new Error('PayPal is not configured: PAYPAL_ENV must be "live" or "sandbox".');
+  }
+
+  // Live payments are only allowed on the production deployment, so a preview
+  // deployment can never charge real money even if live keys leak into it.
+  const vercelEnv = process.env.VERCEL_ENV;
+  if (env === "live" && vercelEnv && vercelEnv !== "production") {
+    throw new Error(`PayPal live mode is not allowed on the "${vercelEnv}" deployment. Use PAYPAL_ENV=sandbox.`);
+  }
+
+  const clientId = process.env.PAYPAL_CLIENT_ID || process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID;
+  const clientSecret = process.env.PAYPAL_CLIENT_SECRET;
+  if (!clientId || !clientSecret) {
+    throw new Error("PayPal is not configured: PAYPAL_CLIENT_ID and PAYPAL_CLIENT_SECRET are required.");
+  }
+
+  return { clientId, clientSecret, baseUrl: PAYPAL_BASE_URLS[env] };
+}
 
 /**
  * Generate OAuth2 Access Token from PayPal REST API
  */
 async function getAccessToken(): Promise<string> {
-  if (!PAYPAL_CLIENT_SECRET || PAYPAL_CLIENT_SECRET.startsWith("placeholder")) {
-    console.warn("PayPal Client Secret is missing or is placeholder. Defaulting to sandbox 'sb' credentials which may fail REST calls.");
-  }
+  const { clientId: PAYPAL_CLIENT_ID, clientSecret: PAYPAL_CLIENT_SECRET, baseUrl: BASE_URL } = getPaypalConfig();
 
   const auth = Buffer.from(`${PAYPAL_CLIENT_ID}:${PAYPAL_CLIENT_SECRET}`).toString("base64");
   const response = await fetch(`${BASE_URL}/v1/oauth2/token`, {
@@ -53,6 +78,7 @@ export async function createPaypalOrder(
   description: string = "Hello Water Cartridges Purchase"
 ): Promise<CreateOrderResponse> {
   const accessToken = await getAccessToken();
+  const BASE_URL = getPaypalConfig().baseUrl;
 
   const response = await fetch(`${BASE_URL}/v2/checkout/orders`, {
     method: "POST",
@@ -139,8 +165,9 @@ export interface PaypalOrderDetails {
  */
 export async function getPaypalOrder(paypalOrderId: string): Promise<PaypalOrderDetails> {
   const accessToken = await getAccessToken();
+  const BASE_URL = getPaypalConfig().baseUrl;
 
-  const response = await fetch(`${BASE_URL}/v2/checkout/orders/${paypalOrderId}`, {
+  const response = await fetch(`${BASE_URL}/v2/checkout/orders/${encodeURIComponent(paypalOrderId)}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -161,12 +188,16 @@ export async function getPaypalOrder(paypalOrderId: string): Promise<PaypalOrder
  */
 export async function capturePaypalOrder(paypalOrderId: string): Promise<CaptureOrderResponse> {
   const accessToken = await getAccessToken();
+  const BASE_URL = getPaypalConfig().baseUrl;
 
-  const response = await fetch(`${BASE_URL}/v2/checkout/orders/${paypalOrderId}/capture`, {
+  const response = await fetch(`${BASE_URL}/v2/checkout/orders/${encodeURIComponent(paypalOrderId)}/capture`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
+      // Idempotency key: PayPal returns the original result for retries
+      // instead of attempting a second capture.
+      "PayPal-Request-Id": `capture-${paypalOrderId}`,
     },
   });
 
@@ -176,4 +207,62 @@ export async function capturePaypalOrder(paypalOrderId: string): Promise<Capture
   }
 
   return (await response.json()) as CaptureOrderResponse;
+}
+
+export interface PaypalWebhookHeaders {
+  authAlgo: string | null;
+  certUrl: string | null;
+  transmissionId: string | null;
+  transmissionSig: string | null;
+  transmissionTime: string | null;
+}
+
+/**
+ * Verify a webhook delivery with PayPal's verify-webhook-signature API.
+ * `rawBody` must be the exact request body; `webhookId` is the ID of the
+ * webhook registered in the PayPal dashboard for this environment.
+ */
+export async function verifyPaypalWebhookSignature(
+  headers: PaypalWebhookHeaders,
+  rawBody: string,
+  webhookId: string
+): Promise<boolean> {
+  const { authAlgo, certUrl, transmissionId, transmissionSig, transmissionTime } = headers;
+  if (!authAlgo || !certUrl || !transmissionId || !transmissionSig || !transmissionTime) {
+    return false;
+  }
+
+  let webhookEvent: unknown;
+  try {
+    webhookEvent = JSON.parse(rawBody);
+  } catch {
+    return false;
+  }
+
+  const accessToken = await getAccessToken();
+  const BASE_URL = getPaypalConfig().baseUrl;
+  const response = await fetch(`${BASE_URL}/v1/notifications/verify-webhook-signature`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify({
+      auth_algo: authAlgo,
+      cert_url: certUrl,
+      transmission_id: transmissionId,
+      transmission_sig: transmissionSig,
+      transmission_time: transmissionTime,
+      webhook_id: webhookId,
+      webhook_event: webhookEvent,
+    }),
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`PayPal webhook verification failed: ${response.status} - ${errorText}`);
+  }
+
+  const data = (await response.json()) as { verification_status?: string };
+  return data.verification_status === "SUCCESS";
 }

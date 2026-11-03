@@ -29,7 +29,7 @@ function CaptureContent() {
         const result = await capturePaypalCheckout(token!);
         if (!isMounted) return;
 
-        if (result.success && result.orderId) {
+        if (result.success) {
           setStatus("success");
           clearCart();
           // Redirect to success page

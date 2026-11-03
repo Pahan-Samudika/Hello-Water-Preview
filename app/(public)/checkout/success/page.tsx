@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getOrderById } from "@/lib/db-queries";
+import { hasOrderAccess } from "@/lib/order-access";
 import { createMetadata } from "@/lib/seo";
 import { CheckCircle2, ShoppingBag, PhoneCall, Printer, MapPin, Mail, Phone, Calendar, ShieldCheck } from "lucide-react";
 import { SmartImage } from "@/components/ui/smart-image";
@@ -19,6 +20,28 @@ interface SuccessPageProps {
   searchParams: Promise<{ orderId?: string }>;
 }
 
+function OrderNotice({ title, message }: { title: string; message: string }) {
+  return (
+    <main className="relative overflow-hidden w-full min-h-screen flex items-center justify-center py-16 px-6">
+      <div className="max-w-md w-full text-center space-y-6 rounded-[2.5rem] border border-border/40 bg-card/30 backdrop-blur-xl p-8 sm:p-12 shadow-2xl">
+        <div className="mx-auto rounded-full bg-destructive/10 p-6 text-destructive w-fit">
+          <ShoppingBag className="h-12 w-12" />
+        </div>
+        <div className="space-y-2">
+          <h1 className="text-2xl font-bold text-foreground">{title}</h1>
+          <p className="text-sm text-muted-foreground">{message}</p>
+        </div>
+        <Link
+          href="/products"
+          className="inline-flex h-12 items-center justify-center px-8 rounded-full bg-primary text-sm font-black text-primary-foreground hover:bg-primary/95 transition-all shadow-lg shadow-primary/10 w-full"
+        >
+          Browse Products
+        </Link>
+      </div>
+    </main>
+  );
+}
+
 export default async function SuccessPage({ searchParams }: SuccessPageProps) {
   const { orderId } = await searchParams;
 
@@ -28,27 +51,23 @@ export default async function SuccessPage({ searchParams }: SuccessPageProps) {
 
   const order = await getOrderById(orderId);
 
-  if (!order) {
+  // Missing orders and orders this browser did not place get the same response,
+  // so the page cannot be used to probe which order IDs exist.
+  if (!order || !(await hasOrderAccess(order.id, order.accessTokenHash))) {
     return (
-      <main className="relative overflow-hidden w-full min-h-screen flex items-center justify-center py-16 px-6">
-        <div className="max-w-md w-full text-center space-y-6 rounded-[2.5rem] border border-border/40 bg-card/30 backdrop-blur-xl p-8 sm:p-12 shadow-2xl">
-          <div className="mx-auto rounded-full bg-destructive/10 p-6 text-destructive w-fit">
-            <ShoppingBag className="h-12 w-12" />
-          </div>
-          <div className="space-y-2">
-            <h1 className="text-2xl font-bold text-foreground">Order Not Found</h1>
-            <p className="text-sm text-muted-foreground">
-              We couldn't retrieve the details for order reference <strong>{orderId}</strong>. If you believe this is an error, please call our support.
-            </p>
-          </div>
-          <Link
-            href="/products"
-            className="inline-flex h-12 items-center justify-center px-8 rounded-full bg-primary text-sm font-black text-primary-foreground hover:bg-primary/95 transition-all shadow-lg shadow-primary/10 w-full"
-          >
-            Browse Products
-          </Link>
-        </div>
-      </main>
+      <OrderNotice
+        title="Order Details Unavailable"
+        message="We can't show this order on this device. Your receipt has been emailed to you. If you need help, please call 1300 515 469."
+      />
+    );
+  }
+
+  if (order.status === "Pending") {
+    return (
+      <OrderNotice
+        title="Payment Not Completed"
+        message="We haven't received payment for this order yet. If you were charged, please call 1300 515 469 and we'll sort it out."
+      />
     );
   }
 
