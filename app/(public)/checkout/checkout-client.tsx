@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { useCart } from "@/hooks/use-cart";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { SmartImage } from "@/components/ui/smart-image";
 import { ShoppingBag, ArrowLeft, ShieldCheck, CreditCard, Loader2 } from "lucide-react";
 import Link from "next/link";
@@ -13,6 +14,17 @@ import { initiatePaypalCheckout } from "@/app/actions/orders";
 interface CheckoutClientProps {
   standardDeliveryFee: number;
 }
+
+const AU_STATES = [
+  { value: "NSW", label: "NSW (New South Wales)" },
+  { value: "VIC", label: "VIC (Victoria)" },
+  { value: "QLD", label: "QLD (Queensland)" },
+  { value: "WA", label: "WA (Western Australia)" },
+  { value: "SA", label: "SA (South Australia)" },
+  { value: "TAS", label: "TAS (Tasmania)" },
+  { value: "ACT", label: "ACT (Capital Territory)" },
+  { value: "NT", label: "NT (Northern Territory)" },
+];
 
 export function CheckoutClient({ standardDeliveryFee }: CheckoutClientProps) {
   const { cart, subtotal, gstAmount, totalWithGst, clearCart } = useCart();
@@ -273,24 +285,33 @@ export function CheckoutClient({ standardDeliveryFee }: CheckoutClientProps) {
                     <Label htmlFor="checkout-state" className="pl-1 text-sm font-medium text-foreground/85">
                       State / Territory
                     </Label>
-                    <select
-                      id="checkout-state"
+                    <Select
                       name="state"
-                      value={shippingDetails.state}
-                      onChange={handleInputChange}
+                      items={AU_STATES}
+                      value={shippingDetails.state || null}
+                      onValueChange={(val) =>
+                        setShippingDetails((prev) => ({ ...prev, state: (val as string | null) ?? "" }))
+                      }
                       required
-                      className="flex h-12 w-full rounded-xl border border-input/40 bg-background px-3 py-1 text-sm shadow-xs transition-all focus-visible:outline-none focus-visible:border-primary/50 focus-visible:ring-primary/50 focus-visible:ring-3 disabled:cursor-not-allowed disabled:opacity-50 text-foreground"
                     >
-                      <option value="" disabled>Select State</option>
-                      <option value="NSW">NSW (New South Wales)</option>
-                      <option value="VIC">VIC (Victoria)</option>
-                      <option value="QLD">QLD (Queensland)</option>
-                      <option value="WA">WA (Western Australia)</option>
-                      <option value="SA">SA (South Australia)</option>
-                      <option value="TAS">TAS (Tasmania)</option>
-                      <option value="ACT">ACT (Capital Territory)</option>
-                      <option value="NT">NT (Northern Territory)</option>
-                    </select>
+                      <SelectTrigger
+                        id="checkout-state"
+                        className="data-[size=default]:h-12 w-full rounded-xl border-input/40 bg-transparent px-3 shadow-xs focus-visible:ring-primary/50 focus-visible:border-primary/50"
+                      >
+                        <SelectValue placeholder="Select State" />
+                      </SelectTrigger>
+                      <SelectContent
+                        alignItemWithTrigger={false}
+                        align="end"
+                        className="w-auto min-w-(--anchor-width) rounded-xl p-1"
+                      >
+                        {AU_STATES.map((s) => (
+                          <SelectItem key={s.value} value={s.value} className="rounded-lg py-2 pl-3">
+                            {s.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </div>
                 </div>
 
