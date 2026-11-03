@@ -68,8 +68,10 @@ export function CartridgePackageCard({ pkg, sizeLabel }: CartridgePackageCardPro
               </span>
             </p>
           )}
-          <p className="text-2xl font-black text-primary">
-            {formatAud(pkg.subtotal)}
+          <p className="text-2xl font-black">
+            <span className="bg-linear-to-r from-primary via-sky-500 to-cyan-400 bg-clip-text text-transparent">
+              {formatAud(pkg.subtotal)}
+            </span>
             <span className="ml-1 text-xs font-semibold text-muted-foreground">+ GST</span>
           </p>
           <p className="flex items-center gap-1.5 text-xs text-muted-foreground">
