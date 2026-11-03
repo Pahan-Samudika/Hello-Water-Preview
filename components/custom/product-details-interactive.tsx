@@ -28,9 +28,11 @@ interface ProductDetailsInteractiveProps {
 
 export function ProductDetailsInteractive({ product, allProducts, initialCompatibleSystems = [] }: ProductDetailsInteractiveProps) {
   const hasVariants = !!(product.variants && product.variants.length > 0);
-  
+  // With only one option there's nothing to choose, so it's always selected.
+  const singleVariantId = product.variants?.length === 1 ? product.variants[0].id : "";
+
   // State for active variant
-  const [selectedVariantId, setSelectedVariantId] = useState<string>("");
+  const [selectedVariantId, setSelectedVariantId] = useState<string>(singleVariantId);
   
   // Carousel API state
   const [carouselApi, setCarouselApi] = useState<CarouselApi>();
@@ -134,6 +136,8 @@ export function ProductDetailsInteractive({ product, allProducts, initialCompati
   // Handles variant select action
   const handleVariantSelect = (variantId: string) => {
     const isAlreadySelected = selectedVariantId === variantId;
+    // A single variant can't be deselected; it stays the default.
+    if (isAlreadySelected && singleVariantId) return;
     const nextVariantId = isAlreadySelected ? "" : variantId;
     setSelectedVariantId(nextVariantId);
     
@@ -195,7 +199,7 @@ export function ProductDetailsInteractive({ product, allProducts, initialCompati
               );
             }
           }
-        } else if (snapIndex === 0 && selectedVariantId !== "") {
+        } else if (snapIndex === 0 && selectedVariantId !== "" && !singleVariantId) {
           // Slide index is 0 (Overview) - clear selection and remove parameter
           setSelectedVariantId("");
           
@@ -217,7 +221,7 @@ export function ProductDetailsInteractive({ product, allProducts, initialCompati
     return () => {
       carouselApi.off("select", onSelect);
     };
-  }, [carouselApi, product.variants, selectedVariantId]);
+  }, [carouselApi, product.variants, selectedVariantId, singleVariantId]);
 
   return (
     <div className="space-y-16">

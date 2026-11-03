@@ -83,6 +83,7 @@ export function CheckoutClient({ standardDeliveryFee }: CheckoutClientProps) {
         cartItems: cart.map((item) => ({
           slug: item.slug,
           quantity: item.quantity,
+          variantId: item.variantId,
         })),
       });
 

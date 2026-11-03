@@ -22,6 +22,8 @@ export interface InitiatePaypalCheckoutInput {
   cartItems: {
     slug: string;
     quantity: number;
+    /** Required when the product has variants (e.g. cartridge sizes). */
+    variantId?: string;
   }[];
 }
 
@@ -41,11 +43,14 @@ export async function initiatePaypalCheckout(input: InitiatePaypalCheckoutInput)
   }
 
   // Validate quantities and slugs before touching prices: quantities must be whole
-  // numbers within bounds, and each product may appear only once.
-  const seenSlugs = new Set<string>();
+  // numbers within bounds, and each product/variant pair may appear only once.
+  const seenLines = new Set<string>();
   for (const item of cartItems) {
     if (typeof item?.slug !== "string" || item.slug.length === 0 || item.slug.length > 200) {
       return { success: false, error: "Invalid product in cart." };
+    }
+    if (item.variantId !== undefined && (typeof item.variantId !== "string" || item.variantId.length > 200)) {
+      return { success: false, error: "Invalid product option in cart." };
     }
     if (
       typeof item.quantity !== "number" ||
@@ -55,10 +60,11 @@ export async function initiatePaypalCheckout(input: InitiatePaypalCheckoutInput)
     ) {
       return { success: false, error: `Invalid quantity for ${item.slug}. Quantity must be a whole number between 1 and ${MAX_QUANTITY_PER_ITEM}.` };
     }
-    if (seenSlugs.has(item.slug)) {
+    const lineKey = `${item.slug}::${item.variantId ?? ""}`;
+    if (seenLines.has(lineKey)) {
       return { success: false, error: `Duplicate product in cart: ${item.slug}` };
     }
-    seenSlugs.add(item.slug);
+    seenLines.add(lineKey);
   }
 
   try {
@@ -72,7 +78,20 @@ export async function initiatePaypalCheckout(input: InitiatePaypalCheckoutInput)
         return { success: false, error: `Product not found: ${item.slug}` };
       }
 
-      const priceStr = product.price;
+      // Price by the selected variant when the product has variants; the
+      // client only says which variant, never what it costs.
+      const hasVariants = !!product.variants && product.variants.length > 0;
+      const variant = hasVariants
+        ? product.variants!.find((v) => v.id === item.variantId) ?? null
+        : null;
+      if (hasVariants && !variant) {
+        return { success: false, error: `Please select a size for ${product.name} again and re-add it to your cart.` };
+      }
+      if (!hasVariants && item.variantId) {
+        return { success: false, error: `${product.name} has changed. Please remove it and add it to your cart again.` };
+      }
+
+      const priceStr = variant ? variant.price : product.price;
       if (priceStr.toLowerCase().includes("call for price")) {
         return { success: false, error: `Filtration systems cannot be purchased online: ${product.name}` };
       }
@@ -87,11 +106,12 @@ export async function initiatePaypalCheckout(input: InitiatePaypalCheckoutInput)
       itemDetails.push({
         id: product.id,
         slug: product.slug,
-        name: product.name,
-        priceString: product.price,
+        name: variant ? `${product.name} (${variant.label})` : product.name,
+        priceString: priceStr,
         priceNumeric: priceNumeric,
         quantity: item.quantity,
-        image: product.image,
+        image: variant?.image || product.image,
+        ...(variant ? { variantId: variant.id, variantLabel: variant.label } : {}),
       });
     }
 

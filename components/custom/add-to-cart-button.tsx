@@ -35,6 +35,7 @@ export function AddToCartButton({ product, selectedVariant, requiresVariant = fa
         name: activeName,
         priceString: activePrice,
         image: activeImage,
+        variantId: selectedVariant?.id,
       },
       quantity
     );

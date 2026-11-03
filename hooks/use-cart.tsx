@@ -10,6 +10,21 @@ export interface CartItem {
   priceNumeric: number;
   quantity: number;
   image: string;
+  /** Selected variant (e.g. cartridge size); the server prices by it. */
+  variantId?: string;
+}
+
+/**
+ * Carts saved before variantId existed only encoded the variant in the line id
+ * as `${productId}-${variantId}` (product ids are numeric). Recover it so those
+ * carts can still check out.
+ */
+function migrateStoredCart(items: CartItem[]): CartItem[] {
+  return items.map((item) => {
+    if (item.variantId || typeof item.id !== "string") return item;
+    const match = item.id.match(/^\d+-(.+)$/);
+    return match ? { ...item, variantId: match[1] } : item;
+  });
 }
 
 interface CartContextType {
@@ -50,7 +65,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     try {
       const storedCart = localStorage.getItem("hw_cart");
       if (storedCart) {
-        setCart(JSON.parse(storedCart));
+        setCart(migrateStoredCart(JSON.parse(storedCart)));
       }
     } catch (e) {
       console.error("Error loading cart from localStorage", e);

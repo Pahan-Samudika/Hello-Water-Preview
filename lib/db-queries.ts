@@ -307,6 +307,8 @@ export interface OrderItem {
   priceNumeric: number;
   quantity: number;
   image: string;
+  variantId?: string; // set when the product has variants (e.g. cartridge size)
+  variantLabel?: string;
 }
 
 export interface Order {
