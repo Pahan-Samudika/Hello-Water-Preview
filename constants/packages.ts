@@ -5,6 +5,8 @@
  * `/checkout?package=<id>`, bypassing the cart.
  */
 
+import type { Product } from "@/constants/products";
+
 export type PackageItem = {
   /** Cartridge product slug. */
   slug: string;
@@ -49,10 +51,120 @@ export function computePackageTotals(pkg: Pick<CartridgePackage, "items" | "deli
   return { subtotal, gst, delivery, total: roundCurrency(subtotal + gst + delivery) };
 }
 
-/** Whether a package applies to the currently selected system size. */
-export function packageMatchesVariant(pkg: CartridgePackage, selectedVariantId: string): boolean {
-  if (!pkg.systemVariantId) return true;
+/**
+ * Whether a package should show for the selected system size. With no size
+ * selected every package shows (each is labelled with its size).
+ */
+export function packageMatchesVariant(
+  pkg: Pick<CartridgePackage, "systemVariantId">,
+  selectedVariantId: string
+): boolean {
+  if (!pkg.systemVariantId || !selectedVariantId) return true;
   return pkg.systemVariantId === selectedVariantId;
+}
+
+export type ResolvedPackageLine = {
+  key: string;
+  productId: number;
+  slug: string;
+  variantId: string;
+  variantLabel?: string;
+  /** Display name incl. size, e.g. "DGD Sediment Cartridge (20\")" */
+  name: string;
+  image: string;
+  quantity: number;
+  offerPrice: number;
+  /** Regular unit price excl. GST, 0 when unknown. */
+  regularPrice: number;
+};
+
+/** A package joined with live product data, ready to display or charge. */
+export type ResolvedPackage = {
+  id: string;
+  name: string;
+  systemSlug: string;
+  systemVariantId: string;
+  lines: ResolvedPackageLine[];
+  subtotal: number;
+  gst: number;
+  delivery: number;
+  total: number;
+  /** Sum of regular prices excl. GST, for showing the saving. */
+  regularSubtotal: number;
+};
+
+function parseRegularPrice(priceStr: string | undefined): number {
+  if (!priceStr || priceStr.toLowerCase().includes("call for price")) return 0;
+  const match = priceStr.match(/\d+(\.\d+)?/);
+  return match ? parseFloat(match[0]) : 0;
+}
+
+/**
+ * Join a package with the catalogue. Returns null when anything no longer
+ * lines up (product removed, size removed, bad price), so callers can treat
+ * the package as unavailable instead of charging for something stale.
+ * Does not check `active`; callers decide that.
+ */
+export function resolvePackage(
+  pkg: CartridgePackage,
+  findProduct: (slug: string) => Product | null | undefined
+): ResolvedPackage | null {
+  if (!Array.isArray(pkg.items) || pkg.items.length === 0 || pkg.items.length > MAX_PACKAGE_ITEMS) {
+    return null;
+  }
+  if (typeof pkg.deliveryFee !== "number" || !Number.isFinite(pkg.deliveryFee) || pkg.deliveryFee < 0) {
+    return null;
+  }
+
+  const lines: ResolvedPackageLine[] = [];
+  for (const item of pkg.items) {
+    if (
+      typeof item.offerPrice !== "number" ||
+      !Number.isFinite(item.offerPrice) ||
+      item.offerPrice <= 0 ||
+      !Number.isInteger(item.quantity) ||
+      item.quantity < 1 ||
+      item.quantity > MAX_PACKAGE_ITEM_QUANTITY
+    ) {
+      return null;
+    }
+
+    const product = findProduct(item.slug);
+    if (!product || product.category !== "Cartridges") return null;
+
+    const hasVariants = !!product.variants && product.variants.length > 0;
+    const variant = hasVariants ? product.variants!.find((v) => v.id === item.variantId) : undefined;
+    if (hasVariants && !variant) return null;
+    if (!hasVariants && item.variantId) return null;
+
+    lines.push({
+      key: `${product.slug}::${item.variantId}`,
+      productId: product.id,
+      slug: product.slug,
+      variantId: item.variantId,
+      ...(variant ? { variantLabel: variant.label } : {}),
+      name: variant ? `${product.name} (${variant.label})` : product.name,
+      image: variant?.image || product.image,
+      quantity: item.quantity,
+      offerPrice: roundCurrency(item.offerPrice),
+      regularPrice: parseRegularPrice(variant ? variant.price : product.price),
+    });
+  }
+
+  const totals = computePackageTotals({ items: lines, deliveryFee: pkg.deliveryFee });
+  const regularSubtotal = roundCurrency(
+    lines.reduce((sum, line) => sum + line.regularPrice * line.quantity, 0)
+  );
+
+  return {
+    id: pkg.id,
+    name: pkg.name,
+    systemSlug: pkg.systemSlug,
+    systemVariantId: pkg.systemVariantId || "",
+    lines,
+    ...totals,
+    regularSubtotal,
+  };
 }
 
 export function formatAud(value: number): string {

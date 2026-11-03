@@ -6,14 +6,29 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { SmartImage } from "@/components/ui/smart-image";
-import { ShoppingBag, ArrowLeft, ShieldCheck, CreditCard, Loader2 } from "lucide-react";
+import { ShoppingBag, ArrowLeft, ShieldCheck, CreditCard, Loader2, PackageCheck, PackageX } from "lucide-react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { initiatePaypalCheckout } from "@/app/actions/orders";
+import { initiatePaypalCheckout, initiatePackageCheckout } from "@/app/actions/orders";
+import type { ResolvedPackage } from "@/constants/packages";
+
+export type CheckoutPackage = ResolvedPackage & { systemName: string };
 
 interface CheckoutClientProps {
   standardDeliveryFee: number;
+  /** Set when buying a whole cartridge set; the cart is ignored. */
+  checkoutPackage?: CheckoutPackage;
+  /** The requested package does not exist, is hidden or is out of date. */
+  packageUnavailable?: boolean;
 }
+
+type SummaryLine = {
+  key: string;
+  name: string;
+  image: string;
+  quantity: number;
+  lineTotal: number;
+};
 
 const AU_STATES = [
   { value: "NSW", label: "NSW (New South Wales)" },
@@ -26,8 +41,8 @@ const AU_STATES = [
   { value: "NT", label: "NT (Northern Territory)" },
 ];
 
-export function CheckoutClient({ standardDeliveryFee }: CheckoutClientProps) {
-  const { cart, subtotal, gstAmount, totalWithGst, clearCart } = useCart();
+export function CheckoutClient({ standardDeliveryFee, checkoutPackage, packageUnavailable }: CheckoutClientProps) {
+  const { cart, subtotal: cartSubtotal, gstAmount: cartGst, totalWithGst } = useCart();
   const router = useRouter();
   const searchParams = useSearchParams();
   const [mounted, setMounted] = useState(false);
@@ -55,8 +70,26 @@ export function CheckoutClient({ standardDeliveryFee }: CheckoutClientProps) {
     shippingDetails.postcode.trim() !== "" &&
     shippingDetails.state !== "";
 
-  // Calculate final total
-  const finalTotal = totalWithGst + standardDeliveryFee;
+  // Order summary: from the package when buying a whole set, otherwise from the cart
+  const summaryLines: SummaryLine[] = checkoutPackage
+    ? checkoutPackage.lines.map((line) => ({
+        key: line.key,
+        name: line.name,
+        image: line.image,
+        quantity: line.quantity,
+        lineTotal: line.offerPrice * line.quantity,
+      }))
+    : cart.map((item) => ({
+        key: String(item.id),
+        name: item.name,
+        image: item.image,
+        quantity: item.quantity,
+        lineTotal: item.priceNumeric * item.quantity,
+      }));
+  const subtotal = checkoutPackage ? checkoutPackage.subtotal : cartSubtotal;
+  const gstAmount = checkoutPackage ? checkoutPackage.gst : cartGst;
+  const deliveryFee = checkoutPackage ? checkoutPackage.delivery : standardDeliveryFee;
+  const finalTotal = checkoutPackage ? checkoutPackage.total : totalWithGst + standardDeliveryFee;
 
   // Hydration fix
   useEffect(() => {
@@ -90,14 +123,16 @@ export function CheckoutClient({ standardDeliveryFee }: CheckoutClientProps) {
     setPaymentError(null);
 
     try {
-      const result = await initiatePaypalCheckout({
-        customer: shippingDetails,
-        cartItems: cart.map((item) => ({
-          slug: item.slug,
-          quantity: item.quantity,
-          variantId: item.variantId,
-        })),
-      });
+      const result = checkoutPackage
+        ? await initiatePackageCheckout({ customer: shippingDetails, packageId: checkoutPackage.id })
+        : await initiatePaypalCheckout({
+            customer: shippingDetails,
+            cartItems: cart.map((item) => ({
+              slug: item.slug,
+              quantity: item.quantity,
+              variantId: item.variantId,
+            })),
+          });
 
       if (result.success) {
         // Redirect browser to PayPal payment approval
@@ -129,8 +164,33 @@ export function CheckoutClient({ standardDeliveryFee }: CheckoutClientProps) {
     setShippingDetails((prev) => ({ ...prev, [name]: value }));
   };
 
+  // Requested package is gone or hidden
+  if (packageUnavailable) {
+    return (
+      <main className="relative overflow-hidden w-full min-h-screen flex items-center justify-center py-16 px-6">
+        <div className="max-w-md w-full text-center space-y-6 rounded-[2.5rem] border border-border/40 bg-card/30 backdrop-blur-xl p-8 sm:p-12 shadow-2xl">
+          <div className="mx-auto rounded-full bg-primary/10 p-6 text-primary w-fit">
+            <PackageX className="h-12 w-12" />
+          </div>
+          <div className="space-y-2">
+            <h1 className="text-2xl font-bold text-foreground sm:text-3xl">Cartridge Set Unavailable</h1>
+            <p className="text-sm text-muted-foreground">
+              This cartridge set is no longer available. You can still buy the cartridges individually, or call us on 1300 515 469.
+            </p>
+          </div>
+          <Link
+            href="/products"
+            className="inline-flex h-12 items-center justify-center px-8 rounded-full bg-primary text-sm font-black text-primary-foreground hover:bg-primary/95 transition-all shadow-lg shadow-primary/10 w-full"
+          >
+            Browse Cartridges
+          </Link>
+        </div>
+      </main>
+    );
+  }
+
   // If cart is empty, show empty state
-  if (cart.length === 0) {
+  if (!checkoutPackage && cart.length === 0) {
     return (
       <main className="relative overflow-hidden w-full min-h-screen flex items-center justify-center py-16 px-6">
         <div className="max-w-md w-full text-center space-y-6 rounded-[2.5rem] border border-border/40 bg-card/30 backdrop-blur-xl p-8 sm:p-12 shadow-2xl">
@@ -159,11 +219,11 @@ export function CheckoutClient({ standardDeliveryFee }: CheckoutClientProps) {
       <section className="mx-auto w-full max-w-6xl px-6 py-8 md:py-16 sm:px-6 lg:px-8">
         <div className="mb-8 md:mb-12 space-y-4">
           <Link
-            href="/products"
+            href={checkoutPackage ? `/products/${checkoutPackage.systemSlug}` : "/products"}
             className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-primary transition-colors group"
           >
             <ArrowLeft className="size-4 transition-transform group-hover:-translate-x-0.5" />
-            <span>Back to Products</span>
+            <span>{checkoutPackage ? "Back to System" : "Back to Products"}</span>
           </Link>
           <h1 className="text-3xl font-extrabold tracking-tight sm:text-4xl text-balance">
             Checkout
@@ -340,10 +400,23 @@ export function CheckoutClient({ standardDeliveryFee }: CheckoutClientProps) {
               Order Summary
             </h2>
 
+            {checkoutPackage && (
+              <div className="rounded-2xl border border-primary/30 bg-primary/5 p-4 flex gap-3 items-start">
+                <PackageCheck className="size-5 text-primary shrink-0 mt-0.5" />
+                <div className="min-w-0">
+                  <p className="text-[10px] font-black uppercase tracking-widest text-primary">Cartridge Set</p>
+                  <p className="text-sm font-bold text-foreground">{checkoutPackage.name}</p>
+                  {checkoutPackage.systemName && (
+                    <p className="text-xs text-muted-foreground">For the {checkoutPackage.systemName}</p>
+                  )}
+                </div>
+              </div>
+            )}
+
             {/* Itemized list */}
             <div className="divide-y divide-border/30 max-h-80 overflow-y-auto pr-2 space-y-3">
-              {cart.map((item) => (
-                <div key={item.id} className="flex gap-4 pt-3 first:pt-0">
+              {summaryLines.map((item) => (
+                <div key={item.key} className="flex gap-4 pt-3 first:pt-0">
                   <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-xl border border-border/50 bg-muted/40">
                     <SmartImage
                       src={item.image}
@@ -364,7 +437,7 @@ export function CheckoutClient({ standardDeliveryFee }: CheckoutClientProps) {
                     </p>
                   </div>
                   <div className="text-right font-semibold text-xs text-foreground shrink-0 pt-0.5">
-                    ${(item.priceNumeric * item.quantity).toFixed(2)}
+                    ${item.lineTotal.toFixed(2)}
                   </div>
                 </div>
               ))}
@@ -381,8 +454,8 @@ export function CheckoutClient({ standardDeliveryFee }: CheckoutClientProps) {
                 <span className="font-semibold text-foreground">${gstAmount.toFixed(2)} AUD</span>
               </div>
               <div className="flex justify-between text-xs text-muted-foreground">
-                <span>Standard Delivery (Flat Rate)</span>
-                <span className="font-semibold text-foreground">${standardDeliveryFee.toFixed(2)} AUD</span>
+                <span>{checkoutPackage ? "Delivery (per order)" : "Standard Delivery (Flat Rate)"}</span>
+                <span className="font-semibold text-foreground">${deliveryFee.toFixed(2)} AUD</span>
               </div>
 
               <div className="border-t border-border/40 pt-4 flex justify-between text-base font-bold text-foreground">

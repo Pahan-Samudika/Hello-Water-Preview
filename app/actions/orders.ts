@@ -4,14 +4,14 @@ import {
   createOrder,
   getShippingSettings,
   getProductBySlug,
-  getPackageById,
   type OrderItem,
 } from "@/lib/db-queries";
 import { createPaypalOrder } from "@/lib/paypal";
 import { headers } from "next/headers";
 import { createOrderAccessToken, setOrderAccessCookie } from "@/lib/order-access";
 import { completePaypalOrder, type FulfillmentResult } from "@/lib/order-fulfillment";
-import { computePackageTotals, GST_RATE } from "@/constants/packages";
+import { GST_RATE } from "@/constants/packages";
+import { getResolvedActivePackage, isValidPackageId } from "@/lib/packages";
 import type { Product, ProductVariant } from "@/constants/products";
 
 const MAX_QUANTITY_PER_ITEM = 50;
@@ -269,57 +269,40 @@ export async function initiatePackageCheckout(input: InitiatePackageCheckoutInpu
     return { success: false, error: customerError };
   }
 
-  if (typeof packageId !== "string" || !/^[A-Za-z0-9_-]{1,128}$/.test(packageId)) {
+  if (!isValidPackageId(packageId)) {
     return { success: false, error: "Invalid cartridge set." };
   }
 
-  const unavailable = "This cartridge set is currently unavailable. Please contact us on 1300 515 469.";
-
   try {
-    const pkg = await getPackageById(packageId);
-    if (!pkg || pkg.active !== true || !Array.isArray(pkg.items) || pkg.items.length === 0) {
-      return { success: false, error: unavailable };
-    }
-    if (typeof pkg.deliveryFee !== "number" || !Number.isFinite(pkg.deliveryFee) || pkg.deliveryFee < 0) {
-      return { success: false, error: unavailable };
-    }
-
-    const itemDetails: OrderItem[] = [];
-    for (const item of pkg.items) {
-      if (
-        typeof item.offerPrice !== "number" ||
-        !Number.isFinite(item.offerPrice) ||
-        item.offerPrice <= 0 ||
-        !Number.isInteger(item.quantity) ||
-        item.quantity < 1
-      ) {
-        return { success: false, error: unavailable };
-      }
-
-      const product = await getProductBySlug(item.slug);
-      if (!product) {
-        return { success: false, error: unavailable };
-      }
-      const resolved = resolveVariant(product, item.variantId || undefined);
-      if (!resolved.ok) {
-        return { success: false, error: unavailable };
-      }
-
-      itemDetails.push(
-        buildOrderItem(product, resolved.variant, `$${item.offerPrice.toFixed(2)} + GST`, item.offerPrice, item.quantity)
-      );
+    // Same resolver the checkout page uses to display the summary, so the
+    // buyer is charged exactly what they were shown.
+    const pkg = await getResolvedActivePackage(packageId);
+    if (!pkg) {
+      return {
+        success: false,
+        error: "This cartridge set is currently unavailable. Please contact us on 1300 515 469.",
+      };
     }
 
-    const totals = computePackageTotals(pkg);
+    const itemDetails: OrderItem[] = pkg.lines.map((line) => ({
+      id: line.productId,
+      slug: line.slug,
+      name: line.name,
+      priceString: `$${line.offerPrice.toFixed(2)} + GST`,
+      priceNumeric: line.offerPrice,
+      quantity: line.quantity,
+      image: line.image,
+      ...(line.variantId ? { variantId: line.variantId, variantLabel: line.variantLabel } : {}),
+    }));
 
     return await createPaypalAndSaveOrder({
       customer,
       items: itemDetails,
       pkg: { id: pkg.id, name: pkg.name },
-      subtotal: totals.subtotal,
-      shipping: totals.delivery,
-      gst: totals.gst,
-      total: totals.total,
+      subtotal: pkg.subtotal,
+      shipping: pkg.delivery,
+      gst: pkg.gst,
+      total: pkg.total,
       cancelPath: `/checkout?package=${encodeURIComponent(pkg.id)}&error=cancelled`,
     });
   } catch (error: unknown) {

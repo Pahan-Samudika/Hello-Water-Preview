@@ -19,14 +19,23 @@ import { FiltrationStagesTimeline } from "@/components/custom/filtration-stages-
 import { Check, ArrowRight } from "lucide-react";
 import { CompatibleSystemCard } from "@/components/custom/compatible-system-card";
 import { AddToCartButton } from "@/components/custom/add-to-cart-button";
+import { CartridgePackageCard } from "@/components/custom/cartridge-package-card";
+import { packageMatchesVariant, type ResolvedPackage } from "@/constants/packages";
 
 interface ProductDetailsInteractiveProps {
   product: Product;
   allProducts: Product[];
   initialCompatibleSystems?: Product[];
+  /** Active whole-set cartridge packages (filtration systems only). */
+  packages?: ResolvedPackage[];
 }
 
-export function ProductDetailsInteractive({ product, allProducts, initialCompatibleSystems = [] }: ProductDetailsInteractiveProps) {
+export function ProductDetailsInteractive({
+  product,
+  allProducts,
+  initialCompatibleSystems = [],
+  packages = [],
+}: ProductDetailsInteractiveProps) {
   const hasVariants = !!(product.variants && product.variants.length > 0);
   // With only one option there's nothing to choose, so it's always selected.
   const singleVariantId = product.variants?.length === 1 ? product.variants[0].id : "";
@@ -51,6 +60,9 @@ export function ProductDetailsInteractive({ product, allProducts, initialCompati
     : (product.sizeKey || "");
 
   const hasStages = !!(product.stages && product.stages.length > 0);
+
+  const visiblePackages = packages.filter((pkg) => packageMatchesVariant(pkg, selectedVariantId));
+  const hasPackages = packages.length > 0;
 
   const isCartridge = product.category === "Cartridges";
 
@@ -423,7 +435,7 @@ export function ProductDetailsInteractive({ product, allProducts, initialCompati
       </div>
 
       {/* COMPATIBILITY STAGES SECTION */}
-      {hasStages && (
+      {(hasStages || hasPackages) && (
         <MotionWrapper
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -452,11 +464,42 @@ export function ProductDetailsInteractive({ product, allProducts, initialCompati
             ) : null}
           </div>
 
-          <FiltrationStagesTimeline
-            stages={product.stages!}
-            activeSizeKey={activeSizeKey}
-            allProducts={allProducts}
-          />
+          {/* Whole-set packages: buy every cartridge at once, straight to checkout */}
+          {hasPackages && (
+            <div className="space-y-4">
+              <div>
+                <h3 className="text-lg font-bold tracking-tight">Complete Cartridge Set</h3>
+                <p className="text-xs text-muted-foreground mt-1">
+                  Replace every stage in one go at a bundled price.
+                </p>
+              </div>
+              {visiblePackages.length > 0 ? (
+                visiblePackages.map((pkg) => (
+                  <CartridgePackageCard
+                    key={pkg.id}
+                    pkg={pkg}
+                    sizeLabel={
+                      pkg.systemVariantId
+                        ? product.variants?.find((v) => v.id === pkg.systemVariantId)?.label
+                        : undefined
+                    }
+                  />
+                ))
+              ) : (
+                <p className="text-xs text-muted-foreground italic">
+                  No complete set is available for this size. Choose another size or buy cartridges individually below.
+                </p>
+              )}
+            </div>
+          )}
+
+          {hasStages && (
+            <FiltrationStagesTimeline
+              stages={product.stages!}
+              activeSizeKey={activeSizeKey}
+              allProducts={allProducts}
+            />
+          )}
         </MotionWrapper>
       )}
 
