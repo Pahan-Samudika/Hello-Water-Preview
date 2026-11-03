@@ -2,6 +2,7 @@ import crypto from "crypto";
 import { db } from "./firebase";
 import { type Product, type Certification } from "@/constants/products";
 import { type BlogPost } from "@/constants/blogs";
+import { type CartridgePackage } from "@/constants/packages";
 
 // ==========================================
 // FAQ Types & Queries
@@ -73,6 +74,49 @@ export async function updateProduct(slug: string, product: Partial<Product>): Pr
 
 export async function deleteProduct(slug: string): Promise<void> {
   await db.collection("products").doc(slug).delete();
+}
+
+// ==========================================
+// Cartridge Package Queries
+// ==========================================
+function toPackage(doc: FirebaseFirestore.DocumentSnapshot): CartridgePackage {
+  return { ...(doc.data() as Omit<CartridgePackage, "id">), id: doc.id };
+}
+
+export async function getPackages(): Promise<CartridgePackage[]> {
+  const snapshot = await db.collection("packages").orderBy("createdAt", "desc").get();
+  return snapshot.docs.map(toPackage);
+}
+
+/** Active packages for one filtration system, for the public product page. */
+export async function getActivePackagesForSystem(systemSlug: string): Promise<CartridgePackage[]> {
+  const snapshot = await db.collection("packages").where("systemSlug", "==", systemSlug).get();
+  return snapshot.docs
+    .map(toPackage)
+    .filter((pkg) => pkg.active === true)
+    .sort((a, b) => a.createdAt.localeCompare(b.createdAt));
+}
+
+export async function getPackageById(id: string): Promise<CartridgePackage | null> {
+  const doc = await db.collection("packages").doc(id).get();
+  if (!doc.exists) return null;
+  return toPackage(doc);
+}
+
+export async function createPackage(pkg: Omit<CartridgePackage, "id">): Promise<string> {
+  const docRef = await db.collection("packages").add(pkg);
+  return docRef.id;
+}
+
+export async function updatePackage(
+  id: string,
+  pkg: Partial<Omit<CartridgePackage, "id" | "createdAt">>
+): Promise<void> {
+  await db.collection("packages").doc(id).update({ ...pkg, updatedAt: new Date().toISOString() });
+}
+
+export async function deletePackage(id: string): Promise<void> {
+  await db.collection("packages").doc(id).delete();
 }
 
 // ==========================================
@@ -323,6 +367,8 @@ export interface Order {
     state: string;
   };
   items: OrderItem[];
+  /** Set when the order was a cartridge package purchase rather than a cart checkout. */
+  package?: { id: string; name: string };
   subtotal: number;
   shipping: number;
   gst: number;
