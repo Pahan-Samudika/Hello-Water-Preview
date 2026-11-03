@@ -5,6 +5,7 @@ import { createOrder, getShippingSettings, getProductBySlug } from "@/lib/db-que
 import nodemailer from "nodemailer";
 import { createPaypalOrder, capturePaypalOrder, getPaypalOrder } from "@/lib/paypal";
 import { headers } from "next/headers";
+import { createOrderAccessToken, setOrderAccessCookie } from "@/lib/order-access";
 import path from "path";
 
 const MAX_QUANTITY_PER_ITEM = 50;
@@ -121,7 +122,9 @@ export async function initiatePaypalCheckout(input: InitiatePaypalCheckoutInput)
       return { success: false, error: "No PayPal approval URL returned." };
     }
 
-    // 4. Save order to Firestore with status 'Pending' and payment.id set to PayPal Order ID
+    // 4. Save order to Firestore with status 'Pending' and payment.id set to PayPal Order ID.
+    // The access token lets only this browser view the order confirmation page.
+    const access = createOrderAccessToken();
     const orderData = {
       customer,
       items: itemDetails,
@@ -138,9 +141,11 @@ export async function initiatePaypalCheckout(input: InitiatePaypalCheckoutInput)
       },
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
+      accessTokenHash: access.hash,
     };
 
     const orderId = await createOrder(orderData);
+    await setOrderAccessCookie(orderId, access.token);
 
     return { success: true, approvalUrl, orderId };
   } catch (error: unknown) {
