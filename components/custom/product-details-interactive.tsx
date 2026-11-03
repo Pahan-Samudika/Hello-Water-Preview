@@ -441,24 +441,13 @@ export function ProductDetailsInteractive({
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className="space-y-8 rounded-[2.5rem] border bg-card/50 backdrop-blur-xl p-6 sm:p-8 lg:p-12 shadow-2xl mt-12"
+          className="space-y-4 mt-12"
         >
-          <div className="border-b border-border/60 pb-6">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-primary/80">
-              Bundle &amp; Save
-            </p>
-            <h2 className="mt-2 text-2xl font-bold tracking-tight sm:text-3xl">
-              Complete Cartridge Set
-            </h2>
-            <p className="text-sm text-muted-foreground mt-2">
-              Replace every stage of the {product.name} in one go at a bundled price.
-            </p>
-            {hasVariants && !selectedVariantId && packages.some((pkg) => pkg.systemVariantId) && (
-              <div className="mt-3 inline-flex items-center gap-2 rounded-full border border-primary/25 bg-primary/8 px-4 py-1.5 text-xs font-semibold text-primary">
-                Select a size above to see the set for that size
-              </div>
-            )}
-          </div>
+          {hasVariants && !selectedVariantId && packages.some((pkg) => pkg.systemVariantId) && (
+            <div className="inline-flex items-center gap-2 rounded-full border border-primary/25 bg-primary/8 px-4 py-1.5 text-xs font-semibold text-primary">
+              Select a size above to see the set for that size
+            </div>
+          )}
 
           {visiblePackages.length > 0 ? (
             <div className="space-y-4">

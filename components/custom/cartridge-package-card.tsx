@@ -92,7 +92,7 @@ export function CartridgePackageCard({ pkg, sizeLabel }: CartridgePackageCardPro
           <div className="space-y-1">
             <div className="flex flex-wrap items-center gap-2">
               <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
-                Set price
+                Best price
               </span>
               {showSaving && (
                 <span className="rounded-full bg-emerald-500/10 px-2 py-0.5 text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
