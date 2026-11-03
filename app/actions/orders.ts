@@ -7,6 +7,9 @@ import { createPaypalOrder, capturePaypalOrder, getPaypalOrder } from "@/lib/pay
 import { headers } from "next/headers";
 import path from "path";
 
+const MAX_QUANTITY_PER_ITEM = 50;
+const MAX_CART_LINES = 20;
+
 export interface InitiatePaypalCheckoutInput {
   customer: {
     name: string;
@@ -30,8 +33,33 @@ export async function initiatePaypalCheckout(input: InitiatePaypalCheckoutInput)
     return { success: false, error: "Missing required shipping fields." };
   }
 
-  if (!cartItems || cartItems.length === 0) {
+  if (!Array.isArray(cartItems) || cartItems.length === 0) {
     return { success: false, error: "Shopping cart is empty." };
+  }
+
+  if (cartItems.length > MAX_CART_LINES) {
+    return { success: false, error: "Too many items in cart." };
+  }
+
+  // Validate quantities and slugs before touching prices: quantities must be whole
+  // numbers within bounds, and each product may appear only once.
+  const seenSlugs = new Set<string>();
+  for (const item of cartItems) {
+    if (typeof item?.slug !== "string" || item.slug.length === 0 || item.slug.length > 200) {
+      return { success: false, error: "Invalid product in cart." };
+    }
+    if (
+      typeof item.quantity !== "number" ||
+      !Number.isInteger(item.quantity) ||
+      item.quantity < 1 ||
+      item.quantity > MAX_QUANTITY_PER_ITEM
+    ) {
+      return { success: false, error: `Invalid quantity for ${item.slug}. Quantity must be a whole number between 1 and ${MAX_QUANTITY_PER_ITEM}.` };
+    }
+    if (seenSlugs.has(item.slug)) {
+      return { success: false, error: `Duplicate product in cart: ${item.slug}` };
+    }
+    seenSlugs.add(item.slug);
   }
 
   try {
@@ -40,8 +68,6 @@ export async function initiatePaypalCheckout(input: InitiatePaypalCheckoutInput)
     const itemDetails = [];
 
     for (const item of cartItems) {
-      if (item.quantity <= 0) continue;
-      
       const product = await getProductBySlug(item.slug);
       if (!product) {
         return { success: false, error: `Product not found: ${item.slug}` };

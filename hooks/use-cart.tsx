@@ -26,6 +26,10 @@ interface CartContextType {
   setCartOpen: (open: boolean) => void;
 }
 
+// Keep in sync with the limits in app/actions/orders.ts
+export const MAX_QUANTITY_PER_ITEM = 50;
+export const MAX_CART_LINES = 20;
+
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export function parseProductPrice(priceStr: string): number {
@@ -66,17 +70,20 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   }, [cart, isLoaded]);
 
   const addItem = (item: Omit<CartItem, "quantity" | "priceNumeric">, quantity = 1) => {
-    if (quantity <= 0) return;
+    if (!Number.isInteger(quantity) || quantity <= 0) return;
     const priceNumeric = parseProductPrice(item.priceString);
 
     setCart((prevCart) => {
       const existingItemIndex = prevCart.findIndex((i) => i.id === item.id);
       if (existingItemIndex > -1) {
-        const newCart = [...prevCart];
-        newCart[existingItemIndex].quantity += quantity;
-        return newCart;
+        return prevCart.map((i, idx) =>
+          idx === existingItemIndex
+            ? { ...i, quantity: Math.min(i.quantity + quantity, MAX_QUANTITY_PER_ITEM) }
+            : i
+        );
       }
-      return [...prevCart, { ...item, priceNumeric, quantity }];
+      if (prevCart.length >= MAX_CART_LINES) return prevCart;
+      return [...prevCart, { ...item, priceNumeric, quantity: Math.min(quantity, MAX_QUANTITY_PER_ITEM) }];
     });
     
     // Automatically open cart drawer
@@ -88,12 +95,13 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   };
 
   const updateQuantity = (id: number | string, quantity: number) => {
-    if (quantity <= 0) {
+    if (!Number.isInteger(quantity) || quantity <= 0) {
       removeItem(id);
       return;
     }
+    const clamped = Math.min(quantity, MAX_QUANTITY_PER_ITEM);
     setCart((prevCart) =>
-      prevCart.map((item) => (item.id === id ? { ...item, quantity } : item))
+      prevCart.map((item) => (item.id === id ? { ...item, quantity: clamped } : item))
     );
   };
 
