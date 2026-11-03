@@ -93,7 +93,12 @@ export default async function SuccessPage({ searchParams }: SuccessPageProps) {
           <div className="space-y-6">
             <div className="rounded-[2.5rem] border border-border/40 bg-card/25 backdrop-blur-xl p-6 sm:p-8 shadow-xl space-y-6">
               <div className="flex justify-between items-center pb-4 border-b border-border/30">
-                <h2 className="text-lg font-bold text-foreground">Order Items</h2>
+                <div>
+                  <h2 className="text-lg font-bold text-foreground">Order Items</h2>
+                  {order.package && (
+                    <p className="text-xs font-semibold text-primary mt-0.5">Cartridge Set: {order.package.name}</p>
+                  )}
+                </div>
                 <span className="px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-xs font-bold text-emerald-400">
                   {order.status}
                 </span>
@@ -102,7 +107,7 @@ export default async function SuccessPage({ searchParams }: SuccessPageProps) {
               {/* Item List */}
               <div className="divide-y divide-border/20 space-y-4">
                 {order.items.map((item) => (
-                  <div key={item.id} className="flex gap-4 pt-4 first:pt-0">
+                  <div key={`${item.slug}-${item.variantId ?? ""}`} className="flex gap-4 pt-4 first:pt-0">
                     <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-2xl border border-border/50 bg-muted/40">
                       <SmartImage
                         src={item.image}

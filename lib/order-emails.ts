@@ -2,6 +2,15 @@ import nodemailer from "nodemailer";
 import path from "path";
 import type { Order } from "@/lib/db-queries";
 
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 /**
  * Sends the customer receipt and the admin new-order notification.
  * Throws if either message fails so the caller can record the failure.
@@ -20,6 +29,10 @@ export async function sendOrderConfirmationEmails(
       pass: process.env.SMTP_PASS,
     },
   });
+
+  const packageLine = orderData.package
+    ? `<p style="font-size: 13px; color: #0369a1; margin: 8px 0 0 0; font-weight: bold;">Cartridge Set: ${escapeHtml(orderData.package.name)}</p>`
+    : "";
 
   const orderItemsTableRows = orderData.items.map(
     (item) => `
@@ -71,6 +84,7 @@ export async function sendOrderConfirmationEmails(
         </p>
 
         <h3 style="font-size: 15px; border-bottom: 2px solid #f1f5f9; padding-bottom: 8px; margin-top: 30px;">Order Summary</h3>
+        ${packageLine}
         <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
           <thead>
             <tr style="background-color: #f8fafc;">
@@ -141,6 +155,7 @@ export async function sendOrderConfirmationEmails(
         <p><strong>PayPal Capture ID:</strong> ${captureId}</p>
         <p><strong>Customer Name:</strong> ${orderData.customer.name}</p>
         <p><strong>Customer Email:</strong> ${orderData.customer.email}</p>
+        ${orderData.package ? `<p><strong>Cartridge Set:</strong> ${escapeHtml(orderData.package.name)}</p>` : ""}
         <p><strong>Order Total:</strong> $${orderData.total.toFixed(2)} AUD (incl. GST & shipping)</p>
         <hr />
         <p>Please log in to the Hello Water Admin Dashboard to view full details and print shipping labels.</p>

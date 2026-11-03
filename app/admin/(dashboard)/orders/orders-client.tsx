@@ -25,6 +25,7 @@ import {
   DollarSign,
   Edit2,
   Info,
+  PackageCheck,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -320,7 +321,18 @@ export function OrdersClient({ initialOrders, shippingSettings }: OrdersClientPr
               paginatedOrders.map((order) => (
                 <tr key={order.id} className="hover:bg-white/2 transition-colors">
                   <td className="py-4 px-6 font-bold text-white">
-                    {order.id}
+                    <div className="flex flex-col">
+                      <span>{order.id}</span>
+                    {order.package && (
+                      <span
+                        className="mt-1 inline-flex w-fit items-center gap-1 rounded bg-primary/10 border border-primary/25 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-primary"
+                        title={order.package.name}
+                      >
+                        <PackageCheck className="size-3" />
+                        Package
+                      </span>
+                    )}
+                    </div>
                   </td>
                   <td className="py-4 px-6 text-slate-400">
                     {new Date(order.createdAt).toLocaleDateString()}
@@ -380,7 +392,15 @@ export function OrdersClient({ initialOrders, shippingSettings }: OrdersClientPr
               className="p-4 rounded-2xl border border-slate-800 bg-slate-900/20 hover:border-slate-700 transition-all flex flex-col gap-3"
             >
               <div className="flex items-center justify-between">
-                <span className="font-bold text-white text-sm">{order.id}</span>
+                <span className="font-bold text-white text-sm flex items-center gap-2">
+                  {order.id}
+                  {order.package && (
+                    <span className="inline-flex items-center gap-1 rounded bg-primary/10 border border-primary/25 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-primary">
+                      <PackageCheck className="size-3" />
+                      Package
+                    </span>
+                  )}
+                </span>
                 <span className={`inline-flex px-2 py-0.5 rounded-full border text-[9px] font-bold ${getStatusBadgeClass(order.status)}`}>
                   {order.status}
                 </span>
@@ -539,9 +559,17 @@ export function OrdersClient({ initialOrders, shippingSettings }: OrdersClientPr
                   Cartridge Items Purchased
                 </h4>
 
+                {selectedOrder.package && (
+                  <div className="flex items-center gap-2 rounded-xl border border-primary/25 bg-primary/5 px-3 py-2 text-xs">
+                    <PackageCheck className="size-4 text-primary shrink-0" />
+                    <span className="text-muted-foreground">Cartridge set:</span>
+                    <span className="font-bold text-foreground">{selectedOrder.package.name}</span>
+                  </div>
+                )}
+
                 <div className="divide-y divide-sidebar-border/40 space-y-3.5">
                   {selectedOrder.items.map((item) => (
-                    <div key={item.id} className="flex gap-4 pt-3.5 first:pt-0">
+                    <div key={`${item.slug}-${item.variantId ?? ""}`} className="flex gap-4 pt-3.5 first:pt-0">
                       <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-xl border border-sidebar-border bg-background">
                         <SmartImage
                           src={item.image}
