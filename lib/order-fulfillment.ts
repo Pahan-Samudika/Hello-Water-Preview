@@ -59,7 +59,12 @@ async function ensureConfirmationSent(orderRef: OrderRef): Promise<void> {
 }
 
 export type FulfillmentResult =
-  | { success: true; orderId: string }
+  | {
+      success: true;
+      orderId: string;
+      /** True for cartridge package orders, which never went through the cart. */
+      isPackage: boolean;
+    }
   | { success: false; error: string; orderId?: string };
 
 const PAID_STATUSES: ReadonlyArray<Order["status"]> = ["Processing", "Shipped", "Completed"];
@@ -114,10 +119,11 @@ export async function completePaypalOrder(paypalOrderId: string): Promise<Fulfil
   const initialSnap = await orderRef.get();
   const initial = initialSnap.data() as Order | undefined;
   if (!initial) return { success: false, error: "Order not found." };
+  const isPackage = !!initial.package;
 
   if (PAID_STATUSES.includes(initial.status)) {
     await ensureConfirmationSent(orderRef);
-    return { success: true, orderId };
+    return { success: true, orderId, isPackage };
   }
   if (initial.status !== "Pending") {
     return { success: false, orderId, error: `Order ${orderId} is ${initial.status} and cannot be paid.` };
@@ -184,7 +190,7 @@ export async function completePaypalOrder(paypalOrderId: string): Promise<Fulfil
   if (!transition.won) {
     if (PAID_STATUSES.includes(transition.status as Order["status"])) {
       await ensureConfirmationSent(orderRef);
-      return { success: true, orderId };
+      return { success: true, orderId, isPackage };
     }
     // Money was captured but the order was changed (e.g. cancelled) meanwhile.
     console.error(
@@ -200,5 +206,5 @@ export async function completePaypalOrder(paypalOrderId: string): Promise<Fulfil
   // 4. Send confirmation emails. Retried by later calls if this one fails.
   await ensureConfirmationSent(orderRef);
 
-  return { success: true, orderId };
+  return { success: true, orderId, isPackage };
 }

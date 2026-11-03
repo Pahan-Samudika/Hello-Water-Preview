@@ -31,7 +31,8 @@ function CaptureContent() {
 
         if (result.success) {
           setStatus("success");
-          clearCart();
+          // Package purchases skip the cart, so leave the shopper's cart alone.
+          if (!result.isPackage) clearCart();
           // Redirect to success page
           router.replace(`/checkout/success?orderId=${result.orderId}`);
         } else {

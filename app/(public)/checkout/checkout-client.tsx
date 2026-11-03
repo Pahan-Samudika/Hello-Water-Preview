@@ -99,7 +99,7 @@ export function CheckoutClient({ standardDeliveryFee }: CheckoutClientProps) {
         })),
       });
 
-      if (result.success && result.approvalUrl) {
+      if (result.success) {
         // Redirect browser to PayPal payment approval
         window.location.href = result.approvalUrl;
       } else {

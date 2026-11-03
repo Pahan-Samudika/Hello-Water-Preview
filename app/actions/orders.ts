@@ -1,24 +1,34 @@
 "use server";
 
-import { createOrder, getShippingSettings, getProductBySlug } from "@/lib/db-queries";
+import {
+  createOrder,
+  getShippingSettings,
+  getProductBySlug,
+  getPackageById,
+  type OrderItem,
+} from "@/lib/db-queries";
 import { createPaypalOrder } from "@/lib/paypal";
 import { headers } from "next/headers";
 import { createOrderAccessToken, setOrderAccessCookie } from "@/lib/order-access";
 import { completePaypalOrder, type FulfillmentResult } from "@/lib/order-fulfillment";
+import { computePackageTotals, GST_RATE } from "@/constants/packages";
+import type { Product, ProductVariant } from "@/constants/products";
 
 const MAX_QUANTITY_PER_ITEM = 50;
 const MAX_CART_LINES = 20;
 
+export interface CheckoutCustomer {
+  name: string;
+  email: string;
+  phone: string;
+  address: string;
+  suburb: string;
+  postcode: string;
+  state: string;
+}
+
 export interface InitiatePaypalCheckoutInput {
-  customer: {
-    name: string;
-    email: string;
-    phone: string;
-    address: string;
-    suburb: string;
-    postcode: string;
-    state: string;
-  };
+  customer: CheckoutCustomer;
   cartItems: {
     slug: string;
     quantity: number;
@@ -27,11 +37,136 @@ export interface InitiatePaypalCheckoutInput {
   }[];
 }
 
-export async function initiatePaypalCheckout(input: InitiatePaypalCheckoutInput) {
+export interface InitiatePackageCheckoutInput {
+  customer: CheckoutCustomer;
+  packageId: string;
+}
+
+type CheckoutResult =
+  | { success: true; approvalUrl: string; orderId: string }
+  | { success: false; error: string };
+
+function validateCustomer(customer: CheckoutCustomer | undefined): string | null {
+  if (
+    !customer ||
+    !customer.name ||
+    !customer.email ||
+    !customer.phone ||
+    !customer.address ||
+    !customer.suburb ||
+    !customer.postcode ||
+    !customer.state
+  ) {
+    return "Missing required shipping fields.";
+  }
+  return null;
+}
+
+/**
+ * Find the variant the buyer chose and reject combinations that no longer
+ * match the product (variant removed, or variants added/removed since).
+ */
+function resolveVariant(
+  product: Product,
+  variantId: string | undefined
+): { ok: true; variant: ProductVariant | null } | { ok: false; error: string } {
+  const hasVariants = !!product.variants && product.variants.length > 0;
+  const variant = hasVariants ? product.variants!.find((v) => v.id === variantId) ?? null : null;
+  if (hasVariants && !variant) {
+    return { ok: false, error: `Please select a size for ${product.name} again and re-add it to your cart.` };
+  }
+  if (!hasVariants && variantId) {
+    return { ok: false, error: `${product.name} has changed. Please remove it and add it to your cart again.` };
+  }
+  return { ok: true, variant };
+}
+
+function buildOrderItem(
+  product: Product,
+  variant: ProductVariant | null,
+  priceString: string,
+  priceNumeric: number,
+  quantity: number
+): OrderItem {
+  return {
+    id: product.id,
+    slug: product.slug,
+    name: variant ? `${product.name} (${variant.label})` : product.name,
+    priceString,
+    priceNumeric,
+    quantity,
+    image: variant?.image || product.image,
+    ...(variant ? { variantId: variant.id, variantLabel: variant.label } : {}),
+  };
+}
+
+/**
+ * Create the PayPal order for a server-computed total, then persist the
+ * Pending order and give this browser its order access cookie.
+ */
+async function createPaypalAndSaveOrder(params: {
+  customer: CheckoutCustomer;
+  items: OrderItem[];
+  subtotal: number;
+  shipping: number;
+  gst: number;
+  total: number;
+  pkg?: { id: string; name: string };
+  cancelPath: string;
+}): Promise<CheckoutResult> {
+  const headersList = await headers();
+  const host = headersList.get("host") || "localhost:3000";
+  const protocol = host.includes("localhost") || host.includes("127.0.0.1") ? "http" : "https";
+  const baseUrl = `${protocol}://${host}`;
+
+  const returnUrl = `${baseUrl}/checkout/capture`;
+  const cancelUrl = `${baseUrl}${params.cancelPath}`;
+
+  const paypalOrder = await createPaypalOrder(params.total, returnUrl, cancelUrl);
+  if (!paypalOrder?.id) {
+    return { success: false, error: "Failed to initiate order with PayPal." };
+  }
+
+  const approvalUrl = paypalOrder.links.find((link) => link.rel === "approve")?.href;
+  if (!approvalUrl) {
+    return { success: false, error: "No PayPal approval URL returned." };
+  }
+
+  // Save order with status 'Pending' and payment.id set to the PayPal Order ID.
+  // The access token lets only this browser view the order confirmation page.
+  const access = createOrderAccessToken();
+  const now = new Date().toISOString();
+  const orderId = await createOrder({
+    customer: params.customer,
+    items: params.items,
+    ...(params.pkg ? { package: params.pkg } : {}),
+    subtotal: params.subtotal,
+    shipping: params.shipping,
+    gst: params.gst,
+    total: params.total,
+    status: "Pending",
+    payment: {
+      method: "paypal",
+      id: paypalOrder.id, // Replaced with the capture ID once paid
+      paypalOrderId: paypalOrder.id, // Stable lookup key for capture and webhooks
+      payerEmail: "",
+      status: paypalOrder.status,
+    },
+    createdAt: now,
+    updatedAt: now,
+    accessTokenHash: access.hash,
+  });
+  await setOrderAccessCookie(orderId, access.token);
+
+  return { success: true, approvalUrl, orderId };
+}
+
+export async function initiatePaypalCheckout(input: InitiatePaypalCheckoutInput): Promise<CheckoutResult> {
   const { customer, cartItems } = input;
 
-  if (!customer.name || !customer.email || !customer.phone || !customer.address || !customer.suburb || !customer.postcode || !customer.state) {
-    return { success: false, error: "Missing required shipping fields." };
+  const customerError = validateCustomer(customer);
+  if (customerError) {
+    return { success: false, error: customerError };
   }
 
   if (!Array.isArray(cartItems) || cartItems.length === 0) {
@@ -68,9 +203,9 @@ export async function initiatePaypalCheckout(input: InitiatePaypalCheckoutInput)
   }
 
   try {
-    // 1. Calculate price on the server side (Zero-Trust verification)
+    // Calculate price on the server side (Zero-Trust verification)
     let calculatedSubtotal = 0;
-    const itemDetails = [];
+    const itemDetails: OrderItem[] = [];
 
     for (const item of cartItems) {
       const product = await getProductBySlug(item.slug);
@@ -80,16 +215,11 @@ export async function initiatePaypalCheckout(input: InitiatePaypalCheckoutInput)
 
       // Price by the selected variant when the product has variants; the
       // client only says which variant, never what it costs.
-      const hasVariants = !!product.variants && product.variants.length > 0;
-      const variant = hasVariants
-        ? product.variants!.find((v) => v.id === item.variantId) ?? null
-        : null;
-      if (hasVariants && !variant) {
-        return { success: false, error: `Please select a size for ${product.name} again and re-add it to your cart.` };
+      const resolved = resolveVariant(product, item.variantId);
+      if (!resolved.ok) {
+        return { success: false, error: resolved.error };
       }
-      if (!hasVariants && item.variantId) {
-        return { success: false, error: `${product.name} has changed. Please remove it and add it to your cart again.` };
-      }
+      const { variant } = resolved;
 
       const priceStr = variant ? variant.price : product.price;
       if (priceStr.toLowerCase().includes("call for price")) {
@@ -103,72 +233,97 @@ export async function initiatePaypalCheckout(input: InitiatePaypalCheckoutInput)
       }
 
       calculatedSubtotal += priceNumeric * item.quantity;
-      itemDetails.push({
-        id: product.id,
-        slug: product.slug,
-        name: variant ? `${product.name} (${variant.label})` : product.name,
-        priceString: priceStr,
-        priceNumeric: priceNumeric,
-        quantity: item.quantity,
-        image: variant?.image || product.image,
-        ...(variant ? { variantId: variant.id, variantLabel: variant.label } : {}),
-      });
+      itemDetails.push(buildOrderItem(product, variant, priceStr, priceNumeric, item.quantity));
     }
 
     const shippingSettings = await getShippingSettings();
     const deliveryFee = shippingSettings.standardDeliveryFee;
-    const gstCalculated = calculatedSubtotal * 0.1;
+    const gstCalculated = calculatedSubtotal * GST_RATE;
     const finalTotal = calculatedSubtotal + gstCalculated + deliveryFee;
 
-    // 2. Generate Return and Cancel URLs dynamically
-    const headersList = await headers();
-    const host = headersList.get("host") || "localhost:3000";
-    const protocol = host.includes("localhost") || host.includes("127.0.0.1") ? "http" : "https";
-    const baseUrl = `${protocol}://${host}`;
-    
-    const returnUrl = `${baseUrl}/checkout/capture`;
-    const cancelUrl = `${baseUrl}/checkout?error=cancelled`;
-
-    // 3. Create PayPal Order
-    const paypalOrder = await createPaypalOrder(finalTotal, returnUrl, cancelUrl);
-    if (!paypalOrder?.id) {
-      return { success: false, error: "Failed to initiate order with PayPal." };
-    }
-
-    const approvalUrl = paypalOrder.links.find((link) => link.rel === "approve")?.href;
-    if (!approvalUrl) {
-      return { success: false, error: "No PayPal approval URL returned." };
-    }
-
-    // 4. Save order to Firestore with status 'Pending' and payment.id set to PayPal Order ID.
-    // The access token lets only this browser view the order confirmation page.
-    const access = createOrderAccessToken();
-    const orderData = {
+    return await createPaypalAndSaveOrder({
       customer,
       items: itemDetails,
       subtotal: calculatedSubtotal,
       shipping: deliveryFee,
       gst: gstCalculated,
       total: finalTotal,
-      status: "Pending" as const,
-      payment: {
-        method: "paypal" as const,
-        id: paypalOrder.id, // Replaced with the capture ID once paid
-        paypalOrderId: paypalOrder.id, // Stable lookup key for capture and webhooks
-        payerEmail: "",
-        status: paypalOrder.status,
-      },
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      accessTokenHash: access.hash,
-    };
-
-    const orderId = await createOrder(orderData);
-    await setOrderAccessCookie(orderId, access.token);
-
-    return { success: true, approvalUrl, orderId };
+      cancelPath: "/checkout?error=cancelled",
+    });
   } catch (error: unknown) {
     console.error("Error initiating PayPal checkout:", error);
+    const message = error instanceof Error ? error.message : "Initiation failed.";
+    return { success: false, error: message };
+  }
+}
+
+/**
+ * Checkout for a cartridge package. The client only names the package; every
+ * price and the delivery fee are read from Firestore here.
+ */
+export async function initiatePackageCheckout(input: InitiatePackageCheckoutInput): Promise<CheckoutResult> {
+  const { customer, packageId } = input ?? ({} as InitiatePackageCheckoutInput);
+
+  const customerError = validateCustomer(customer);
+  if (customerError) {
+    return { success: false, error: customerError };
+  }
+
+  if (typeof packageId !== "string" || !/^[A-Za-z0-9_-]{1,128}$/.test(packageId)) {
+    return { success: false, error: "Invalid cartridge set." };
+  }
+
+  const unavailable = "This cartridge set is currently unavailable. Please contact us on 1300 515 469.";
+
+  try {
+    const pkg = await getPackageById(packageId);
+    if (!pkg || pkg.active !== true || !Array.isArray(pkg.items) || pkg.items.length === 0) {
+      return { success: false, error: unavailable };
+    }
+    if (typeof pkg.deliveryFee !== "number" || !Number.isFinite(pkg.deliveryFee) || pkg.deliveryFee < 0) {
+      return { success: false, error: unavailable };
+    }
+
+    const itemDetails: OrderItem[] = [];
+    for (const item of pkg.items) {
+      if (
+        typeof item.offerPrice !== "number" ||
+        !Number.isFinite(item.offerPrice) ||
+        item.offerPrice <= 0 ||
+        !Number.isInteger(item.quantity) ||
+        item.quantity < 1
+      ) {
+        return { success: false, error: unavailable };
+      }
+
+      const product = await getProductBySlug(item.slug);
+      if (!product) {
+        return { success: false, error: unavailable };
+      }
+      const resolved = resolveVariant(product, item.variantId || undefined);
+      if (!resolved.ok) {
+        return { success: false, error: unavailable };
+      }
+
+      itemDetails.push(
+        buildOrderItem(product, resolved.variant, `$${item.offerPrice.toFixed(2)} + GST`, item.offerPrice, item.quantity)
+      );
+    }
+
+    const totals = computePackageTotals(pkg);
+
+    return await createPaypalAndSaveOrder({
+      customer,
+      items: itemDetails,
+      pkg: { id: pkg.id, name: pkg.name },
+      subtotal: totals.subtotal,
+      shipping: totals.delivery,
+      gst: totals.gst,
+      total: totals.total,
+      cancelPath: `/checkout?package=${encodeURIComponent(pkg.id)}&error=cancelled`,
+    });
+  } catch (error: unknown) {
+    console.error("Error initiating package checkout:", error);
     const message = error instanceof Error ? error.message : "Initiation failed.";
     return { success: false, error: message };
   }
