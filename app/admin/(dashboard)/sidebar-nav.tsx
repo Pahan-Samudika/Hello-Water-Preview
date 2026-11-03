@@ -40,7 +40,7 @@ export function SidebarNav({ permissions }: SidebarNavProps) {
       name: "Packages",
       href: "/admin/packages",
       icon: PackageOpen,
-      show: permissions.includes("Product Management"),
+      show: permissions.includes("Package Management"),
     },
     {
       name: "Orders",

@@ -5,8 +5,8 @@ import { PackagesClient } from "./packages-client";
 export const revalidate = 0;
 
 export default async function AdminPackagesPage() {
-  // Guard: packages are part of the product catalogue
-  await requireSession("Product Management");
+  // Guard: Requires "Package Management" permission
+  await requireSession("Package Management");
 
   const [packages, products] = await Promise.all([getPackages(), getProducts()]);
 

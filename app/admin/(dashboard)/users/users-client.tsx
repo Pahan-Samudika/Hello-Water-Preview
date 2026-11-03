@@ -20,6 +20,7 @@ import {
 const AVAILABLE_PERMISSIONS = [
   "User Management",
   "Product Management",
+  "Package Management",
   "Order Management",
   "Enquiry Management",
   "Enquiry View",

@@ -17,10 +17,10 @@ import {
   type PackageItem,
 } from "@/constants/packages";
 
-// Security guard: packages are part of the product catalogue
+// Security guard: Ensure caller has "Package Management"
 async function checkAuth() {
   const session = await getAdminSession();
-  if (!session || !hasPermission(session, "Product Management")) {
+  if (!session || !hasPermission(session, "Package Management")) {
     throw new Error("Unauthorized access. Permission denied.");
   }
   return session;

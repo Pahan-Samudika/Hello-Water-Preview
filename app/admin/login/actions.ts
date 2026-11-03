@@ -79,10 +79,11 @@ export async function registerInitialAdminAction(prevState: any, formData: FormD
 
     const { hash, salt } = hashPassword(password);
 
-    // Initial super admin gets all 8 permissions
+    // Initial super admin gets all permissions
     const allPermissions = [
       "User Management",
       "Product Management",
+      "Package Management",
       "Enquiry Management",
       "Enquiry View",
       "Contact Management",
