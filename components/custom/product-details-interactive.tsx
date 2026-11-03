@@ -404,7 +404,11 @@ export function ProductDetailsInteractive({ product, allProducts, initialCompati
                   Enquire Now
                 </Link>
               ) : (
-                <AddToCartButton product={product} selectedVariant={activeVariant} />
+                <AddToCartButton
+                  product={product}
+                  selectedVariant={activeVariant}
+                  requiresVariant={hasVariants}
+                />
               )}
             </div>
           </div>
