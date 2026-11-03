@@ -11,6 +11,7 @@ import { JsonLd } from "@/components/seo/json-ld";
 import { createMetadata } from "@/lib/seo";
 import { breadcrumbsJsonLd, productJsonLd } from "@/lib/structured-data";
 import { ProductDetailsInteractive } from "@/components/custom/product-details-interactive";
+import { getResolvedPackagesForSystem } from "@/lib/packages";
 export const revalidate = 0;
 
 export async function generateStaticParams() {
@@ -75,6 +76,12 @@ export default async function ProductViewPage({
       })
     : [];
 
+  // Whole-set cartridge packages offered for this filtration system
+  const packages =
+    product.category === "Filtration Systems"
+      ? await getResolvedPackagesForSystem(product.slug, allProducts)
+      : [];
+
   return (
     <main className="relative overflow-hidden w-full min-h-screen">
       <JsonLd
@@ -108,6 +115,7 @@ export default async function ProductViewPage({
             product={product}
             allProducts={allProducts}
             initialCompatibleSystems={compatibleSystems}
+            packages={packages}
           />
 
           {/* Server-rendered compatible systems links — visible to crawlers, hidden visually */}

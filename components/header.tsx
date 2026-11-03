@@ -5,8 +5,9 @@ import Link from "next/link";
 import { useScroll } from "@/hooks/use-scroll";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { PhoneCall, ChevronDown } from "lucide-react";
+import { PhoneCall, ChevronDown, ShoppingBag } from "lucide-react";
 import { MobileNav } from "@/components/mobile-nav";
+import { useCart } from "@/hooks/use-cart";
 
 import LogoSVG from "@/assets/svg/logo.svg";
 import TxtLogoSVG from "@/assets/svg/txtlogo-white.svg";
@@ -60,6 +61,7 @@ export const navigationData: NavItem[] = [
 
 export function Header() {
   const scrolled = useScroll(10);
+  const { setCartOpen, itemCount, cartOpen } = useCart();
   const pathname = usePathname();
   const isHomepage = pathname === "/";
 
@@ -166,12 +168,52 @@ export function Header() {
                 </a>
               </div>
 
+              {/* Cart Button */}
+              <button
+                onClick={() => setCartOpen(true)}
+                className={cn(
+                  "relative text-slate-300 hover:text-white transition-all duration-300 flex items-center justify-center cursor-pointer rounded-full hover:bg-white/5",
+                  scrolled
+                    ? "opacity-0 scale-75 pointer-events-none w-0 h-0 p-0 m-0 overflow-hidden"
+                    : "w-9 h-9 p-2"
+                )}
+                aria-label="Open cart"
+              >
+                <ShoppingBag className="w-5 h-5" />
+                {itemCount > 0 && (
+                  <span className="absolute -top-0.5 -right-0.5 bg-primary text-primary-foreground text-[10px] font-black w-4.5 h-4.5 rounded-full flex items-center justify-center border border-background">
+                    {itemCount}
+                  </span>
+                )}
+              </button>
+
               {/* Mobile nav */}
               <MobileNav />
             </div>
           </nav>
         </header>
       </div>
+
+      {/* Floating Cart Button (visible on scroll) */}
+      <button
+        onClick={() => setCartOpen(true)}
+        className={cn(
+          "fixed z-[150] flex items-center justify-center rounded-full transition-all duration-300 ease-out",
+          "bg-base-300/90 border border-white/10 hover:border-primary/50 text-slate-300 hover:text-white shadow-xl shadow-black/40 hover:scale-110 active:scale-95",
+          "w-12 h-12",
+          scrolled && !cartOpen
+            ? "top-3 right-16 md:top-4 md:right-8 opacity-100 scale-100"
+            : "top-3 right-16 md:top-4 md:right-8 opacity-0 scale-50 pointer-events-none"
+        )}
+        aria-label="Open cart"
+      >
+        <ShoppingBag className="w-5 h-5 md:w-5.5 md:h-5.5" />
+        {itemCount > 0 && (
+          <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center border border-background animate-in zoom-in-50 duration-200">
+            {itemCount}
+          </span>
+        )}
+      </button>
     </>
   );
 }

@@ -18,18 +18,30 @@ import Link from "next/link";
 import { FiltrationStagesTimeline } from "@/components/custom/filtration-stages-timeline";
 import { Check, ArrowRight } from "lucide-react";
 import { CompatibleSystemCard } from "@/components/custom/compatible-system-card";
+import { AddToCartButton } from "@/components/custom/add-to-cart-button";
+import { CartridgePackageCard } from "@/components/custom/cartridge-package-card";
+import { packageMatchesVariant, type ResolvedPackage } from "@/constants/packages";
 
 interface ProductDetailsInteractiveProps {
   product: Product;
   allProducts: Product[];
   initialCompatibleSystems?: Product[];
+  /** Active whole-set cartridge packages (filtration systems only). */
+  packages?: ResolvedPackage[];
 }
 
-export function ProductDetailsInteractive({ product, allProducts, initialCompatibleSystems = [] }: ProductDetailsInteractiveProps) {
+export function ProductDetailsInteractive({
+  product,
+  allProducts,
+  initialCompatibleSystems = [],
+  packages = [],
+}: ProductDetailsInteractiveProps) {
   const hasVariants = !!(product.variants && product.variants.length > 0);
-  
+  // With only one option there's nothing to choose, so it's always selected.
+  const singleVariantId = product.variants?.length === 1 ? product.variants[0].id : "";
+
   // State for active variant
-  const [selectedVariantId, setSelectedVariantId] = useState<string>("");
+  const [selectedVariantId, setSelectedVariantId] = useState<string>(singleVariantId);
   
   // Carousel API state
   const [carouselApi, setCarouselApi] = useState<CarouselApi>();
@@ -48,6 +60,9 @@ export function ProductDetailsInteractive({ product, allProducts, initialCompati
     : (product.sizeKey || "");
 
   const hasStages = !!(product.stages && product.stages.length > 0);
+
+  const visiblePackages = packages.filter((pkg) => packageMatchesVariant(pkg, selectedVariantId));
+  const hasPackages = packages.length > 0;
 
   const isCartridge = product.category === "Cartridges";
 
@@ -133,6 +148,8 @@ export function ProductDetailsInteractive({ product, allProducts, initialCompati
   // Handles variant select action
   const handleVariantSelect = (variantId: string) => {
     const isAlreadySelected = selectedVariantId === variantId;
+    // A single variant can't be deselected; it stays the default.
+    if (isAlreadySelected && singleVariantId) return;
     const nextVariantId = isAlreadySelected ? "" : variantId;
     setSelectedVariantId(nextVariantId);
     
@@ -194,7 +211,7 @@ export function ProductDetailsInteractive({ product, allProducts, initialCompati
               );
             }
           }
-        } else if (snapIndex === 0 && selectedVariantId !== "") {
+        } else if (snapIndex === 0 && selectedVariantId !== "" && !singleVariantId) {
           // Slide index is 0 (Overview) - clear selection and remove parameter
           setSelectedVariantId("");
           
@@ -216,7 +233,7 @@ export function ProductDetailsInteractive({ product, allProducts, initialCompati
     return () => {
       carouselApi.off("select", onSelect);
     };
-  }, [carouselApi, product.variants, selectedVariantId]);
+  }, [carouselApi, product.variants, selectedVariantId, singleVariantId]);
 
   return (
     <div className="space-y-16">
@@ -392,12 +409,67 @@ export function ProductDetailsInteractive({ product, allProducts, initialCompati
                 </div>
               </div>
             )}
+
+            {/* Add to Cart / Enquiry CTA */}
+            <div className="pt-3">
+              {displayPrice.toLowerCase().includes("call for price") ? (
+                <Link
+                  href={`/enquiry?product=${product.slug}${selectedVariantId ? `&variant=${selectedVariantId}` : ""}`}
+                  className="flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-primary px-6 text-sm font-black text-primary-foreground hover:bg-primary/95 transition-all shadow-lg shadow-primary/10 cursor-pointer"
+                >
+                  Enquire Now
+                </Link>
+              ) : (
+                <AddToCartButton
+                  product={product}
+                  selectedVariant={activeVariant}
+                  requiresVariant={hasVariants}
+                />
+              )}
+            </div>
           </div>
 
           {/* Financing Preview Footer */}
           {product.showFinancing === true && <FinancingOptionsPreview />}
         </MotionWrapper>
       </div>
+
+      {/* COMPLETE CARTRIDGE SET SECTION: buy every cartridge at once, straight to checkout */}
+      {hasPackages && (
+        <MotionWrapper
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="space-y-4 mt-12"
+        >
+          {hasVariants && !selectedVariantId && packages.some((pkg) => pkg.systemVariantId) && (
+            <div className="inline-flex items-center gap-2 rounded-full border border-primary/25 bg-primary/8 px-4 py-1.5 text-xs font-semibold text-primary">
+              Select a size above to see the set for that size
+            </div>
+          )}
+
+          {visiblePackages.length > 0 ? (
+            <div className="space-y-4">
+              {visiblePackages.map((pkg) => (
+                <CartridgePackageCard
+                  key={pkg.id}
+                  pkg={pkg}
+                  sizeLabel={
+                    pkg.systemVariantId
+                      ? product.variants?.find((v) => v.id === pkg.systemVariantId)?.label
+                      : undefined
+                  }
+                />
+              ))}
+            </div>
+          ) : (
+            <p className="text-xs text-muted-foreground italic">
+              No complete set is available for this size. Choose another size or buy cartridges individually below.
+            </p>
+          )}
+        </MotionWrapper>
+      )}
 
       {/* COMPATIBILITY STAGES SECTION */}
       {hasStages && (

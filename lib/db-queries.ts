@@ -1,6 +1,8 @@
+import crypto from "crypto";
 import { db } from "./firebase";
 import { type Product, type Certification } from "@/constants/products";
 import { type BlogPost } from "@/constants/blogs";
+import { type CartridgePackage } from "@/constants/packages";
 
 // ==========================================
 // FAQ Types & Queries
@@ -72,6 +74,49 @@ export async function updateProduct(slug: string, product: Partial<Product>): Pr
 
 export async function deleteProduct(slug: string): Promise<void> {
   await db.collection("products").doc(slug).delete();
+}
+
+// ==========================================
+// Cartridge Package Queries
+// ==========================================
+function toPackage(doc: FirebaseFirestore.DocumentSnapshot): CartridgePackage {
+  return { ...(doc.data() as Omit<CartridgePackage, "id">), id: doc.id };
+}
+
+export async function getPackages(): Promise<CartridgePackage[]> {
+  const snapshot = await db.collection("packages").orderBy("createdAt", "desc").get();
+  return snapshot.docs.map(toPackage);
+}
+
+/** Active packages for one filtration system, for the public product page. */
+export async function getActivePackagesForSystem(systemSlug: string): Promise<CartridgePackage[]> {
+  const snapshot = await db.collection("packages").where("systemSlug", "==", systemSlug).get();
+  return snapshot.docs
+    .map(toPackage)
+    .filter((pkg) => pkg.active === true)
+    .sort((a, b) => a.createdAt.localeCompare(b.createdAt));
+}
+
+export async function getPackageById(id: string): Promise<CartridgePackage | null> {
+  const doc = await db.collection("packages").doc(id).get();
+  if (!doc.exists) return null;
+  return toPackage(doc);
+}
+
+export async function createPackage(pkg: Omit<CartridgePackage, "id">): Promise<string> {
+  const docRef = await db.collection("packages").add(pkg);
+  return docRef.id;
+}
+
+export async function updatePackage(
+  id: string,
+  pkg: Partial<Omit<CartridgePackage, "id" | "createdAt">>
+): Promise<void> {
+  await db.collection("packages").doc(id).update({ ...pkg, updatedAt: new Date().toISOString() });
+}
+
+export async function deletePackage(id: string): Promise<void> {
+  await db.collection("packages").doc(id).delete();
 }
 
 // ==========================================
@@ -266,4 +311,136 @@ export async function getSession(sessionId: string): Promise<UserSession | null>
 
 export async function deleteSession(sessionId: string): Promise<void> {
   await db.collection("dashboard_sessions").doc(sessionId).delete();
+}
+
+// ==========================================
+// Shipping Settings Queries
+// ==========================================
+export interface ShippingSettings {
+  standardDeliveryFee: number;
+}
+
+export async function getShippingSettings(): Promise<ShippingSettings> {
+  try {
+    const doc = await db.collection("settings").doc("shipping").get();
+    if (!doc.exists) {
+      return { standardDeliveryFee: 15 };
+    }
+    const data = doc.data();
+    return {
+      standardDeliveryFee: data && typeof data.standardDeliveryFee === "number" ? data.standardDeliveryFee : 15,
+    };
+  } catch (error) {
+    console.error("Error fetching shipping settings:", error);
+    return { standardDeliveryFee: 15 };
+  }
+}
+
+export async function updateShippingSettings(fee: number): Promise<void> {
+  await db.collection("settings").doc("shipping").set({ standardDeliveryFee: fee });
+}
+
+// ==========================================
+// Order Queries
+// ==========================================
+export interface OrderItem {
+  id: number;
+  slug: string;
+  name: string;
+  priceString: string;
+  priceNumeric: number;
+  quantity: number;
+  image: string;
+  variantId?: string; // set when the product has variants (e.g. cartridge size)
+  variantLabel?: string;
+}
+
+export interface Order {
+  id: string; // generated order ID (e.g. HW-K4M2L8)
+  customer: {
+    name: string;
+    email: string;
+    phone: string;
+    address: string;
+    suburb: string;
+    postcode: string;
+    state: string;
+  };
+  items: OrderItem[];
+  /** Set when the order was a cartridge package purchase rather than a cart checkout. */
+  package?: { id: string; name: string };
+  subtotal: number;
+  shipping: number;
+  gst: number;
+  total: number;
+  status: "Pending" | "Processing" | "Shipped" | "Completed" | "Cancelled";
+  payment: {
+    method: "paypal";
+    id: string; // PayPal capture ID once paid (PayPal order ID while pending)
+    paypalOrderId?: string; // PayPal order ID; absent on orders created before this field existed
+    payerEmail: string;
+    status: string;
+  };
+  createdAt: string;
+  updatedAt: string;
+  /** SHA-256 of the buyer's order access token. Server-only; never send to clients. */
+  accessTokenHash?: string;
+}
+
+function generateOrderId(): string {
+  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  let result = "HW-";
+  for (let i = 0; i < 6; i++) {
+    result += chars.charAt(crypto.randomInt(chars.length));
+  }
+  return result;
+}
+
+function stripServerOnlyFields(data: FirebaseFirestore.DocumentData): Order {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { accessTokenHash, ...rest } = data;
+  return rest as Order;
+}
+
+export async function createOrder(order: Omit<Order, "id">): Promise<string> {
+  let orderId = generateOrderId();
+  let doc = await db.collection("orders").doc(orderId).get();
+  let attempts = 0;
+  
+  // Ensure uniqueness
+  while (doc.exists && attempts < 5) {
+    orderId = generateOrderId();
+    doc = await db.collection("orders").doc(orderId).get();
+    attempts++;
+  }
+  
+  const finalOrder: Order = {
+    id: orderId,
+    ...order,
+  };
+  
+  await db.collection("orders").doc(orderId).set(finalOrder);
+  return orderId;
+}
+
+export async function getOrders(): Promise<Order[]> {
+  const snapshot = await db.collection("orders").orderBy("createdAt", "desc").get();
+  return snapshot.docs.map((doc) => stripServerOnlyFields(doc.data()));
+}
+
+export async function getOrderById(id: string): Promise<Order | null> {
+  const doc = await db.collection("orders").doc(id).get();
+  if (!doc.exists) return null;
+  return doc.data() as Order;
+}
+
+export async function updateOrderStatus(id: string, status: Order["status"]): Promise<void> {
+  await db.collection("orders").doc(id).update({
+    status,
+    updatedAt: new Date().toISOString(),
+  });
+}
+
+export async function deleteOrder(id: string): Promise<void> {
+  await db.collection("orders").doc(id).delete();
 }
