@@ -140,7 +140,7 @@ export interface PaypalOrderDetails {
 export async function getPaypalOrder(paypalOrderId: string): Promise<PaypalOrderDetails> {
   const accessToken = await getAccessToken();
 
-  const response = await fetch(`${BASE_URL}/v2/checkout/orders/${paypalOrderId}`, {
+  const response = await fetch(`${BASE_URL}/v2/checkout/orders/${encodeURIComponent(paypalOrderId)}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -162,11 +162,14 @@ export async function getPaypalOrder(paypalOrderId: string): Promise<PaypalOrder
 export async function capturePaypalOrder(paypalOrderId: string): Promise<CaptureOrderResponse> {
   const accessToken = await getAccessToken();
 
-  const response = await fetch(`${BASE_URL}/v2/checkout/orders/${paypalOrderId}/capture`, {
+  const response = await fetch(`${BASE_URL}/v2/checkout/orders/${encodeURIComponent(paypalOrderId)}/capture`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
+      // Idempotency key: PayPal returns the original result for retries
+      // instead of attempting a second capture.
+      "PayPal-Request-Id": `capture-${paypalOrderId}`,
     },
   });
 
@@ -176,4 +179,61 @@ export async function capturePaypalOrder(paypalOrderId: string): Promise<Capture
   }
 
   return (await response.json()) as CaptureOrderResponse;
+}
+
+export interface PaypalWebhookHeaders {
+  authAlgo: string | null;
+  certUrl: string | null;
+  transmissionId: string | null;
+  transmissionSig: string | null;
+  transmissionTime: string | null;
+}
+
+/**
+ * Verify a webhook delivery with PayPal's verify-webhook-signature API.
+ * `rawBody` must be the exact request body; `webhookId` is the ID of the
+ * webhook registered in the PayPal dashboard for this environment.
+ */
+export async function verifyPaypalWebhookSignature(
+  headers: PaypalWebhookHeaders,
+  rawBody: string,
+  webhookId: string
+): Promise<boolean> {
+  const { authAlgo, certUrl, transmissionId, transmissionSig, transmissionTime } = headers;
+  if (!authAlgo || !certUrl || !transmissionId || !transmissionSig || !transmissionTime) {
+    return false;
+  }
+
+  let webhookEvent: unknown;
+  try {
+    webhookEvent = JSON.parse(rawBody);
+  } catch {
+    return false;
+  }
+
+  const accessToken = await getAccessToken();
+  const response = await fetch(`${BASE_URL}/v1/notifications/verify-webhook-signature`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify({
+      auth_algo: authAlgo,
+      cert_url: certUrl,
+      transmission_id: transmissionId,
+      transmission_sig: transmissionSig,
+      transmission_time: transmissionTime,
+      webhook_id: webhookId,
+      webhook_event: webhookEvent,
+    }),
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`PayPal webhook verification failed: ${response.status} - ${errorText}`);
+  }
+
+  const data = (await response.json()) as { verification_status?: string };
+  return data.verification_status === "SUCCESS";
 }

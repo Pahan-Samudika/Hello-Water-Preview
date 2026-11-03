@@ -328,7 +328,8 @@ export interface Order {
   status: "Pending" | "Processing" | "Shipped" | "Completed" | "Cancelled";
   payment: {
     method: "paypal";
-    id: string; // PayPal transaction ID
+    id: string; // PayPal capture ID once paid (PayPal order ID while pending)
+    paypalOrderId?: string; // PayPal order ID; absent on orders created before this field existed
     payerEmail: string;
     status: string;
   };
